@@ -138,7 +138,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 
 <a id="recommendation.event"></a>
 
-## 5. 추천 이벤트 수집하기(성공률 분석) { #recommendation.event }
+## 5. 추천 이벤트 수집하기 { #recommendation.event }
 
 사용자가 추천 결과를 클릭하는 등 반응이 발생하면 추천 이벤트 API로 전송합니다. 적재된 이벤트 데이터로 추천 성공률을 분석할 수 있습니다.
 요청 필드의 자세한 설명은 [API 가이드](./api-guide/#recommendation.event.api)의 '추천 이벤트 API'를 참고하세요.
