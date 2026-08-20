@@ -68,7 +68,7 @@ NHN Cloud Foundry는 고객의 데이터를 통합한 후, 머신러닝 모델(�
 NHN Cloud Foundry는 콘솔 외에도 API를 제공합니다.
 이미 만든 데이터 소스에 데이터를 추가·갱신하는 Ingest API와, 생성한 앱의 추천 결과를 요청하고 사용자 반응 이벤트를 전송하는 API를 사용할 수 있습니다.
 
-자세한 내용은 [API 가이드](./api-guide/)를 참고하세요.
+자세한 내용은 [API 가이드](../api-guide/)를 참고하세요.
 
 <a id="target"></a>
 
