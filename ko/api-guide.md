@@ -451,14 +451,14 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| userId | String | O | 추천 대상 사용자 ID |
-| context | Object | X | 요청 맥락 정보(자유 형식 키-값). currentItemKey와 recentlyViewed는 추천 추론에 사용됩니다 |
+| userId | String | O | 추천 대상 사용자 ID. 익명 사용자에게 추천을 요청하려면 빈 문자열("")로 보냅니다 |
 | context.currentItemKey | String | X | 현재 보고 있는 아이템 키 |
 | context.recentlyViewed | Array | X | 최근 조회한 아이템 키 목록 |
+| context.availableItems | Array | X | 추천 대상 아이템 키 목록. 지정하면 이 목록에 포함된 아이템 중에서만 추천합니다 |
 | context.pageType | String | X | 현재 페이지 유형(자유 형식. 예: home, item_detail) |
 | context.sessionId | String | X | 세션 ID |
-| userAttributes | Object | X | 사용자 속성 정보(자유 형식 키-값. 예: 직업, 관심 분야, 나이). Cold Start 추론에 사용됩니다 |
-| options.maxRecommendations | Integer | X | 최대 추천 수(1~100, 기본값 10) |
+| userAttributes | Object | X | 사용자 속성 정보. Cold Start 추론에 사용됩니다 |
+| options.maxRecommendations | Integer | X | 최대 추천 수(1~100). 100을 초과하는 값은 오류 없이 100으로 조정되며, 지정하지 않으면 100이 적용됩니다. 추천 가능한 아이템이 이 값보다 적으면 실제 아이템 수만큼만 반환합니다 |
 | options.mode | String | X | 추론 방식 지정. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) 중 하나. 지정하지 않으면 서버가 자동으로 결정합니다 |
 | options.longtail | Boolean | X | 인기가 낮은 항목까지 포함해 추천 다양성을 높입니다. sequential일 때만 적용됩니다 |
 
