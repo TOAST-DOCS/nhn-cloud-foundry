@@ -408,6 +408,7 @@ Response:
 | 값 | 설명 |
 | --- | --- |
 | UPLOADING | 파일을 업로드하고 있습니다. |
+| QUEUED | 업로드가 완료되어 적재 대기 중입니다. |
 | STAGED | 처리 준비가 완료되었습니다. |
 | RUNNING | 데이터를 적재하고 있습니다. |
 | COMPLETED | 작업이 정상적으로 완료되었습니다. |
@@ -450,18 +451,16 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| userId | String | O | 추천 대상 사용자 ID |
-| context | Object | X | 요청 맥락 정보 |
+| userId | String | O | 추천 대상 사용자 ID. 익명 사용자에게 추천을 요청하려면 빈 문자열("")로 보냅니다 |
 | context.currentItemKey | String | X | 현재 보고 있는 아이템 키 |
 | context.recentlyViewed | Array | X | 최근 조회한 아이템 키 목록 |
-| context.pageType | String | X | 현재 페이지 유형. home, course_detail, course_list, search_result, my_page |
+| context.availableItems | Array | X | 추천 대상 아이템 키 목록. 지정하면 이 목록에 포함된 아이템 중에서만 추천합니다 |
+| context.pageType | String | X | 현재 페이지 유형(자유 형식. 예: home, item_detail) |
 | context.sessionId | String | X | 세션 ID |
 | userAttributes | Object | X | 사용자 속성 정보. Cold Start 추론에 사용됩니다 |
-| userAttributes.jobCategory | String | X | 직업/직군 |
-| userAttributes.interestArea | Array | X | 관심 분야 목록 |
-| userAttributes.experienceYears | Integer | X | 경력 연수 |
-| options.maxRecommendations | Integer | X | 최대 추천 수(1~100, 기본값 10) |
-| options.excludeItemKeys | Array | X | 추천에서 제외할 아이템 키 목록 |
+| options.maxRecommendations | Integer | X | 최대 추천 수(1~100). 100을 초과하는 값은 오류 없이 100으로 조정되며, 지정하지 않으면 100이 적용됩니다. 추천 가능한 아이템이 이 값보다 적으면 실제 아이템 수만큼만 반환합니다 |
+| options.mode | String | X | 추론 방식 지정. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) 중 하나. 지정하지 않으면 서버가 자동으로 결정합니다 |
+| options.longtail | Boolean | X | 인기가 낮은 항목까지 포함해 추천 다양성을 높입니다. sequential일 때만 적용됩니다 |
 
 !!! tip "알아두기"
     `userAttributes` 스키마는 향후 선호도 유도(Preference Elicitation) 구현 방향에 따라 수집 방식이나 필드 종류가 변경될 수 있습니다.
@@ -484,8 +483,8 @@ Response:
     "metadata": {
       "modelVersion": "v1.2.0",
       "requestId": "req_xyz789",
-      "inferenceType": "normal",
-      "abTestGroup": "treatment"
+      "inferenceType": "sequential",
+      "abTestGroup": ""
     }
   }
 }
@@ -499,8 +498,8 @@ Response:
 | body.recommendations[].position | 추천 순위 |
 | body.metadata.modelVersion | 사용된 모델 버전 |
 | body.metadata.requestId | 요청 추적 ID. 추천 이벤트 API 전송 시 이 값을 사용합니다 |
-| body.metadata.inferenceType | 추론 유형. normal(이력 기반) 또는 cold_start(속성 기반) |
-| body.metadata.abTestGroup | A/B 테스트 그룹. treatment, control, none |
+| body.metadata.inferenceType | 추론 유형. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) |
+| body.metadata.abTestGroup | A/B 테스트 그룹(현재는 빈 값으로 반환됩니다) |
 
 <a id="recommendation.event.api"></a>
 
