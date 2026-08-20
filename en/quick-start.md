@@ -1,5 +1,6 @@
-<a id="foundry.getting.started"></a>
+<!-- pre-align:aligned sig=8c004103ffd6 -->
 
+<a id="foundry.getting.started"></a>
 ## Machine Learning > NHN Cloud Foundry > 시작하기 { #foundry.getting.started }
 
 이 문서에서는 NHN Cloud Foundry에서 **추천 시스템 앱**을 생성하고 추천 결과를 활용하기까지의 과정을 설명합니다.
@@ -12,11 +13,9 @@
 5. 추천 이벤트 수집하기
 
 <a id="preparation"></a>
-
 ## 사전 준비하기 { #preparation }
 
 <a id="preparation.service.enable"></a>
-
 ### 서비스 이용 신청 { #preparation.service.enable }
 
 NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비스를 이용하려면 [1:1 문의](https://www.nhncloud.com/kr/support/inquiry)로 신청해야 합니다.
@@ -28,7 +27,6 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ![서비스 이용 신청](../static/images/quick-start/서비스이용신청.png){ height="70%" }
 
 <a id="preparation.data"></a>
-
 ### 데이터 준비 { #preparation.data }
 
 추천 시스템 앱을 만들려면 다음 3개의 CSV 데이터가 필요합니다.
@@ -40,7 +38,6 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 | 히스토리 테이블 | 사용자 ID, 아이템 ID, 타임스탬프 | 사용자-아이템 상호작용 이력(평점, 카테고리 칼럼 선택 가능) |
 
 <a id="datasource.create"></a>
-
 ## 1. 데이터 소스 생성하기 { #datasource.create }
 
 **Machine Learning > NHN Cloud Foundry > 데이터 소스** 탭으로 이동합니다.
@@ -63,14 +60,12 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
     ![데이터 소스 목록](../static/images/quick-start/데이터소스목록.png){ height="70%" }
 
 <a id="app.create"></a>
-
 ## 2. 앱 생성하기 { #app.create }
 
 **Machine Learning > NHN Cloud Foundry > 앱** 탭으로 이동한 뒤 **앱 생성** 버튼을 클릭합니다.
 각 설정 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.create)의 '앱 생성'을 참고하세요.
 
 <a id="app.create.basic"></a>
-
 ### 기본 설정 { #app.create.basic }
 
 앱 이름과 앱 설명을 입력하고 앱 유형으로 **추천 시스템**을 선택한 뒤 **다음**을 클릭합니다.
@@ -78,7 +73,6 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ![앱 생성 - 기본 설정](../static/images/quick-start/앱생성화면1.png){ height="70%" }
 
 <a id="app.create.detail"></a>
-
 ### 상세 설정 { #app.create.detail }
 
 1. **모델 추가** 버튼을 클릭해 사용할 모델을 추가합니다. 신규 서비스라면 **Cold User**, 사용자 행동 이력이 충분하다면 **Warm User(Transformer)** 모델을 권장합니다.
@@ -95,7 +89,6 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
     ![앱 생성 - 추가 설정](../static/images/quick-start/앱생성화면4.png){ height="70%" }
 
 <a id="app.create.review"></a>
-
 ### 최종 검토 { #app.create.review }
 
 1. 입력한 기본 설정, 모델 설정, 추가 설정을 검토합니다.
@@ -104,7 +97,6 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ![앱 생성 - 최종 검토](../static/images/quick-start/앱생성화면5.png){ height="70%" }
 
 <a id="app.status"></a>
-
 ## 3. 앱 상태 확인하기 { #app.status }
 
 앱 생성 후 학습과 배포가 자동으로 진행됩니다. 상태는 초기화 중, 학습 중, 배포 중, 활성화 중을 거쳐 활성으로 바뀝니다.
@@ -118,7 +110,6 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
     앱 생성 직후의 학습·배포는 앱을 준비하는 과정입니다. 추천 모델의 첫 학습은 배치 스케줄 설정에 지정한 시각에 실행되며, 그 전에는 추천 API가 응답을 반환하더라도 학습된 모델의 추천 결과가 아닙니다.
 
 <a id="recommendation.query"></a>
-
 ## 4. 추천 결과 조회하기 { #recommendation.query }
 
 앱이 활성 상태가 되면 콘솔의 추천 API 호출 화면에서 추천 결과를 확인하거나, 추천 조회 API를 호출하여 추천 결과를 조회할 수 있습니다.
@@ -140,7 +131,6 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ![앱 정보](../static/images/quick-start/앱정보.png){ height="70%" }
 
 <a id="recommendation.event"></a>
-
 ## 5. 추천 이벤트 수집하기 { #recommendation.event }
 
 사용자가 추천 결과를 클릭하는 등 반응이 발생하면 추천 이벤트 API로 전송합니다. 적재된 이벤트 데이터로 추천 성공률을 분석할 수 있습니다.
