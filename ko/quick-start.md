@@ -44,7 +44,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ## 1. 데이터 소스 생성하기 { #datasource.create }
 
 **Machine Learning > NHN Cloud Foundry > 데이터 소스** 탭으로 이동합니다.
-각 설정 항목의 자세한 설명은 [콘솔 사용 가이드](./console-user-guide/#datasource.create)의 '데이터 소스 생성'을 참고하세요.
+각 설정 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#datasource.create)의 '데이터 소스 생성'을 참고하세요.
 
 1. **데이터 소스 생성** 버튼을 클릭합니다.
 
@@ -67,7 +67,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ## 2. 앱 생성하기 { #app.create }
 
 **Machine Learning > NHN Cloud Foundry > 앱** 탭으로 이동한 뒤 **앱 생성** 버튼을 클릭합니다.
-각 설정 항목의 자세한 설명은 [콘솔 사용 가이드](./console-user-guide/#app.create)의 '앱 생성'을 참고하세요.
+각 설정 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.create)의 '앱 생성'을 참고하세요.
 
 <a id="app.create.basic"></a>
 
@@ -81,7 +81,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 
 ### 상세 설정 { #app.create.detail }
 
-1. **모델 추가** 버튼을 클릭해 사용할 모델을 추가합니다. 신규 서비스라면 **Cold User**, 사용자 행동 이력이 충분하다면 **Warm User(Transformer/Graph)** 모델을 권장합니다.
+1. **모델 추가** 버튼을 클릭해 사용할 모델을 추가합니다. 신규 서비스라면 **Cold User**, 사용자 행동 이력이 충분하다면 **Warm User(Transformer)** 모델을 권장합니다.
 
     ![앱 생성 - 모델 설정](../static/images/quick-start/앱생성화면2.png){ height="70%" }
 
@@ -112,14 +112,17 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 
 ![앱 목록](../static/images/quick-start/앱목록.png){ height="70%" }
 
-상태 값의 자세한 설명은 [콘솔 사용 가이드](./console-user-guide/#app.list.status)의 '앱 상태'를 참고하세요.
+상태 값의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.list.status)의 '앱 상태'를 참고하세요.
+
+!!! tip "알아두기"
+    앱 생성 직후의 학습·배포는 앱을 준비하는 과정입니다. 추천 모델의 첫 학습은 배치 스케줄 설정에 지정한 시각에 실행되며, 그 전에는 추천 API가 응답을 반환하더라도 학습된 모델의 추천 결과가 아닙니다.
 
 <a id="recommendation.query"></a>
 
 ## 4. 추천 결과 조회하기 { #recommendation.query }
 
 앱이 활성 상태가 되면 콘솔의 추천 API 호출 화면에서 추천 결과를 확인하거나, 추천 조회 API를 호출하여 추천 결과를 조회할 수 있습니다.
-각 항목의 자세한 설명은 [콘솔 사용 가이드](./console-user-guide/#app.detail.recommend)의 '추천 API 호출'을 참고하세요.
+각 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.detail.recommend)의 '추천 API 호출'을 참고하세요.
 
 1. 앱 목록에서 생성한 앱을 클릭해 상세 화면의 **추천 API 호출** 탭으로 이동합니다.
 2. 사용자 ID를 입력하고 추천 모드와 최대 추천 수를 지정합니다.
@@ -128,7 +131,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
     ![추천 API 호출](../static/images/quick-start/추천API호출.png){ height="70%" }
 
 **요청 미리보기**에는 입력 값으로 구성된 실제 API 요청 JSON이 표시됩니다. **복사** 버튼으로 복사해 API 연동 개발에 활용할 수 있습니다.
-추천 조회 API를 직접 호출하는 방법은 [API 가이드](./api-guide/#recommendation.api)의 '추천 조회 API'를 참고하세요.
+추천 조회 API를 직접 호출하는 방법은 [API 가이드](../api-guide/#recommendation.api)의 '추천 조회 API'를 참고하세요.
 
 응답에는 요청 식별자(`metadata.requestId`)와 추천 아이템 목록(`recommendations[].itemKey`)이 포함됩니다. 이 값은 다음 단계의 추천 이벤트 전송에 사용됩니다.
 
@@ -141,7 +144,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ## 5. 추천 이벤트 수집하기 { #recommendation.event }
 
 사용자가 추천 결과를 클릭하는 등 반응이 발생하면 추천 이벤트 API로 전송합니다. 적재된 이벤트 데이터로 추천 성공률을 분석할 수 있습니다.
-요청 필드의 자세한 설명은 [API 가이드](./api-guide/#recommendation.event.api)의 '추천 이벤트 API'를 참고하세요.
+요청 필드의 자세한 설명은 [API 가이드](../api-guide/#recommendation.event.api)의 '추천 이벤트 API'를 참고하세요.
 
 ```bash
 curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
