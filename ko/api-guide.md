@@ -1,5 +1,6 @@
-<a id="foundry.api.guide"></a>
+<!-- pre-align:aligned sig=876ecae2be90 -->
 
+<a id="foundry.api.guide"></a>
 ## Machine Learning > NHN Cloud Foundry > API 가이드 { #foundry.api.guide }
 
 NHN Cloud Foundry가 제공하는 API를 설명합니다.
@@ -11,11 +12,9 @@ NHN Cloud Foundry가 제공하는 API를 설명합니다.
 | 추천 이벤트 API | 추천 결과에 사용자가 보인 반응 이벤트를 수집합니다. |
 
 <a id="auth.common"></a>
-
 ## 인증 및 공통 사항 { #auth.common }
 
 <a id="auth.common.preparation"></a>
-
 ### 사전 준비 { #auth.common.preparation }
 
 API를 사용하려면 **Appkey**와 **인증 토큰**이 필요합니다.
@@ -25,7 +24,6 @@ API를 사용하려면 **Appkey**와 **인증 토큰**이 필요합니다.
 - 인증 토큰(`X-NHN-Authorization` 헤더의 Bearer 토큰) 발급 방법은 [User Access Key 토큰](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/user-access-key-token/) 가이드를 참고하세요.
 
 <a id="auth.common.request"></a>
-
 ### 요청 공통 사항 { #auth.common.request }
 
 필수 헤더:
@@ -43,7 +41,6 @@ https://{gateway-public-host}/api/v1.0
 ```
 
 <a id="auth.common.response"></a>
-
 ### 응답 공통 사항 { #auth.common.response }
 
 모든 API 응답은 `header`와 `body`로 구성됩니다.
@@ -67,7 +64,6 @@ https://{gateway-public-host}/api/v1.0
 | body | Object/Array | API별 응답 데이터 |
 
 <a id="ingest.api"></a>
-
 ## Ingest API { #ingest.api }
 
 Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재하는 API입니다.
@@ -77,7 +73,6 @@ Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재
     데이터 소스를 새로 만드는 API는 제공하지 않습니다. Ingest API를 사용하려면 콘솔에서 데이터 소스를 먼저 생성해야 하며, FILE 타입 데이터 소스만 사용할 수 있습니다.
 
 <a id="ingest.snapshot"></a>
-
 ### 스냅샷 업로드(파일 업로드) { #ingest.snapshot }
 
 업로드한 파일의 내용으로 데이터 소스의 데이터를 **전부 교체**합니다. 업로드는 3단계로 진행됩니다.
@@ -93,7 +88,6 @@ Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재
 - `formPost` 필드 값들은 응답에 포함된 값을 **그대로** 요청에 넣어 사용합니다.
 
 <a id="ingest.snapshot.init"></a>
-
 #### 1. 업로드 초기화(init) { #ingest.snapshot.init }
 
 | 메서드 | URI |
@@ -205,7 +199,6 @@ Response(MULTIPART):
 | body.formPost.maxFileCount | 최대 파일 개수 |
 
 <a id="ingest.snapshot.upload.single"></a>
-
 #### 2-A. 단일 파일 업로드(100MB 이하) { #ingest.snapshot.upload.single }
 
 init 응답의 `uploadUrl`로 multipart/form-data POST를 보냅니다.
@@ -227,7 +220,6 @@ curl -X POST "{uploadUrl}" \
     `file` 필드는 반드시 폼 데이터의 **마지막**에 추가해야 합니다. 성공 시 HTTP `201 Created` 응답을 받습니다.
 
 <a id="ingest.snapshot.upload.multipart"></a>
-
 #### 2-B. 대용량 파일 업로드(100MB 초과, MULTIPART) { #ingest.snapshot.upload.multipart }
 
 응답의 `parts[]` 배열을 받아서 파트별로 업로드합니다.
@@ -255,7 +247,6 @@ curl -I "{parts[i].headUrl}" | grep -i '^etag:'
 ```
 
 <a id="ingest.snapshot.complete"></a>
-
 #### 3. 업로드 완료(complete) { #ingest.snapshot.complete }
 
 | 메서드 | URI |
@@ -317,7 +308,6 @@ Response:
 | body.jobId | 작업 ID. [작업 상태 조회](#ingest.snapshot.job.status)에 사용합니다 |
 
 <a id="ingest.snapshot.cancel"></a>
-
 #### 업로드 취소 { #ingest.snapshot.cancel }
 
 | 메서드 | URI |
@@ -341,7 +331,6 @@ curl -X DELETE "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceI
 ```
 
 <a id="ingest.snapshot.job.status"></a>
-
 #### 작업 상태 조회 { #ingest.snapshot.job.status }
 
 | 메서드 | URI |
@@ -415,13 +404,11 @@ Response:
 | FAILED | 작업이 실패했습니다. |
 
 <a id="recommendation.api"></a>
-
 ## 추천 조회 API { #recommendation.api }
 
 생성한 추천 시스템 앱에 추천 결과를 요청합니다. 사용자 이력이 충분하면 모델 기반(Normal Flow), 부족하면 속성 기반(Cold Start)으로 추론합니다.
 
 <a id="recommendation.api.recommend"></a>
-
 ### 추천 요청 { #recommendation.api.recommend }
 
 | 메서드 | URI |
@@ -503,13 +490,11 @@ Response:
 | body.metadata.abTestGroup | A/B 테스트 그룹(현재는 빈 값으로 반환됩니다) |
 
 <a id="recommendation.event.api"></a>
-
 ## 추천 이벤트 API { #recommendation.event.api }
 
 추천 결과에 사용자가 보인 반응(클릭 등) 이벤트를 수집합니다. 적재된 이벤트 데이터로 추천 성공률을 분석할 수 있습니다.
 
 <a id="recommendation.event.api.send"></a>
-
 ### 추천 이벤트 전송 { #recommendation.event.api.send }
 
 | 메서드 | URI |

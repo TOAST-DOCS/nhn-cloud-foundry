@@ -1,13 +1,12 @@
-<a id="foundry"></a>
+<!-- pre-align:aligned sig=11f4475601aa -->
 
+<a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > 릴리스 노트 { #foundry }
 
 <a id="foundry.release.notes.2026.08.25"></a>
-
 ### 2026. 08. 25. { #foundry.release.notes.2026.08.25 }
 
 <a id="foundry.release.notes.2026.08.25.new.service"></a>
-
 #### 신규 서비스 출시 { #foundry.release.notes.2026.08.25.new.service }
 
 - NHN Cloud Foundry가 출시되었습니다.
