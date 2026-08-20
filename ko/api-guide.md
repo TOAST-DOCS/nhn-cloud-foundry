@@ -286,7 +286,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | jobId | String | O | 작업 ID(init 응답의 jobId) |
 | fileName | String | O | 파일 이름 |
 | uploadId | String | X | 멀티파트 업로드 ID(멀티파트 업로드 시에만 필요) |
-| partETags | Array | X | 파트별 ETag 목록(멀티파트 업로드 시에만 필요, partNumber 순) |
+| partETags | Array | X | 파트별 ETag 목록(멀티파트 업로드 시에만 필요, partNumber순) |
 
 Response:
 
