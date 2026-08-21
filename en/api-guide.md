@@ -3,7 +3,6 @@
 <!-- pre-align:aligned sig=876ecae2be90 -->
 
 <a id="foundry.api.guide"></a>
-
 ## Machine Learning > NHN Cloud Foundry > API Guide { #foundry.api.guide }
 
 Describes the APIs provided by NHN Cloud Foundry.
@@ -15,7 +14,6 @@ Describes the APIs provided by NHN Cloud Foundry.
 | Recommendation Event API | Collects user reaction events to recommendation results. |
 
 <a id="auth.common"></a>
-
 ## Authentication and Common Information { #auth.common }
 
 <a id="auth.common.preparation"></a>
@@ -68,7 +66,6 @@ All API responses consist of a `header` and a `body`.
 | body | Object/Array | Response data for each API |
 
 <a id="ingest.api"></a>
-
 ## Ingest API { #ingest.api }
 
 The Ingest API loads data into a data source that you have already created in the console. It provides a snapshot upload method that replaces all data in the data source with the uploaded file.
@@ -408,7 +405,6 @@ The job status (`status`) can have the following values:
 | FAILED | Job failed |
 
 <a id="recommendation.api"></a>
-
 ## Recommendation API { #recommendation.api }
 
 Requests recommendation results from the recommendation system app that you created. If the user's interaction history is sufficient, the server performs model-based inference (Normal Flow); if the history is insufficient, it performs attribute-based inference (Cold Start).
@@ -495,7 +491,6 @@ Response example:
 | body.metadata.abTestGroup | A/B test group (currently returns an empty value) |
 
 <a id="recommendation.event.api"></a>
-
 ## Recommendation Event API { #recommendation.event.api }
 
 Collects user interaction events (such as clicks) in response to recommendation results. You can analyze the recommendation success rate using the collected event data.
