@@ -1097,7 +1097,7 @@ Input form:
 | --- | --- |
 | Recommendation app ID | App ID to call. Automatically populated with the current app. |
 | User ID | Select the user to receive recommendations. |
-| Recommendation mode | Choose between Normal Flow (history-based) and Cold Start (attribute-based). |
+| Recommendation mode | Choose between Sequential (history-based) and Cold Start (attribute-based). |
 | Maximum recommendations | Maximum number of items to include in the response (1–100, default: 10). |
 | Longtail mode | Improves recommendation diversity by including unpopular items. Not available in Cold Start mode. |
 | context | Add contextual information for the recommendation request (e.g., current or recently viewed items) on a field-by-field basis. |

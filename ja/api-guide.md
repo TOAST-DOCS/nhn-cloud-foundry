@@ -408,7 +408,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 <a id="recommendation.api"></a>
 ## レコメンデーション照会 API { #recommendation.api }
 
-作成したレコメンデーションシステムアプリにレコメンデーション結果をリクエストします。ユーザーの履歴が十分な場合はモデルベース (Normal Flow)、不足している場合は属性ベース (Cold Start) で推論します。
+作成したレコメンデーションシステムアプリにレコメンデーション結果をリクエストします。ユーザーの履歴が十分な場合はモデルベース (Sequential)、不足している場合は属性ベース (Cold Start) で推論します。
 
 <a id="recommendation.api.recommend"></a>
 ### レコメンデーションリクエスト { #recommendation.api.recommend }
