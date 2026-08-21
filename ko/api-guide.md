@@ -406,7 +406,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 <a id="recommendation.api"></a>
 ## 추천 조회 API { #recommendation.api }
 
-생성한 추천 시스템 앱에 추천 결과를 요청합니다. 사용자 이력이 충분하면 모델 기반(Normal Flow), 부족하면 속성 기반(Cold Start)으로 추론합니다.
+생성한 추천 시스템 앱에 추천 결과를 요청합니다. 사용자 이력이 충분하면 모델 기반(Sequential), 부족하면 속성 기반(Cold Start)으로 추론합니다.
 
 <a id="recommendation.api.recommend"></a>
 ### 추천 요청 { #recommendation.api.recommend }
