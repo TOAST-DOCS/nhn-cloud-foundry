@@ -1,151 +1,156 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=a160539b5f44 -->
 
 <a id="foundry.console.guide"></a>
-## Machine Learning > NHN Cloud Foundry > 콘솔 유저 가이드 { #foundry.console.guide }
 
-이 문서에서는 NHN Cloud Foundry 콘솔에서 데이터 소스, 파이프라인, 분석(쿼리·차트·대시보드), 앱을 관리하는 방법을 설명합니다.
+## Machine Learning > NHN Cloud Foundry > Console User Guide { #foundry.console.guide }
 
-설정 항목 표의 필수 열은 다음을 의미합니다.
+This document describes how to manage data sources, pipelines, analytics (queries, charts, and dashboards), and apps in the NHN Cloud Foundry console.
 
-- `O`: 반드시 입력해야 하는 항목
-- `X`: 선택 항목
-- `O*`: 다른 설정 값에 따라 필수 여부가 달라지는 항목
+In the settings tables, the Required column indicates the following:
+
+- `O`: Required entry
+- `X`: Optional entry
+- `O*`: Required or optional depending on other settings
 
 <a id="status"></a>
-## 현황 { #status }
 
-콘솔 경로: **Machine Learning > NHN Cloud Foundry > 현황** 탭
+## Status { #status }
 
-현황 탭에서 서비스 활성화 상태와 테넌트 설정을 확인합니다. 서비스를 사용하려면 먼저 이 탭에서 활성화 상태를 확인하고, 활성화되어 있지 않다면 활성화를 신청해야 합니다.
+Console path: **Machine Learning > NHN Cloud Foundry > Status** tab
+
+On the Status tab, you can check the service activation status and tenant settings. Before using the service, check the activation status on this tab, and submit an activation request if the service is not yet activated.
 
 <a id="status.activate"></a>
-### 서비스 활성화 신청 { #status.activate }
+### Request Service Activation { #status.activate }
 
-서비스 활성화는 콘솔에서 직접 수행할 수 없습니다. [1:1 문의](https://www.nhncloud.com/kr/support/inquiry)로 원하는 리소스 크기를 포함해서 문의하세요. 신청한 클러스터가 생성되면 데이터 소스 생성부터 순서대로 사용할 수 있습니다.
+Service activation cannot be performed directly from the console. Contact us through [1:1 Inquiry](https://www.nhncloud.com/kr/support/inquiry) with your preferred resource size. Once the requested cluster is created, you can use the service starting from creating a data source.
 
-리소스 크기별로 사용할 수 있는 기능은 다음과 같습니다.
+The features available for each resource size are as follows:
 
-| 값 | 설명 |
+| Value | Description |
 | --- | --- |
-| SMALL | 기본 리소스: 데이터 소스, 공통 기능, 차트 쿼리 사용 가능 |
-| MEDIUM | 기본 + 데이터 파이프라인 추가 사용 가능 |
-| LARGE | 기본 + AI 앱 사용 가능 |
-| XLARGE | 모든 기능 사용 가능(데이터 파이프라인 + AI 앱) |
+| SMALL | Basic resources: data sources, common features, and chart queries available |
+| MEDIUM | Basic resources + data pipeline additionally available |
+| LARGE | Basic resources + AI apps available |
+| XLARGE | All features available (data pipeline + AI apps) |
 
 <a id="status.info"></a>
-### 서비스 상태 확인 { #status.info }
+### Check Service Status { #status.info }
 
-활성화된 후에는 현황 탭에서 다음 정보를 확인할 수 있습니다.
+After activation, the Status tab displays the following information:
 
-| 항목 | 설명 |
+| Item | Description |
 | --- | --- |
-| 서비스 상태 | 현재 서비스의 활성화 상태 |
-| 테넌트 도메인 | 서비스에 접근할 때 사용하는 도메인 |
+| Service status | Current activation status of the service |
+| Tenant domain | Domain used to access the service |
 
-- 활성화 이후 리소스 변경이 필요한 경우에도 1:1 문의로 신청합니다.
-- 서비스 환경을 구성하거나 정리하는 중에는 진행률이 함께 표시됩니다.
-- **비활성화** 버튼을 클릭하면 서비스를 비활성화할 수 있습니다.
+- If you need to change your resource size after activation, submit a request through 1:1 Inquiry.
+- While the service environment is being configured or decommissioned, the progress is displayed.
+- Click the **Deactivate** button to deactivate the service.
 
-!!! danger "주의"
-    서비스를 비활성화하면 생성되었던 모든 리소스가 삭제되며, 이 작업은 되돌릴 수 없습니다.
+!!! danger "Caution"
+    Deactivating the service deletes all created resources, and this action cannot be undone.
 
 <a id="datasource"></a>
-## 데이터 소스 { #datasource }
 
-콘솔 경로: **Machine Learning > NHN Cloud Foundry > 데이터 소스** 탭
+## Data Source { #datasource }
 
-데이터 소스는 NHN Cloud Foundry에서 분석할 데이터를 저장하는 단위입니다. 데이터 소스의 생성, 조회, 삭제는 콘솔에서 수행합니다.
+Console path: **Machine Learning > NHN Cloud Foundry > Data Source** tab
+
+A data source is the unit that stores data for analysis in NHN Cloud Foundry. You can create, view, and delete data sources in the console.
 
 <a id="datasource.list"></a>
-### 데이터 소스 목록 { #datasource.list }
+### Data Source List { #datasource.list }
 
-데이터 소스 목록 화면에서 다음 정보를 확인할 수 있습니다.
+The data source list screen displays the following information.
 
-| 칼럼 | 설명 |
+| Column | Description |
 | --- | --- |
-| 타입 | 데이터 소스의 종류 |
-| 데이터 소스 이름 | 데이터 소스를 식별하는 이름 |
-| 테이블 이름 | 데이터가 저장되는 테이블 이름 |
-| 상태 | 데이터 소스의 현재 상태 |
-| 데이터양 | 적재된 데이터의 행 수 |
-| 생성일 | 데이터 소스가 생성된 일시 |
-| 자세히 | 돋보기 아이콘 클릭 시 상세 정보 조회 |
+| Type | The type of the data source |
+| Data source name | The name that identifies the data source |
+| Table name | The name of the table where data is stored |
+| Status | The current status of the data source |
+| Data volume | The number of rows of ingested data |
+| Created on | The date and time the data source was created |
+| Details | Click the magnifying glass icon to view detailed information |
 
-타입:
+Type:
 
-| 값 | 설명 |
+| Value | Description |
 | --- | --- |
-| 파일 | 업로드한 CSV 파일로 만든 데이터 소스 |
-| 추천 | 추천 결과가 저장되는 데이터 소스 |
-| 데이터셋 | 파이프라인이 생성한 데이터 소스 |
+| File | A data source created from an uploaded CSV file |
+| Recommendation | A data source where recommendation results are stored |
+| Dataset | A data source created by a pipeline |
 
-상태:
+Status:
 
-| 값 | 설명 |
+| Value | Description |
 | --- | --- |
-| INITIALIZING | 데이터 소스 초기화 중 |
-| PROCESSING | 데이터 처리 중 |
-| INGESTING | 데이터 적재 중 |
-| COMPLETED | 데이터 소스 처리 완료 |
-| FAILED | 데이터 소스 처리 실패 |
-| DELETING | 데이터 소스 삭제 중 |
+| INITIALIZING | The data source is being initialized |
+| PROCESSING | Data is being processed |
+| INGESTING | Data is being ingested |
+| COMPLETED | Data source processing is complete |
+| FAILED | Data source processing has failed |
+| DELETING | The data source is being deleted |
 
-타입이 파일인 데이터 소스는 최근 파일 업로드 결과가 상태 옆에 아이콘으로 함께 표시됩니다.
+For data sources of type File, the result of the most recent file upload is displayed as an icon next to the status.
 
-| 값 | 설명 |
+| Value | Description |
 | --- | --- |
-| 반영 중 | 최근 업로드한 파일 반영 중 |
-| 확인 권장 | 최근 업로드한 파일은 반영되었으나 확인할 항목 있음. 데이터 소스 상세에서 내용 확인 필요 |
-| 확인 필요 | 데이터 소스는 사용 가능하나 최근 업로드한 파일은 미반영. 파일 확인 후 다시 업로드 필요 |
+| Applying | The most recently uploaded file is being applied |
+| Review recommended | The most recently uploaded file has been applied, but there are items to review. Check the details in the data source detail view |
+| Review required | The data source is available, but the most recently uploaded file has not been applied. Check the file and re-upload |
 
-- 상태 배지 옆의 물음표 아이콘에 마우스를 올리면 상태 설명이 표시됩니다.
-- 상단의 검색 기능으로 데이터 소스 이름 또는 ID 기준 필터링이 가능합니다.
-- 타입·데이터 소스 이름·테이블 이름·상태 칼럼은 칼럼 헤더의 필터로도 좁힐 수 있습니다.
-- 페이지당 표시 개수를 조절할 수 있습니다(10개, 20개, 50개 / 기본 10개).
+- Hovering over the question mark icon next to the status badge displays a status description.
+- You can filter by data source name or ID using the search feature at the top.
+- You can also narrow results using the column header filters for the Type, Data source name, Table name, and Status columns.
+- You can adjust the number of items displayed per page (10, 20, or 50 items; default is 10).
 
-!!! tip "알아두기"
-    타입이 추천, 데이터셋인 항목은 사용자가 직접 생성할 수 없습니다. 추천은 추천 시스템 앱을 생성할 때, 데이터셋은 파이프라인을 실행할 때 자동으로 생성됩니다.
+!!! tip "Note"
+    Items of type Recommendation and Dataset cannot be created directly by users. Recommendation data sources are created automatically when a recommendation system app is created, and Dataset data sources are created automatically when a pipeline runs.
 
 <a id="datasource.create"></a>
-### 데이터 소스 생성 { #datasource.create }
+### Create a Data Source { #datasource.create }
 
-**데이터 소스 생성** 버튼을 클릭하면 생성 모달이 열립니다.
+Click the **Create data source** button to open the creation modal.
 
 <a id="datasource.create.basic"></a>
-#### 기본 설정 { #datasource.create.basic }
+#### Basic Settings { #datasource.create.basic }
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 데이터 소스 이름 | O | 한글, 일본어, 영문, 숫자, 공백, -, _ 사용(1~64자) |
-| 테이블 이름 | O | 영문 소문자, 숫자, _ 사용(1~64자). 숫자로 시작 불가, SQL 예약어 사용 불가 |
-| 설명 | X | 데이터 소스 설명 |
+| Data source name | O | Korean, Japanese, English, numbers, spaces, -, _ allowed (between 1 and 64 characters) |
+| Table name | O | Lowercase English letters, numbers, and _ allowed (between 1 and 64 characters). Cannot start with a number; SQL reserved words not allowed |
+| Description | X | A description of the data source |
 
-이미 사용 중인 데이터 소스 이름과 테이블 이름은 사용할 수 없습니다.
+Data source names and table names that are already in use cannot be used.
 
 <a id="datasource.create.detail"></a>
-#### 상세 설정 { #datasource.create.detail }
+#### Advanced Settings { #datasource.create.detail }
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| CSV 파일 | X | **파일 선택** 버튼으로 업로드할 CSV 파일 선택(최대 100MB) |
-| 헤더 설정 | X | **첫 번째 행이 헤더입니다** 체크 시 CSV 첫 행을 칼럼 이름으로 사용 |
-| 기본 키 필드 | X | 행을 구분하는 칼럼을 드롭다운으로 지정 |
-| 스키마 | O | 데이터의 필드 이름과 타입 정의 |
+| CSV file | X | Select the CSV file to upload using the **Select File** button (up to 100 MB) |
+| Header settings | X | When **First row is the header** is checked, the first row of the CSV is used as column names |
+| Primary key field | X | Specify the column to use as the row identifier from the dropdown |
+| Schema | O | Define the field names and types for the data |
 
-기본 키 필드는 다음과 같이 지정합니다.
+Specify the primary key field as follows:
 
-- CSV 파일을 선택하면 첫 번째 칼럼으로 드롭다운이 자동으로 만들어집니다. 드롭다운을 클릭해 다른 칼럼으로 변경합니다.
-- **기본 키 추가** 버튼으로 드롭다운을 추가하면 두 개 이상의 칼럼을 묶어 지정할 수 있습니다. 이미 선택한 칼럼은 다른 드롭다운의 후보에 표시되지 않습니다.
-- 드롭다운을 모두 지우면 기본 키를 지정하지 않은 상태가 됩니다.
-- 헤더가 없는 파일은 칼럼이 순번과 첫 데이터 행의 값으로 표시됩니다.
+- When you select a CSV file, a dropdown is automatically created with the first column selected. Click the dropdown to change to a different column.
+- Click the **Add primary key** button to add another dropdown and specify two or more columns as a composite key. Columns already selected will not appear as options in other dropdowns.
+- If all dropdowns are cleared, no primary key will be specified.
+- For files without a header, columns are displayed with their sequence number and the value from the first data row.
 
-스키마는 다음 방법으로 입력합니다.
+Enter the schema using one of the following methods:
 
-- 타입 추론: CSV 파일을 선택한 뒤 **타입 추론** 버튼을 클릭하면 CSV 앞부분 샘플(최대 1,000행)로 칼럼 타입을 추론해 스키마 입력란을 채웁니다. 잘못 추론된 타입은 사용자가 직접 수정합니다.
-- 표 편집: **필드 추가** 버튼으로 행을 추가하고 각 행에 필드 이름과 타입을 지정합니다. 비고 열에는 타입 추론 결과 중 확인이 필요한 항목이 표시됩니다.
-- JSON 편집: **JSON으로 직접 편집** 버튼을 클릭하고 아래 형식의 JSON 배열을 직접 입력합니다.
+- Type inference: After selecting a CSV file, click the **Infer types** button to infer column types from a sample of up to 1,000 rows at the beginning of the CSV and populate the schema input fields. Correct any incorrectly inferred types manually.
+- Table edit: Click the **Add field** button to add rows, then specify the field name and type for each row. The Remarks column displays any items from the type inference results that require review.
+- JSON edit: Click the **Edit directly as JSON** button and enter a JSON array in the format shown below.
 
-스키마 JSON 형식 예시:
+Schema JSON format example:
 
 ```json
 [
@@ -156,962 +161,976 @@
 ]
 ```
 
-지원하는 필드 타입:
+Supported field types:
 
-| 값 | 설명 |
+| Value | Description |
 | --- | --- |
-| boolean | 불리언 |
-| int | 정수(32bit) |
-| long | 정수(64bit) |
-| float | 실수(32bit) |
-| double | 실수(64bit) |
-| string | 문자열 |
-| timestamp | 타임스탬프 |
-| datetime | 날짜시간(YYYY-MM-DD HH:MM:SS) |
-| date | 날짜 |
-| array | 배열(기본) |
-| array&lt;double&gt; | double 배열 |
-| array&lt;int&gt; | int 배열 |
-| array&lt;string&gt; | string 배열(추천 모델용) |
-| array&lt;float&gt; | float 배열(추천 모델용) |
+| boolean | Boolean |
+| int | Integer (32-bit) |
+| long | Integer (64-bit) |
+| float | Float (32-bit) |
+| double | Double (64-bit) |
+| string | String |
+| timestamp | Timestamp |
+| datetime | Date and time (YYYY-MM-DD HH:MM:SS) |
+| date | Date |
+| array | Array (default) |
+| array&lt;double&gt; | Double array |
+| array&lt;int&gt; | Int array |
+| array&lt;string&gt; | String array (for recommendation models) |
+| array&lt;float&gt; | Float array (for recommendation models) |
 
-!!! danger "주의"
-    예약 필드 이름 `system_eventTimestamp`는 사용할 수 없습니다.
+!!! danger "Caution"
+    The reserved field name `system_eventTimestamp` cannot be used.
 
-설정 완료 후 **추가** 버튼을 클릭하면 데이터 소스가 생성됩니다.
+After completing the settings, click the **Add** button to create the data source.
 
 <a id="datasource.delete"></a>
-### 데이터 소스 삭제 { #datasource.delete }
+### Delete a Data Source { #datasource.delete }
 
-목록에서 삭제할 데이터 소스를 체크박스로 선택한 후 **삭제** 버튼을 클릭합니다.
+Select the data sources to delete using the checkboxes in the list, then click the **Delete** button.
 
-- 삭제 시 테이블과 적재된 데이터도 함께 삭제됩니다.
-- 수집 작업이 진행 중인 경우 삭제할 수 없습니다.
+- Deleting a data source also deletes the table and all ingested data.
+- You cannot delete a data source while an ingestion job is in progress.
 
 <a id="datasource.detail"></a>
-### 자세히 보기 / 프리뷰 { #datasource.detail }
+### View Details / Preview { #datasource.detail }
 
-- **자세히**(돋보기 아이콘): 데이터 소스 정보를 확인합니다.
-- **프리뷰**(⌄ 아이콘): 적재된 데이터를 테이블 형태로 미리 봅니다.
+- **Details** (magnifying glass icon): View information about the data source.
+- **Preview** (⌄ icon): Preview the ingested data in table format.
 
-자세히 보기는 다음 탭으로 구성됩니다.
+The Details view consists of the following tabs.
 
-| 탭 | 설명 |
+| Tab | Description |
 | --- | --- |
-| 연결 정보 | 데이터 소스 ID, 데이터 소스 이름, 테이블 이름, 타입, 설명, 상태 |
-| 카탈로그 | 필드 이름과 자료형 목록 조회, **필드 추가** |
+| Connection info | Data source ID, data source name, table name, type, description, and status |
+| Catalog | View the list of field names and data types, and **Add field** |
 
 <a id="datasource.edit"></a>
-### 데이터 갱신 { #datasource.edit }
+### Update Data { #datasource.edit }
 
-데이터 소스 이름과 테이블 이름은 생성 후 변경할 수 없습니다. 적재된 데이터는 새 CSV 파일로 갱신하며, 필드는 추가할 수 있습니다.
+The data source name and table name cannot be changed after creation. You can update ingested data by uploading a new CSV file, and you can add new fields.
 
 <a id="datasource.edit.csv"></a>
-#### CSV로 데이터 수정 { #datasource.edit.csv }
+#### Edit Data with CSV { #datasource.edit.csv }
 
-목록에서 타입이 파일인 데이터 소스 행의 더보기(⋯) 메뉴에서 **CSV로 수정하기**를 클릭합니다.
+In the list, click **Edit with CSV** from the more options (⋯) menu in the row of a data source of type File.
 
-1. 기존 칼럼 목록을 확인합니다.
-2. **파일 선택** 버튼으로 새 CSV 파일을 선택합니다(최대 100MB).
-3. 선택한 파일의 미리보기와 확인 사항을 확인합니다.
-4. **덮어쓰기** 버튼을 클릭하면 업로드가 시작되며, 진행률은 목록 화면에서 확인합니다.
+1. Review the existing column list.
+2. Click the **Select File** button to select a new CSV file (up to 100 MB).
+3. Check the preview and review notes for the selected file.
+4. Click the **Overwrite** button to start the upload. You can track the progress on the list screen.
 
-업로드가 제한되는 경우는 다음과 같습니다.
+Upload is restricted in the following cases.
 
-| 상황 | 안내 |
+| Situation | Guidance |
 | --- | --- |
-| 파일의 칼럼 수가 기존 칼럼 수보다 많음 | 카탈로그에 필드를 먼저 추가한 뒤 다시 업로드 |
-| 카탈로그에 없는 칼럼이 포함됨 | 카탈로그에 필드를 먼저 추가한 뒤 다시 업로드 |
-| 헤더 설정과 파일의 첫 행이 어긋남 | 칼럼 이름 행이 있는 파일로 올리거나 데이터 소스의 헤더 설정 변경 |
+| The number of columns in the file exceeds the number of existing columns | Add fields to the catalog first, then re-upload |
+| The file contains columns not in the catalog | Add fields to the catalog first, then re-upload |
+| The header setting does not match the first row of the file | Upload a file that includes a column header row, or change the header setting in the data source |
 
 <a id="datasource.edit.field"></a>
-#### 필드 추가 { #datasource.edit.field }
+#### Add a Field { #datasource.edit.field }
 
-자세히 보기의 **카탈로그** 탭에서 **필드 추가** 버튼을 클릭합니다.
+Click the **Add field** button in the **Catalog** tab of the Details view.
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 필드 이름 | O | 영문자 또는 _로 시작하고 영문자, 숫자, _만 사용 |
-| 타입 | O | 스키마에서 지원하는 필드 타입 중 선택 |
-| 설명 | X | 필드 설명 |
+| Field name | O | Must start with a letter or underscore (_); only letters, numbers, and _ allowed |
+| Type | O | Select from the supported field types in the schema |
+| Description | X | A description of the field |
 
-- **행 추가** 버튼으로 한 번에 최대 20개까지 추가할 수 있습니다.
-- 시스템 예약 필드 이름과 이미 있는 필드 이름은 사용할 수 없습니다.
+- You can add up to 20 fields at a time using the **Add row** button.
+- System-reserved field names and field names that already exist cannot be used.
 
-!!! tip "알아두기"
-    콘솔뿐 아니라 API로도 데이터를 갱신할 수 있습니다. 사용 방법은 [API 가이드](../api-guide/#ingest.api)의 'Ingest API'를 참고합니다.
+!!! tip "Note"
+    You can update data not only through the console but also via the API. For details, see the 'Ingest API' section in the [API guide](../api-guide/#ingest.api).
 
 <a id="pipeline"></a>
-## 파이프라인 { #pipeline }
 
-콘솔 경로: **Machine Learning > NHN Cloud Foundry > 파이프라인** 탭
+## Pipeline { #pipeline }
 
-파이프라인은 데이터 소스의 데이터를 노드를 연결한 워크플로우로 처리하여 분석 가능한 데이터셋으로 변환하는 기능입니다.
+Console path: **Machine Learning > NHN Cloud Foundry > Pipeline** tab
+
+A pipeline processes data from a data source through a workflow of connected nodes, transforming it into an analyzable dataset.
 
 <a id="pipeline.list"></a>
-### 파이프라인 목록 { #pipeline.list }
 
-파이프라인 메뉴에 진입하면 생성된 파이프라인 목록이 테이블 형태로 표시됩니다.
+### Pipeline List { #pipeline.list }
 
-| 칼럼 | 설명 |
+When you enter the pipeline menu, the list of created pipelines is displayed in table format.
+
+| Column | Description |
 | --- | --- |
-| 체크박스 | 파이프라인 선택 |
-| 활성화 | 활성화 여부 아이콘 |
-| 파이프라인 이름 | 파이프라인을 식별하는 이름 |
-| 배치 스케줄 | 설정된 스케줄. 미설정 시 하이픈으로 표시 |
-| 시작 일시 | 스케줄 시작 일시 |
-| 종료 일시 | 스케줄 종료 일시 |
-| 마지막 실행 일자 | 가장 최근 실행 일시 |
-| 파이프라인 상태 | 파이프라인의 현재 상태 |
-| 수동 실행 | 실행 버튼 |
+| Checkbox | Pipeline selection |
+| Enabled | Icon indicating whether it is enabled |
+| Pipeline Name | Name that identifies the pipeline |
+| Batch Schedule | Configured schedule. Displayed as a hyphen if not configured |
+| Start Date/Time | Schedule start date and time |
+| End Date/Time | Schedule end date and time |
+| Last Run Date | Most recent run date and time |
+| Pipeline Status | Current status of the pipeline |
+| Manual Run | Run button |
 
-- 행을 클릭하면 편집 화면으로 이동합니다.
-- 실행 중인 파이프라인은 수동 실행 자리에 진행 표시가 나타나며, 실행할 수 없는 상태에서는 버튼이 비활성화됩니다.
+- Clicking a row takes you to the edit screen.
+- For a running pipeline, a progress indicator appears in the Manual Run column, and the button is disabled when the pipeline cannot be run.
 
-툴바에서 파이프라인 생성, 수정, 삭제, 활성화, 비활성화를 수행할 수 있습니다. 활성화와 비활성화는 **더보기(⋯)** 메뉴에 있습니다.
+You can create, modify, delete, enable, and disable pipelines from the toolbar. Enable and disable options are in the **More (⋯)** menu.
 
 <a id="pipeline.create"></a>
-### 파이프라인 생성 { #pipeline.create }
 
-1. 목록 화면에서 **파이프라인 생성** 버튼을 클릭합니다.
-2. 우측 **설정 패널**에서 기본 정보를 입력합니다.
+### Create a Pipeline { #pipeline.create }
 
-    | 항목 | 필수 | 설명 |
+1. On the list screen, click the **Create Pipeline** button.
+2. In the **Settings** panel on the right, enter the basic information.
+
+    | Item | Required | Description |
     | --- | --- | --- |
-    | 파이프라인 이름 | O | 파이프라인을 식별하는 이름(최대 30자). 한글, 일본어, 영문, 숫자, 공백, -, _ 사용 |
-    | 파이프라인 설명 | X | 파이프라인 부가 설명(최대 255자) |
-    | 태그 | X | 분류를 위한 태그(최대 10개, 각 50자) |
+    | Pipeline Name | O | Name that identifies the pipeline (up to 30 characters). Korean, Japanese, English, numbers, spaces, -, and _ are allowed. |
+    | Pipeline Description | X | Additional description for the pipeline (up to 255 characters) |
+    | Tag | X | Tags for classification (up to 10 tags, 50 characters each) |
 
-3. **생성** 버튼을 클릭하면 파이프라인이 초안 상태로 생성됩니다.
+3. Click the **Create** button to create the pipeline in draft status.
 
-!!! danger "주의"
-    활성화된 파이프라인의 설정을 저장하면 파이프라인이 비활성화됩니다. 실행 버튼을 눌러 빌드하면 자동으로 활성화됩니다.
+!!! danger "Caution"
+    Saving the settings of an enabled pipeline disables the pipeline. Building by clicking the Run button automatically enables it again.
 
 <a id="pipeline.editor"></a>
-### 파이프라인 에디터 { #pipeline.editor }
 
-파이프라인 생성/편집 시 진입하는 메인 편집 화면입니다.
+### Pipeline editor { #pipeline.editor }
 
-- **헤더**: 파이프라인 이름, 설명, 뒤로 가기 버튼
-- **탭 바(좌측)**: 실행/중지, 실행 이력, 소스 노드 추가 버튼
-- **탭 바(우측)**: 마지막 실행 일시, 상태/빌드/활성화 배지, 저장 버튼
-- **에디터 영역**: 노드-에지 편집기(드래그 앤 드롭, 자동 정렬 지원)
-- **사이드 패널**: 설정, 스케줄, 컴퓨팅 리소스 패널
+This is the main editing screen that you enter when creating or editing a pipeline.
+
+- **Header**: Pipeline name, description, and back button
+- **Tab bar (left)**: Run/Stop, run history, and add source node buttons
+- **Tab bar (right)**: Last run date and time, status/build/activation badges, and save button
+- **Editor area**: Node-edge editor (supports drag and drop and auto-layout)
+- **Side panel**: Settings, schedule, and computing resources panels
 
 <a id="pipeline.status"></a>
-#### 파이프라인 상태 { #pipeline.status }
+#### Pipeline status { #pipeline.status }
 
-상태 배지에 마우스를 올리면 툴팁으로 상세 설명을 확인할 수 있습니다.
+You can hover over the status badge to view a detailed description in a tooltip.
 
-| 값 | 설명 |
+| Value | Description |
 | --- | --- |
-| 초안 | 파이프라인이 생성되고 노드가 없는 상태 |
-| 수정됨 | 파이프라인 설정이 변경되어 다시 빌드(실행)가 필요한 상태 |
-| 빌드 중 | 파이프라인 빌드 중 |
-| 대기 | 파이프라인 빌드가 완료되어 실행 준비가 된 상태 |
-| 실행 중 | 파이프라인 실행 중 |
-| 완료 | 파이프라인 실행 정상 완료 |
-| 실패 | 파이프라인 실행 중지 또는 오류 발생 |
-| 종료됨 | 사용자가 파이프라인 실행을 중지한 상태 |
-| 삭제 중 | 파이프라인 삭제 중 |
+| Draft | Pipeline has been created with no nodes |
+| Modified | Pipeline configuration has been changed, requiring a rebuild (run) |
+| Building | Pipeline build in progress |
+| Waiting | Pipeline build is complete and ready to run |
+| Running | Pipeline run in progress |
+| Completed | Pipeline run completed successfully |
+| Failed | Pipeline run stopped or an error occurred |
+| Terminated | User has stopped the pipeline run |
+| Deleting | Pipeline deletion in progress |
 
 <a id="pipeline.node"></a>
-### 노드 구성 { #pipeline.node }
 
-파이프라인은 아래 5종류의 노드를 조합하여 구성합니다.
+### Node configuration { #pipeline.node }
 
-| 노드 타입 | 역할 | 입력 | 출력 | 설명 |
+A pipeline is configured by combining the following five node types.
+
+| Node Type | Role | Input | Output | Description |
 | --- | --- | --- | --- | --- |
-| Source(소스 노드) | 데이터 원본 | 없음 | 데이터 | 외부 데이터 소스를 연결 |
-| Transform(변환 노드) | 데이터 가공 | 데이터 | 변환된 데이터 | 필터, 파생 칼럼, 집계, 라벨 인코딩 등 |
-| Join(조인 노드) | 테이블 결합 | 2개 데이터 | 결합된 데이터 | Inner/Left/Right/Full Outer/Semi/Anti 조인 |
-| Union(유니온 노드) | 테이블 합치기 | 2개 데이터 | 합쳐진 데이터 | Full Merge/Intersect Merge/Left-First Merge |
-| Dataset(출력 노드) | 출력 테이블 | 데이터 | 없음 | 테이블로 결과 저장(최종 노드) |
+| Source | Data source | None | Data | Connects to an external data source |
+| Transform | Data processing | Data | Transformed data | Filter, derived columns, aggregation, label encoding, etc. |
+| Join | Table join | 2 inputs | Joined data | Inner/Left/Right/Full Outer/Semi/Anti joins |
+| Union | Table merge | 2 inputs | Merged data | Full Merge/Intersect Merge/Left-First Merge |
+| Dataset | Output table | Data | None | Saves results as a table (final node) |
 
-연결 제약 사항:
+Connection constraints:
 
-- SOURCE 노드에는 입력을 연결할 수 없습니다(루트 노드).
-- DATASET 노드에는 출력을 연결할 수 없습니다(최종 노드).
-- 순환 참조(루프)나 자기 자신과의 연결은 할 수 없습니다.
+- SOURCE nodes cannot have inputs connected to them (root node).
+- DATASET nodes cannot have outputs connected to them (final node).
+- Circular references (loops) and self-connections are not allowed.
 
-!!! danger "주의"
-    저장할 때 파이프라인 구성을 검사합니다. 모든 노드는 하나의 흐름으로 연결되어야 하며(연결되지 않은 노드 불가), 흐름의 마지막 노드는 1개의 DATASET 노드여야 합니다.
+!!! danger "Caution"
+    The pipeline configuration is validated when saved. All nodes must be connected in a single flow (disconnected nodes are not allowed), and the last node in the flow must be exactly one DATASET node.
 
 <a id="pipeline.node.source"></a>
-#### 소스 노드 추가 { #pipeline.node.source }
+#### Add source node { #pipeline.node.source }
 
-1. 탭 바에서 **소스 노드 추가** 버튼을 클릭합니다.
-2. 사용 가능한 데이터 소스 목록이 모달로 표시됩니다.
-3. 원하는 소스를 선택하여 추가합니다.
+1. Click the **Add Source Node** button in the tab bar.
+2. A list of available data sources is displayed in a modal.
+3. Select the desired source to add it.
 
-| 값 | 설명 |
+| Value | Description |
 | --- | --- |
-| FILE | CSV 파일 데이터 소스 |
-| 추천 | 추천 결과 저장소 |
-| 데이터셋 | 파이프라인의 데이터셋 노드가 생성한 데이터. 다른 파이프라인의 입력으로 재사용 가능 |
+| FILE | CSV file data source |
+| Recommendation | Recommendation result store |
+| Dataset | Data generated by a Dataset node in a pipeline. Can be reused as input for other pipelines. |
 
 <a id="pipeline.node.transform"></a>
-#### 변환 노드(TRANSFORM) { #pipeline.node.transform }
+#### Transform node (TRANSFORM) { #pipeline.node.transform }
 
-변환 작업마다 노드 이름(최대 30자, 한글·일본어·영문·숫자·공백·`-`·`_`)을 지정하며, 한 노드에 여러 변환 작업을 추가하면 순서대로 연결된 노드가 생성됩니다.
+Each transform operation requires a node name (up to 30 characters; Korean, Japanese, English, numbers, spaces, `-`, and `_` are allowed). Adding multiple transform operations to a single node creates nodes connected in sequence.
 
-지원하는 변환 메서드는 다음과 같습니다.
+The following transform methods are supported:
 
-| 분류 | 메서드 | 설명 |
+| Category | Method | Description |
 | --- | --- | --- |
-| Row(행 단위 연산) | Filter | 조건에 맞는 행만 추출 |
-| Row(행 단위 연산) | Explode | 구분자 문자열을 행으로 분해 |
-| Row(행 단위 연산) | Derive | 화이트리스트 함수로 파생 칼럼 생성 |
-| Aggregation(집계 연산) | Aggregate | 그룹화 및 집계 |
-| Window(윈도우 연산) | Rank Top N | 글로벌 정렬 + 상위 N 건 |
-| Column(칼럼 연산) | Label Encode FIT | 카테고리 → 정수 매핑 테이블 생성 |
-| Column(칼럼 연산) | Label Encode Apply | 매핑 테이블로 인코딩 적용 |
-| LLM(LLM 기반 연산) | Classify | LLM으로 텍스트를 카테고리로 분류 |
+| Row (row-level operations) | Filter | Extracts only rows that match the condition |
+| Row (row-level operations) | Explode | Splits a delimited string into separate rows |
+| Row (row-level operations) | Derive | Creates derived columns using allowlisted functions |
+| Aggregation (aggregation operations) | Aggregate | Grouping and aggregation |
+| Window (window operations) | Rank Top N | Global sort + top N rows |
+| Column (column operations) | Label Encode FIT | Creates a category-to-integer mapping table |
+| Column (column operations) | Label Encode Apply | Applies encoding using a mapping table |
+| LLM (LLM-based operations) | Classify | Classifies text into categories using an LLM |
 
 <a id="pipeline.node.transform.filter"></a>
-##### 필터(Filter) { #pipeline.node.transform.filter }
+##### Filter { #pipeline.node.transform.filter }
 
-| 값 | 설명 | 예시 |
+| Value | Description | Example |
 | --- | --- | --- |
-| = | 같음 | field = 'value' |
-| ≠ | 같지 않음 | field ≠ 'value' |
-| > | 초과 | field > 100 |
-| ≥ | 이상 | field ≥ 100 |
-| &lt; | 미만 | field < 100 |
-| ≤ | 이하 | field ≤ 100 |
-| LIKE | 패턴 매칭 | field LIKE '%keyword%' |
-| IN | 목록 포함 | field IN ('a', 'b', 'c') |
-| IS NULL | NULL 여부 | field IS NULL |
-| IS NOT NULL | NOT NULL 여부 | field IS NOT NULL |
+| = | Equal | field = 'value' |
+| ≠ | Not equal | field ≠ 'value' |
+| > | Greater than | field > 100 |
+| ≥ | Greater than or equal to | field ≥ 100 |
+| &lt; | Less than | field < 100 |
+| ≤ | Less than or equal to | field ≤ 100 |
+| LIKE | Pattern matching | field LIKE '%keyword%' |
+| IN | Included in list | field IN ('a', 'b', 'c') |
+| IS NULL | Is NULL | field IS NULL |
+| IS NOT NULL | Is not NULL | field IS NOT NULL |
 
-선택한 칼럼의 타입에 따라 사용 가능한 연산자만 표시됩니다.
+Only operators available for the selected column type are displayed.
 
-| 칼럼 타입 | 사용 가능한 연산자 |
+| Column Type | Available Operators |
 | --- | --- |
-| 문자열 | =, ≠, LIKE, IN, IS NULL, IS NOT NULL |
-| 숫자 | =, ≠, >, ≥, &lt;, ≤, IN, IS NULL, IS NOT NULL |
-| 날짜/시간 | =, ≠, >, ≥, &lt;, ≤, IS NULL, IS NOT NULL |
-| 불리언 | =, ≠, IS NULL, IS NOT NULL |
+| String | =, ≠, LIKE, IN, IS NULL, IS NOT NULL |
+| Number | =, ≠, >, ≥, &lt;, ≤, IN, IS NULL, IS NOT NULL |
+| Date/Time | =, ≠, >, ≥, &lt;, ≤, IS NULL, IS NOT NULL |
+| Boolean | =, ≠, IS NULL, IS NOT NULL |
 
-비교할 값은 **직접 입력**, **시간(현재 기준)**, **다른 칼럼** 중에서 선택합니다.
+The comparison value can be selected from **Direct input**, **Time (relative to now)**, or **Another column**.
 
-논리 연산자는 `AND`, `OR`를 지원하며, **그룹 추가** 버튼으로 조건을 최대 3단계까지 묶을 수 있습니다.
+Logical operators `AND` and `OR` are supported. Use the **Add Group** button to nest conditions up to three levels deep.
 
 <a id="pipeline.node.transform.explode"></a>
-##### 분해(Explode) { #pipeline.node.transform.explode }
+##### Explode { #pipeline.node.transform.explode }
 
-구분자로 이어진 문자열 칼럼을 토큰마다 별도의 행으로 분해합니다.
+Splits a delimited string column into separate rows for each token.
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 분해할 칼럼 | O | 구분자로 이어진 문자열이 담긴 칼럼 |
-| 출력 칼럼 이름 | O | 분해된 각 토큰을 담을 칼럼 이름 |
-| 구분자 | O | 기본값은 쉼표(,) |
-| 공백 제거 | X | ON이면 각 토큰의 앞뒤 공백을 제거 |
-| 빈 토큰 제거 | X | ON이면 분해 후 빈 문자열 토큰을 행에서 제외 |
-| 출력 타입 | X | STRING, BIGINT, INT, DOUBLE. 미지정 시 STRING |
-| 유지할 원본 칼럼 | X | 결과에 포함할 원본 칼럼. 선택하지 않으면 모든 원본 칼럼이 유지 |
+| Column to split | O | Column containing the delimited string |
+| Output column name | O | Name of the column to hold each split token |
+| Delimiter | O | Default is a comma (,) |
+| Trim whitespace | X | When ON, removes leading and trailing whitespace from each token |
+| Remove empty tokens | X | When ON, excludes empty string tokens from the output rows after splitting |
+| Output type | X | STRING, BIGINT, INT, DOUBLE. Defaults to STRING if not specified. |
+| Original columns to retain | X | Original columns to include in the output. If not selected, all original columns are retained. |
 
-- 구분자는 정규식으로 해석되므로 특수문자는 이스케이프가 필요합니다(예: `\.`, `\|`).
-- 출력 타입을 지정하면 분해된 값이 해당 타입으로 변환됩니다. 예를 들어 숫자 ID가 쉼표로 구분된 경우 BIGINT로 지정하면 조인 키 타입을 맞출 수 있습니다.
+- The delimiter is interpreted as a regular expression, so special characters must be escaped (e.g., `\.`, `\|`).
+- If an output type is specified, each split value is cast to that type. For example, if numeric IDs are comma-separated, specifying BIGINT ensures the type matches your join key.
 
 <a id="pipeline.node.transform.derive"></a>
-##### 파생 칼럼(Derive) { #pipeline.node.transform.derive }
+##### Derive { #pipeline.node.transform.derive }
 
-제공되는 함수를 사용하여 기존 칼럼에서 새로운 칼럼을 만듭니다. **파생 칼럼 추가** 버튼으로 정의를 여러 개 추가할 수 있으며, 각 정의마다 함수와 파생 칼럼 이름을 지정합니다.
+Creates new columns from existing ones using provided functions. Use the **Add Derived Column** button to add multiple definitions, specifying a function and a derived column name for each.
 
-| 값 | 설명 | 추가 설정 |
+| Value | Description | Additional Settings |
 | --- | --- | --- |
-| DATE_BUCKET | 날짜 버킷(epoch ms → 지정 타임존 날짜) | 소스 칼럼, 타임존(예: Asia/Seoul) |
-| JSON_ARRAY_LENGTH | JSON 배열 원소 개수 | 소스 칼럼, 원소 스키마 |
-| CONCAT | 여러 칼럼을 구분자로 결합 | 소스 칼럼 2개 이상, 구분자, 기본값(선택) |
-| RATIO | 분자/분모 비율 계산 | 분자, 분모, 배수(선택, 기본 1), 반올림 자릿수(선택) |
-| COALESCE | 여러 칼럼 중 첫 non-null 값 | 소스 칼럼 2개 이상 |
+| DATE_BUCKET | Date bucket (epoch ms → date in specified timezone) | Source column, timezone (e.g., Asia/Seoul) |
+| JSON_ARRAY_LENGTH | Number of elements in a JSON array | Source column, element schema |
+| CONCAT | Concatenates multiple columns with a delimiter | 2 or more source columns, delimiter, default value (optional) |
+| RATIO | Calculates numerator/denominator ratio | Numerator, denominator, multiplier (optional, default 1), rounding decimal places (optional) |
+| COALESCE | First non-null value among multiple columns | 2 or more source columns |
 
-- 정의는 위에서 아래로 순서대로 적용되며, 앞에서 만든 파생 칼럼을 뒤 정의의 소스 칼럼으로 참조할 수 있습니다.
-- 파생 칼럼 이름에는 영문, 숫자, 밑줄(_), 한글을 사용할 수 있습니다.
+- Definitions are applied in order from top to bottom. A derived column created earlier can be referenced as a source column in a later definition.
+- Derived column names can contain English letters, numbers, underscores (_), and Korean characters.
 
 <a id="pipeline.node.transform.aggregate"></a>
-##### 집계(Aggregate) { #pipeline.node.transform.aggregate }
+##### Aggregate { #pipeline.node.transform.aggregate }
 
-1. **그룹화 기준 선택**(선택): 같은 값을 가진 행들을 그룹으로 묶습니다. 선택하지 않으면 전체 데이터를 하나의 그룹으로 집계합니다.
-2. **집계 함수 정의**(필수): 집계할 칼럼, 집계 함수, 결과 칼럼 이름을 지정합니다. 여러 개를 추가할 수 있습니다.
+1. **Select grouping criteria** (optional): Groups rows that share the same value. If not selected, all data is aggregated as a single group.
+2. **Define aggregation functions** (required): Specify the column to aggregate, the aggregation function, and the result column name. Multiple definitions can be added.
 
-| 값 | 설명 |
+| Value | Description |
 | --- | --- |
-| COUNT | 개수 |
-| COUNT_DISTINCT | 고유 값 개수 |
-| SUM | 합계 |
-| AVG | 평균 |
-| MIN | 최솟값 |
-| MAX | 최댓값 |
-| FIRST | 첫 번째 값 |
-| LAST | 마지막 값 |
-| STDDEV | 표준편차 |
-| VARIANCE | 분산 |
-| ARRAY_AGG | 그룹 값을 배열로 수집 |
+| COUNT | Count |
+| COUNT_DISTINCT | Count of distinct values |
+| SUM | Sum |
+| AVG | Average |
+| MIN | Minimum value |
+| MAX | Maximum value |
+| FIRST | First value |
+| LAST | Last value |
+| STDDEV | Standard deviation |
+| VARIANCE | Variance |
+| ARRAY_AGG | Collects group values into an array |
 
-- COUNT는 집계할 칼럼으로 `* (전체)`를 선택할 수 있습니다.
-- FIRST와 LAST는 정렬 기준 칼럼과 방향(오름차순/내림차순)을 지정하며, 정렬 후 첫 번째 또는 마지막 값을 가져옵니다.
+- For COUNT, you can select `* (all)` as the column to aggregate.
+- FIRST and LAST require a sort column and direction (ascending/descending), and return the first or last value after sorting.
 
-ARRAY_AGG를 선택하면 다음 설정이 추가됩니다.
+Selecting ARRAY_AGG adds the following settings:
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 배열 원소 종류 | O | 단일 칼럼 또는 JSON 객체 |
-| 수집할 칼럼 | O* | 배열 원소 종류가 단일 칼럼일 때 필수. 배열에 담을 칼럼 |
-| JSON 객체 필드 정의 | O* | 배열 원소 종류가 JSON 객체일 때 필수. 키 이름과 칼럼의 조합 |
-| 배열 원소 정렬 | X | 정렬 기준 칼럼과 방향. 미지정 시 정렬하지 않음 |
-| 출력 형태 | O | STRUCT_ARRAY, JSON_STRING_ARRAY, JSON_STRING |
-| 중복 제거(DISTINCT) | X | 정렬을 설정하면 무시됨 |
+| Array element type | O | Single column or JSON object |
+| Column to collect | O* | Required when the array element type is a single column. The column to include in the array. |
+| JSON object field definition | O* | Required when the array element type is a JSON object. A combination of key names and columns. |
+| Array element sort | X | Sort column and direction. No sorting if not specified. |
+| Output format | O | STRUCT_ARRAY, JSON_STRING_ARRAY, JSON_STRING |
+| Deduplicate (DISTINCT) | X | Ignored if sort is configured. |
 
 <a id="pipeline.node.transform.rank"></a>
-##### 랭킹(Rank Top N) { #pipeline.node.transform.rank }
+##### Rank Top N { #pipeline.node.transform.rank }
 
-전체 데이터를 지정한 기준으로 정렬하여 상위 N개 행만 남깁니다.
+Sorts all data by the specified criteria and retains only the top N rows.
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 정렬 기준 | O | 정렬할 칼럼과 방향(DESC / ASC) |
-| 상위 N 건 | O | 정렬 후 결과에 포함할 행 수 |
-| 결과 순위 칼럼 이름 | O | 결과에 추가되는 1~N 순위 칼럼의 이름 |
+| Sort criteria | O | Column to sort by and direction (DESC / ASC) |
+| Top N rows | O | Number of rows to include in the result after sorting |
+| Result rank column name | O | Name of the rank column (1 to N) added to the output |
 
-- **정렬 기준 추가** 버튼으로 기준을 여러 개 지정하면 1차 정렬, 2차 정렬 순으로 적용되며, 드래그하여 순서를 바꿀 수 있습니다.
-- 조회할 때 순위 칼럼으로 정렬하면 원래 순서를 유지할 수 있습니다.
+- Use the **Add Sort Criteria** button to specify multiple criteria, which are applied as primary sort, secondary sort, and so on. You can drag to reorder them.
+- Sorting by the rank column when querying preserves the original order.
 
 <a id="pipeline.node.transform.label.encode"></a>
-##### 라벨 인코딩(Label Encode FIT / Label Encode Apply) { #pipeline.node.transform.label.encode }
+##### Label encoding (Label Encode FIT / Label Encode Apply) { #pipeline.node.transform.label.encode }
 
-범주형(카테고리) 데이터를 수치(정수)로 변환하는 기능입니다. **FIT(학습)**과 **APPLY(적용)** 2단계로 구성되며, 반드시 FIT 노드를 먼저 생성한 후 APPLY 노드에서 참조해야 합니다.
+This feature converts categorical data to numeric (integer) values. It consists of two stages: **FIT (training)** and **APPLY (application)**. You must create the FIT node first and then reference it in the APPLY node.
 
-FIT 노드 설정:
+FIT node settings:
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 인코딩할 칼럼 선택 | O | 라벨 인코딩을 적용할 칼럼(1개 이상) |
-| 시작 인덱스 | X | 인코딩 시작 값(기본값: 0) |
+| Select columns to encode | O | Columns to apply label encoding to (one or more) |
+| Starting index | X | Starting value for encoding (default: 0) |
 
-APPLY 노드 설정:
+APPLY node settings:
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 매핑 테이블 노드 선택 | O | FIT 노드를 선택 |
-| 원본 칼럼 덮어쓰기 | X | 체크 시 원본 칼럼을 인코딩된 값으로 대체(기본: 해제) |
-| 결과 칼럼 접미사 | X | 원본 유지 시 새 칼럼 이름에 붙는 접미사(기본: _encoded) |
+| Select mapping table node | O | Select the FIT node |
+| Overwrite original column | X | When checked, replaces the original column with the encoded value (default: unchecked) |
+| Result column suffix | X | Suffix appended to the new column name when the original is retained (default: _encoded) |
 
-!!! tip "알아두기"
-    매핑 테이블에 없는 값(OOV, Out-of-Vocabulary)은 `-1`로 인코딩합니다.
+!!! tip "Note"
+    Values not found in the mapping table (OOV, Out-of-Vocabulary) are encoded as `-1`.
 
-!!! danger "주의"
-    FIT을 재실행하면 데이터 변경에 따라 인코딩 번호가 달라질 수 있습니다. 기존 모델과의 호환성에 주의하세요.
+!!! danger "Caution"
+    Re-running FIT may change encoding numbers depending on data changes. Be aware of compatibility issues with existing models.
 
 <a id="pipeline.node.transform.classify"></a>
-##### 분류(Classify) { #pipeline.node.transform.classify }
+##### Classify { #pipeline.node.transform.classify }
 
-LLM을 사용하여 텍스트 칼럼의 값을 카테고리로 분류합니다. 분류 기준이 되는 카테고리 목록은 별도의 데이터 소스 노드로 준비해야 합니다.
+Classifies text column values into categories using an LLM. The category list used as the classification criteria must be prepared as a separate data source node.
 
-파이프라인이 실행되면 입력 데이터의 행을 배치 크기만큼 묶어 배치당 1회 LLM을 호출합니다. 각 호출의 프롬프트에는 카테고리 목록과 해당 배치의 행들이 담기며, LLM이 행별로 적합한 카테고리 ID를 응답하면 그 결과가 분류 결과 칼럼으로 저장됩니다.
+When the pipeline runs, input data rows are grouped into batches, and the LLM is called once per batch. Each call's prompt includes the category list and the rows in that batch. The LLM returns an appropriate category ID for each row, and the result is stored in the classification result column.
 
-**LLM 설정**
+**LLM Settings**
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| LLM 공급자 | O | Claude |
-| 모델 이름 | O | claude-haiku-4-5, claude-sonnet-4-6 |
-| API 키 | O | 사용할 LLM의 API 키. 이 파이프라인에만 저장되며 저장 후 다시 표시되지 않음 |
-| 배치 크기 | X | 한 번의 LLM 호출에 담을 행 수(1~30) |
-| 최대 재시도 | X | 호출 실패 시 재시도 횟수(0~10) |
-| 타임아웃(초) | X | 호출 대기 시간(1~600) |
-| 증분 분류 | X | 변경된 행만 LLM으로 분류하고 변경 없는 행은 이전 실행 결과를 재사용 |
+| LLM provider | O | Claude |
+| Model name | O | claude-haiku-4-5, claude-sonnet-4-6 |
+| API key | O | API key for the LLM. Stored only for this pipeline and not displayed again after saving. |
+| Batch size | X | Number of rows to include in a single LLM call (1–30) |
+| Max retries | X | Number of retry attempts on call failure (0–10) |
+| Timeout (seconds) | X | Wait time for a call (1–600) |
+| Incremental classification | X | Classifies only changed rows using the LLM, and reuses the previous run's results for unchanged rows. |
 
-**입력 칼럼**
+**Input Columns**
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 입력 칼럼 | O | LLM에 전달할 칼럼. 여러 개 선택 가능 |
-| 칼럼 결합 구분자 | X | 여러 입력 칼럼 값을 이어 붙일 때 사용할 구분자 |
-| 사용자 프롬프트 템플릿 | X | 행별 입력 값 구성 템플릿. {{ 칼럼 이름 }} 패턴이 해당 칼럼 값으로 치환되며, 설정하면 결합 구분자보다 우선 적용. 입력 칼럼에서 선택한 칼럼만 참조 가능 |
+| Input column | O | Column(s) to pass to the LLM. Multiple columns can be selected. |
+| Column join delimiter | X | Delimiter used when concatenating multiple input column values |
+| User prompt template | X | Template for composing per-row input values. The {{ column name }} pattern is replaced with the corresponding column value. When set, this takes precedence over the column join delimiter. Only columns selected in the input column setting can be referenced. |
 
-**축(카테고리 테이블)**
+**Axes (Category Table)**
 
-분류 기준이 되는 카테고리 목록을 축으로 등록합니다. 축은 최대 5개까지 추가할 수 있습니다.
+Register the category list used as the classification criteria as axes. Up to 5 axes can be added.
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 카테고리 노드 | O | 카테고리 목록이 담긴 데이터 소스 노드 |
-| 카테고리 ID 칼럼 | O | 카테고리를 식별하는 칼럼 |
-| 카테고리 이름 칼럼 | O | 카테고리 이름 칼럼 |
-| 카테고리 메타데이터 칼럼 | X | 카테고리 설명, 판정 기준 등 추가 칼럼. 프롬프트에 함께 전달되어 분류 정확도 향상 |
-| 분류 결과 칼럼(배열) | O | 분류 결과를 담을 배열 칼럼 이름 |
-| 대표 칼럼 | X | 가장 대표적인 분류 ID를 저장할 칼럼 이름. 비우면 생성하지 않음 |
+| Category node | O | Data source node containing the category list |
+| Category ID column | O | Column that identifies the category |
+| Category name column | O | Category name column |
+| Category metadata column | X | Additional columns such as category descriptions and classification criteria. Passed along in the prompt to improve classification accuracy. |
+| Classification result column (array) | O | Name of the array column to hold classification results |
+| Representative column | X | Name of the column to store the most representative classification ID. If left empty, the column is not created. |
 
-**출력**
+**Output**
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 출력 타입 | O | SINGLE_LABEL, MULTI_LABEL |
-| 분류 근거 칼럼 | X | LLM이 제공한 분류 근거를 저장할 칼럼 이름. 비우면 근거를 요청하지 않아 토큰 비용 절감 |
-| 콘텐츠 근거 칼럼 | X | 입력 콘텐츠에서 생성한 짧은 설명을 저장할 칼럼 이름 |
-| 콘텐츠 근거 최대 길이 | X | 콘텐츠 근거 칼럼의 최대 글자 수(1~200) |
+| Output type | O | SINGLE_LABEL, MULTI_LABEL |
+| Classification rationale column | X | Name of the column to store the classification rationale provided by the LLM. If left empty, rationale is not requested, reducing token costs. |
+| Content rationale column | X | Name of the column to store a short description generated from the input content |
+| Content rationale max length | X | Maximum number of characters for the content rationale column (1–200) |
 
-**시스템 프롬프트**(선택): LLM에 역할과 분류 기준을 지시합니다. 설정하지 않으면 기본 프롬프트가 사용됩니다.
+**System prompt** (optional): Instructs the LLM on its role and classification criteria. If not set, the default prompt is used.
 
-!!! danger "주의"
-    처리할 행 수가 많을수록 LLM 호출 횟수와 토큰 사용량이 비례하여 늘어나 비용이 증가합니다. 대규모 데이터는 먼저 소규모로 검증해 비용과 품질을 확인한 후 적용하세요.
+!!! danger "Caution"
+    The more rows you process, the more LLM calls and token usage increase proportionally, raising costs. For large datasets, validate on a small scale first to verify cost and quality before applying at full scale.
 
 <a id="pipeline.node.join"></a>
-#### 조인 노드(JOIN) { #pipeline.node.join }
+#### Join node (JOIN) { #pipeline.node.join }
 
-두 개의 데이터 스트림을 결합합니다.
+Combines two data streams.
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 노드 이름 | O | 조인 결과 노드의 이름(최대 30자) |
-| 조인 타입 | O | Inner Join / Left Join / Right Join / Full Outer Join / Semi Join(EXISTS) / Anti Join(NOT EXISTS) 중 선택 |
-| 조인 테이블 | O | 왼쪽/오른쪽 테이블 노드 선택 |
-| 조인 조건 | O | 왼쪽 필드 = 오른쪽 필드 매핑(다중 조건 가능) |
-| 칼럼 선택 | X | 결과에 포함할 칼럼 선택, 접두사 설정 가능 |
+| Node name | O | Name of the join result node (up to 30 characters) |
+| Join type | O | Select from Inner Join / Left Join / Right Join / Full Outer Join / Semi Join (EXISTS) / Anti Join (NOT EXISTS) |
+| Join tables | O | Select the left and right table nodes |
+| Join condition | O | Left field = right field mapping (multiple conditions supported) |
+| Column selection | X | Select columns to include in the output; a prefix can be set. |
 
-!!! tip "알아두기"
-    양쪽 테이블에 동일한 이름의 칼럼이 있을 경우 오른쪽 테이블에 **접두사**를 설정하여 칼럼 이름 충돌을 방지할 수 있습니다.
+!!! tip "Note"
+    If both tables have columns with the same name, you can set a **prefix** for the right table to prevent column name conflicts.
 
 <a id="pipeline.node.union"></a>
-#### 유니온 노드(UNION) { #pipeline.node.union }
+#### Union node (UNION) { #pipeline.node.union }
 
-두 개의 데이터 스트림을 수직으로 합칩니다.
+Vertically combines two data streams.
 
-| 값 | 설명 |
+| Value | Description |
 | --- | --- |
-| Full Merge | 양쪽 전체 칼럼 포함. 없는 쪽은 NULL |
-| Intersect Merge | 양쪽 공통 칼럼만 포함 |
-| Left-First Merge | 왼쪽 테이블 스키마 기준. 오른쪽에 없는 칼럼은 NULL |
+| Full Merge | Includes all columns from both sides. Columns missing from one side are NULL. |
+| Intersect Merge | Includes only columns common to both sides. |
+| Left-First Merge | Based on the left table schema. Columns not present in the right table are NULL. |
 
 <a id="pipeline.node.dataset"></a>
-#### 데이터셋 노드(DATASET) { #pipeline.node.dataset }
+#### Dataset node (DATASET) { #pipeline.node.dataset }
 
-파이프라인의 최종 출력 노드로, 처리된 데이터를 테이블로 저장합니다.
+The final output node in the pipeline. Saves processed data as a table.
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 데이터셋 이름 | O | 테이블 이름으로 사용(최대 30자). 영문 소문자, 숫자, _만 사용 가능하며 숫자로 시작 불가 |
-| 설명 | X | 데이터셋 설명(최대 500자) |
-| 칼럼 선택 | O | 데이터셋에 포함할 칼럼 선택(최소 1개 이상) |
+| Dataset name | O | Used as the table name (up to 30 characters). Only lowercase English letters, numbers, and underscores (_) are allowed; must not start with a number. |
+| Description | X | Dataset description (up to 500 characters) |
+| Column selection | O | Select columns to include in the dataset (at least one required) |
 
-데이터셋 이름은 데이터 소스 이름과 테이블 이름으로 함께 사용되므로, 이미 사용 중인 데이터 소스 이름·테이블 이름과 중복될 수 없습니다. 중복 여부는 파이프라인을 저장할 때와 실행할 때 각각 확인합니다.
+The dataset name is used as both the data source name and the table name, so it cannot duplicate an existing data source name or table name. Duplicate checks are performed both when saving and when running the pipeline.
 
-!!! danger "주의"
-    실행된 데이터셋은 수정할 수 없습니다. 삭제 후 재생성하세요(데이터 소스는 유지됩니다).
+!!! danger "Caution"
+    An executed dataset cannot be modified. Delete it and recreate it (the data source is retained).
 
 <a id="pipeline.schedule"></a>
-### 스케줄 설정 { #pipeline.schedule }
 
-우측 사이드 패널의 스케줄 아이콘을 클릭하여 배치 스케줄을 설정합니다.
+### Configure a Schedule { #pipeline.schedule }
 
-| 주기 타입 | 설정 항목 | 예시 |
+Click the schedule icon in the right side panel to configure the batch schedule.
+
+| Interval Type | Settings | Example |
 | --- | --- | --- |
-| 매분 | 간격(5/10/15/20/30분) | 10분마다 실행 |
-| 매시간 | 간격(1/2/3/4/6/8/12시간), 분 | 2시간마다 30분에 실행 |
-| 매일 | 시, 분 | 매일 09시 30분에 실행 |
-| 매주 | 요일(다중 선택), 시, 분 | 매주 월, 수, 금 09시 00분에 실행 |
-| 매월 | 일, 시, 분 | 매월 1일 09시 30분에 실행 |
+| Every minute | Interval (5/10/15/20/30 minutes) | Execute every 10 minutes |
+| Every hour | Interval (1/2/3/4/6/8/12 hours), minute | Execute every 2 hours at 30 minutes |
+| Every day | Hour, minute | Execute every day at 9:30 AM |
+| Every week | Day of week (multiple selection), hour, minute | Execute every Monday, Wednesday, and Friday at 9:00 AM |
+| Every month | Day, hour, minute | Execute on the 1st of every month at 9:30 AM |
 
-날짜 범위 설정:
+Date range settings:
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 시작 날짜 설정 | X | 체크 시 설정한 날짜 이후부터 스케줄 시작. 미설정 시 저장 시점부터 시작 |
-| 종료 날짜 설정 | X | 체크 시 설정한 날짜 이후에는 스케줄이 실행되지 않음 |
+| Start date | X | When checked, the schedule starts from the configured date onward. If not set, the schedule starts from the time of saving. |
+| End date | X | When checked, the schedule does not run after the configured date. |
 
-스케줄을 저장하고 최초 1회 실행된 이후부터 설정한 주기에 따라 실행됩니다.
+After the schedule is saved and executed for the first time, it runs at the configured interval.
 
 <a id="pipeline.resource"></a>
-### 컴퓨팅 리소스 설정 { #pipeline.resource }
 
-우측 사이드 패널의 컴퓨팅 리소스 아이콘을 클릭하여 파이프라인 실행 시 사용할 컴퓨팅 자원을 설정합니다.
+### Configure Computing Resources { #pipeline.resource }
 
-| 타입 | Driver | Executor |
+Click the computing resource icon in the right side panel to configure the computing resources to use when running the pipeline.
+
+| Type | Driver | Executor |
 | --- | --- | --- |
-| Small(기본값) | 1 CPU, 1GB 메모리 | 1 CPU, 1GB 메모리 × 1개 |
-| Medium | 1 CPU, 2GB 메모리 | 1 CPU, 2GB 메모리 × 2개 |
-| Large | 2 CPU, 4GB 메모리 | 2 CPU, 4GB 메모리 × 4개 |
-| XLarge | 4 CPU, 8GB 메모리 | 4 CPU, 8GB 메모리 × 8개 |
+| Small (default) | 1 CPU, 1 GB memory | 1 CPU, 1 GB memory × 1 |
+| Medium | 1 CPU, 2 GB memory | 1 CPU, 2 GB memory × 2 |
+| Large | 2 CPU, 4 GB memory | 2 CPU, 4 GB memory × 4 |
+| XLarge | 4 CPU, 8 GB memory | 4 CPU, 8 GB memory × 8 |
 
-!!! danger "주의"
-    리소스 설정을 변경하면 재빌드 후 적용됩니다. 파이프라인 생성 전에는 리소스를 변경할 수 없습니다.
+!!! danger "Caution"
+    If you change the resource settings, the changes are applied after a rebuild. You cannot change the resources before creating a pipeline.
 
 <a id="pipeline.run"></a>
-### 파이프라인 실행 { #pipeline.run }
 
-최초 또는 설정 변경 후 첫 실행 시에는 빌드와 실행이 함께 진행됩니다.
+### Run Pipeline { #pipeline.run }
 
-1. 탭 바에서 **실행** 버튼을 클릭합니다.
-2. 확인 모달에서 **실행** 버튼을 클릭합니다.
+On the first run or after a settings change, the build and execution proceed together.
 
-실행은 마지막으로 저장한 구성으로 수행됩니다. 저장하지 않은 변경이 있으면 저장 전 구성으로 실행됨을 알리는 확인 모달이 먼저 표시되므로, 변경 사항을 포함해 실행하려면 먼저 저장하세요.
-이미 빌드된 파이프라인은 빌드 과정 없이 바로 실행됩니다.
-실행 중 **중지** 버튼을 클릭하면 종료됨 상태로 전환됩니다.
-빌드가 완료되면 스케줄이 설정되어 있는 파이프라인은 자동으로 활성화됩니다.
+1. Click **Run** on the tab bar.
+2. Click **Run** in the confirmation modal.
+
+Execution is performed using the last saved configuration. If there are unsaved changes, a confirmation modal appears first to notify you that execution will proceed with the pre-save configuration — save your changes first if you want to include them in the run.
+A pipeline that has already been built runs immediately without going through the build process.
+Clicking **Stop** during execution transitions the pipeline to the Terminated status.
+When the build is complete, pipelines with a schedule configured are automatically activated.
 
 <a id="pipeline.run.history"></a>
-#### 실행 이력 조회 { #pipeline.run.history }
+#### View Run History { #pipeline.run.history }
 
-탭 바에서 **실행 이력** 버튼을 클릭하면 실행 ID, 시작/종료 일시, 소요 시간, 실행 상태, 노드별 실행 상세를 확인할 수 있습니다.
+Click **Run History** on the tab bar to view the run ID, start/end time, duration, run status, and per-node execution details.
 
 <a id="pipeline.activation"></a>
-### 활성화/비활성화 { #pipeline.activation }
 
-- **활성화**: 목록에서 파이프라인 1개를 선택하고 더보기(⋯) 메뉴에서 **파이프라인 활성화**를 클릭합니다. 설정된 스케줄에 따라 자동으로 실행됩니다.
-- **비활성화**: 목록에서 파이프라인 1개를 선택하고 더보기(⋯) 메뉴에서 **파이프라인 비활성화**를 클릭합니다. 스케줄이 설정되어 있어도 자동 실행되지 않습니다.
+### Activate/Deactivate { #pipeline.activation }
+
+- **Activate**: Select one pipeline from the list and click **Activate Pipeline** in the More (⋯) menu. The pipeline runs automatically according to the configured schedule.
+- **Deactivate**: Select one pipeline from the list and click **Deactivate Pipeline** in the More (⋯) menu. The pipeline does not run automatically even if a schedule is configured.
 
 <a id="pipeline.delete"></a>
-### 파이프라인 삭제 { #pipeline.delete }
 
-1. 목록에서 삭제할 파이프라인을 선택합니다(다중 선택 가능).
-2. **삭제** 버튼을 클릭합니다.
-3. 확인 모달에서 **삭제**를 클릭합니다.
+### Delete Pipeline { #pipeline.delete }
+
+1. Select the pipeline to delete from the list (multiple selections allowed).
+2. Click **Delete**.
+3. Click **Delete** in the confirmation modal.
 
 <a id="query"></a>
-## 분석 - 쿼리 { #query }
 
-콘솔 경로: **Machine Learning > NHN Cloud Foundry > 분석** 탭 > **쿼리** 탭
+## Analysis - Query { #query }
 
-SQL을 사용하여 데이터 소스의 데이터를 조회·분석합니다.
+Console path: **Machine Learning > NHN Cloud Foundry > Analysis** tab > **Query** tab
+
+Use SQL to query and analyze data from a data source.
 
 <a id="query.run"></a>
-### 쿼리 실행 { #query.run }
+### Run a Query { #query.run }
 
-1. **데이터 소스**를 선택합니다.
-2. **쿼리 선택**에서 저장된 쿼리를 불러옵니다. 선택한 데이터 소스로 저장한 쿼리가 있을 때 목록에 표시되며, 불러오지 않고 바로 작성해도 됩니다.
-3. 쿼리 입력란에 SQL을 작성합니다.
-4. **행 제한**을 선택합니다(10, 100, 1,000, 10,000, 100,000 / 기본 1,000).
-5. **쿼리 실행** 버튼을 클릭합니다.
+1. Select a **Data Source**.
+2. Load a saved query from **Query Selection**. Queries saved for the selected data source appear in the list; you can also write a query directly without loading one.
+3. Enter SQL in the query input field.
+4. Select a **Row Limit** (10, 100, 1,000, 10,000, or 100,000; default: 1,000).
+5. Click **Run Query**.
 
-- 실행 결과가 데이터 그리드 형식으로 표시됩니다. 칼럼 구조는 쿼리 결과에 따라 동적으로 생성되며, 페이지네이션을 지원합니다.
-- 데이터 소스를 선택하면 쿼리 입력란 오른쪽에 스키마 패널이 표시되어 필드 이름과 자료형을 확인할 수 있습니다. 필드 이름으로 검색할 수 있습니다.
-- 쿼리 입력란에서 **Ctrl+Enter**(macOS는 **⌘+Enter**)를 누르면 쿼리가 실행됩니다.
-- 쿼리 실행에 실패하면 실패 원인이 결과 영역에 표시됩니다.
-- **초기화** 버튼을 클릭하면 작성한 쿼리가 지워집니다.
-- **쿼리 결과 내려받기** 버튼을 클릭하면 결과가 CSV 파일로 저장됩니다(파일 이름: `쿼리명_날짜_시간.csv`).
-- FROM 절에는 데이터 소스 목록에 표시된 테이블 이름을 그대로 사용합니다(`SELECT * FROM {테이블 이름}`).
-- 단일 SELECT 구문만 실행할 수 있습니다. 그 외 구문은 거부됩니다.
+- The execution results are displayed in a data grid format. The column structure is dynamically generated based on the query results, and pagination is supported.
+- When you select a data source, a schema panel appears to the right of the query input field, where you can view field names and data types. You can search by field name.
+- Press **Ctrl+Enter** (or **⌘+Enter** on macOS) in the query input field to run the query.
+- If a query fails to run, the reason for the failure is displayed in the results area.
+- Click **Reset** to clear the query that you have written.
+- Click **Download Query Results** to save the results as a CSV file (file name: `query_name_date_time.csv`).
+- Use the table name as shown in the data source list in the FROM clause (`SELECT * FROM {table_name}`).
+- Only a single SELECT statement can be executed. All other statements are rejected.
 
 <a id="query.save"></a>
-### 저장된 쿼리 변경 { #query.save }
+### Modify a Saved Query { #query.save }
 
-**쿼리 선택**으로 불러온 쿼리의 내용을 수정한 뒤 **쿼리 저장** 버튼을 클릭하면 변경 사항이 저장됩니다. 불러온 쿼리가 없거나 내용을 바꾸지 않으면 버튼이 비활성화됩니다.
+After loading a query with **Query Selection** and modifying its content, click **Save Query** to save your changes. The button is disabled if no query is loaded or if no changes have been made.
 
 <a id="query.list"></a>
-### 쿼리 목록 { #query.list }
+### Query List { #query.list }
 
-쿼리는 실행할 때마다 실행 이력으로 자동 기록되며, 반복해서 사용할 쿼리는 쿼리 목록에 직접 만들어 둘 수 있습니다. **쿼리 목록** 버튼을 클릭하면 저장된 쿼리를 관리하는 모달이 열립니다.
+Every query that you run is automatically recorded in the execution history. You can also create queries in the query list for repeated use. Click **Query List** to open the modal for managing saved queries.
 
-| 칼럼 | 설명 |
+| Column | Description |
 | --- | --- |
-| 쿼리 이름 | 저장할 때 지정한 이름 |
-| 쿼리 구문 | 저장된 SQL |
-| 저장 시각 | 쿼리를 마지막으로 저장한 일시 |
-| 자세히 | 쿼리 전체 내용 조회 |
+| Query Name | Name assigned when saving |
+| Query Statement | Saved SQL |
+| Saved At | Date and time the query was last saved |
+| Details | View the full content of the query |
 
-- 쿼리 이름으로 검색할 수 있습니다.
-- **추가** 버튼으로 새 쿼리를 등록하고, 쿼리를 선택한 후 **수정** 또는 **삭제** 버튼으로 편집하거나 삭제합니다. 삭제한 쿼리는 복구할 수 없습니다.
+- You can search by query name.
+- Click **Add** to register a new query. Select a query and click **Modify** or **Delete** to edit or delete it. Deleted queries cannot be recovered.
 
-추가와 수정 시 입력하는 항목은 다음과 같습니다.
+The fields that you enter when adding or modifying a query are as follows:
 
-| 항목 | 필수 | 설명 |
+| Field | Required | Description |
 | --- | --- | --- |
-| 쿼리 이름 | O | 쿼리를 식별하기 위한 이름 |
-| 데이터 소스 | O | 쿼리를 실행할 데이터 소스 |
-| 구문 | O | 실행할 SQL |
+| Query Name | O | Name to identify the query |
+| Data Source | O | Data source on which to run the query |
+| Statement | O | SQL to execute |
 
 <a id="query.history"></a>
-### 쿼리 실행 이력 { #query.history }
+### Query Execution History { #query.history }
 
-지금까지 실행한 쿼리를 조회하는 화면입니다. **시간** 범위와 **쿼리 내용**으로 검색하며, **초기화** 버튼으로 검색 조건을 지웁니다.
+This screen shows all queries that have been run. You can search by **Time** range and **Query Content**, and click **Reset** to clear the search conditions.
 
-| 칼럼 | 설명 |
+| Column | Description |
 | --- | --- |
-| 쿼리 이름 | 실행한 쿼리의 이름 |
-| 쿼리 실행 날짜 | 쿼리를 실행한 일시 |
-| 데이터 소스 이름 | 쿼리를 실행한 데이터 소스 |
-| 쿼리/결과 | 실행한 SQL과 결과 |
+| Query Name | Name of the executed query |
+| Query Run Date | Date and time the query was run |
+| Data Source Name | Data source on which the query was run |
+| Query/Result | Executed SQL and its result |
 
-목록에서 항목을 클릭하면 쿼리 상세가 표시되며, **쿼리 사용**을 클릭하면 해당 쿼리를 실행 화면으로 불러옵니다.
+Click an item in the list to view query details. Click **Use Query** to load the query to the execution screen.
 
 <a id="chart"></a>
-## 분석 - 차트 { #chart }
 
-콘솔 경로: **Machine Learning > NHN Cloud Foundry > 분석** 탭 > **차트** 탭
+## Analysis - Chart { #chart }
+
+Console path: **Machine Learning > NHN Cloud Foundry > Analysis** tab > **Chart** tab
 
 <a id="chart.list"></a>
-### 차트 목록 { #chart.list }
+### Chart List { #chart.list }
 
-- 상단 검색 기능으로 차트 이름 필터링이 가능합니다.
+- You can filter chart names using the search feature at the top.
 
 <a id="chart.create"></a>
-### 차트 생성 { #chart.create }
+### Create a Chart { #chart.create }
 
-**차트 생성** 버튼을 클릭하면 차트 에디터 화면으로 이동합니다. 에디터에서 다음 항목을 차례로 설정합니다.
+Click the **Create Chart** button to go to the chart editor screen. In the editor, configure the following settings in order.
 
 <a id="chart.create.basic"></a>
-#### 기본 설정 { #chart.create.basic }
+#### Basic Settings { #chart.create.basic }
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 차트 이름 | O | 차트를 식별하기 위한 이름(최대 30자) |
-| 차트 타입 | O | 차트 용도 구분(현재는 기본만 제공) |
-| 차트 시각화 타입 | O | Line Chart, Bar Chart, Pie Chart, Scatter Chart |
+| Chart Name | O | Name to identify the chart (up to 30 characters) |
+| Chart Type | O | Categorizes the chart purpose (currently only the default type is available) |
+| Chart Visualization Type | O | Line Chart, Bar Chart, Pie Chart, Scatter Chart |
 
 <a id="chart.create.datasource"></a>
-#### 데이터 소스 설정 { #chart.create.datasource }
+#### Data Source Settings { #chart.create.datasource }
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 데이터소스 타입 | O | FILE, DATASET, RECOMMENDATION SINK |
-| 데이터 소스 이름 | O | 사용할 데이터 소스 선택 |
+| Data Source Type | O | FILE, DATASET, RECOMMENDATION SINK |
+| Data Source Name | O | Select the data source to use |
 
 <a id="chart.create.query"></a>
-#### 쿼리 설정 { #chart.create.query }
+#### Query Settings { #chart.create.query }
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| X축 | O* | 가로축에 사용할 필드. Pie 차트에서는 표시되지 않음 |
-| 집계 간격 | O* | 5분, 15분, 30분, 45분, 1시간, 2시간, 6시간, 12시간, 1일, 3일, 7일. Line·Bar 차트에서만 표시 |
-| 기준 시간 | O | 데이터의 시간 범위 지정 |
-| 칼럼 | O | 집계 대상 칼럼과 집계함수 선택. 1개 이상 필요 |
-| 그룹 키 | O* | 값별로 나누어 볼 칼럼. Pie 차트는 1개 이상 필요하고, 그 밖에는 선택 |
-| 필터 | X | 데이터 필터링 조건 설정 |
-| 정렬 | X | 정렬 칼럼과 방향. Pie·Bar 차트에서만 표시 |
-| 행 제한 | O | 조회할 최대 행 수 |
+| X-axis | O* | Field to use for the horizontal axis. Not displayed in Pie charts |
+| Aggregation Interval | O* | 5 minutes, 15 minutes, 30 minutes, 45 minutes, 1 hour, 2 hours, 6 hours, 12 hours, 1 day, 3 days, 7 days. Displayed in Line and Bar charts only |
+| Reference Time | O | Specifies the time range of the data |
+| Column | O | Select the column and aggregation function to aggregate. At least one is required |
+| Group Key | O* | Column to split values by. At least one is required for Pie charts; optional for other chart types |
+| Filter | X | Set data filtering conditions |
+| Sort | X | Sort column and direction. Displayed in Pie and Bar charts only |
+| Row Limit | O | Maximum number of rows to retrieve |
 
-차트 시각화 타입별로 필요한 설정은 다음과 같습니다.
+The required settings for each chart visualization type are as follows:
 
-| 차트 시각화 타입 | 필수 설정 |
+| Chart Visualization Type | Required Settings |
 | --- | --- |
-| Line, Bar | X축(시간축), 집계 간격, 칼럼 1개 이상 |
-| Pie | 칼럼 1개 이상, 그룹 키 1개 이상 |
-| Scatter | 칼럼 1개 이상 |
+| Line, Bar | X-axis (time axis), Aggregation Interval, at least one Column |
+| Pie | At least one Column, at least one Group Key |
+| Scatter | At least one Column |
 
-Bar 차트에 정렬을 지정하면 시간축 대신 상위 N개 카테고리로 표시됩니다.
+When a sort is specified for a Bar chart, the top N categories are displayed instead of the time axis.
 
 <a id="chart.create.preview"></a>
-#### 차트 프리뷰 { #chart.create.preview }
+#### Chart Preview { #chart.create.preview }
 
-설정 완료 후 **UPDATE CHART** 버튼을 클릭하여 프리뷰를 확인합니다.
+After completing the configuration, click the **UPDATE CHART** button to preview the chart.
 
-- 차트가 정상적으로 표시되는지 확인합니다.
-- 하단 테이블 뷰에서 데이터를 확인할 수 있으며, 테이블 뷰 표시/숨김을 전환할 수 있습니다.
+- Verify that the chart is displayed correctly.
+- You can review the data in the table view at the bottom and toggle the table view on or off.
 
 <a id="chart.create.save"></a>
-#### 차트 저장 { #chart.create.save }
+#### Save a Chart { #chart.create.save }
 
-- 프리뷰 확인 후 헤더의 **생성** 버튼을 클릭합니다.
-- 입력 내용 검증이 완료되면 생성 버튼이 활성화됩니다.
+- After reviewing the preview, click the **Create** button in the header.
+- The Create button is enabled once input validation is complete.
 
 <a id="chart.edit"></a>
-### 차트 편집 { #chart.edit }
+### Edit a Chart { #chart.edit }
 
-차트 목록에서 차트를 클릭하여 편집 화면으로 진입합니다.
+Click a chart in the chart list to open the edit screen.
 
-- 기본 설정, 데이터 소스 설정, 쿼리 설정을 변경할 수 있습니다.
-- **UPDATE CHART**로 프리뷰 확인 후 **저장**으로 변경 사항을 저장합니다.
+- You can modify the basic settings, data source settings, and query settings.
+- Preview the changes by clicking **UPDATE CHART**, then save them by clicking **Save**.
 
 <a id="chart.delete"></a>
-### 차트 삭제 { #chart.delete }
+### Delete a Chart { #chart.delete }
 
-1. 차트 목록에서 삭제할 차트를 체크박스로 선택합니다.
-2. **삭제** 버튼을 클릭합니다.
-3. 확인 모달에서 **삭제**를 클릭합니다.
+1. Select the chart to delete by checking the checkbox in the chart list.
+2. Click the **Delete** button.
+3. Click **Delete** in the confirmation modal.
 
-!!! danger "주의"
-    대시보드에서 사용 중인 차트를 삭제하면 해당 대시보드에서도 삭제됩니다.
+!!! danger "Caution"
+    Deleting a chart that is in use on a dashboard will also remove it from that dashboard.
 
 <a id="dashboard"></a>
-## 분석 - 대시보드 { #dashboard }
 
-콘솔 경로: **Machine Learning > NHN Cloud Foundry > 분석** 탭 > **대시보드** 탭
+## Analytics - Dashboard { #dashboard }
+
+Console path: **Machine Learning > NHN Cloud Foundry > Analytics** tab > **Dashboard** tab
 
 <a id="dashboard.list"></a>
-### 대시보드 목록 { #dashboard.list }
+### Dashboard List { #dashboard.list }
 
-- 검색 기능으로 대시보드 이름 필터링이 가능합니다.
-- 페이지당 표시 건수를 조정할 수 있습니다.
+- You can filter dashboards by name using the search feature.
+- You can adjust the number of items displayed per page.
 
 <a id="dashboard.create"></a>
-### 대시보드 생성 { #dashboard.create }
+### Create a Dashboard { #dashboard.create }
 
-**대시보드 생성** 버튼을 클릭하면 대시보드 에디터 화면으로 이동합니다.
+Click the **Create Dashboard** button to go to the dashboard editor screen.
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 대시보드 이름 | O | 대시보드를 식별하기 위한 이름 |
-| 대시보드 설명 | X | 대시보드 설명 |
+| Dashboard Name | O | Name to identify the dashboard |
+| Dashboard Description | X | Description of the dashboard |
 
-편집 패널은 두 개의 탭으로 구성됩니다.
+The edit panel consists of two tabs.
 
-| 탭 | 설명 |
+| Tab | Description |
 | --- | --- |
-| CHARTS | 대시보드에 추가할 수 있는 차트 목록. 차트 이름으로 검색 가능 |
-| LAYOUT ELEMENTS | 캔버스에 추가할 레이아웃 요소 |
+| CHARTS | List of charts that can be added to the dashboard. Searchable by chart name |
+| LAYOUT ELEMENTS | Layout elements to add to the canvas |
 
 <a id="dashboard.create.chart"></a>
-#### 차트 추가 { #dashboard.create.chart }
+#### Add a Chart { #dashboard.create.chart }
 
-1. 추가할 차트 카드를 클릭하거나 드래그합니다.
-2. 대시보드 캔버스에 차트를 배치합니다.
+1. Click or drag the chart card to add.
+2. Place the chart on the dashboard canvas.
 
 <a id="dashboard.create.tabgroup"></a>
-#### 탭 그룹 추가 { #dashboard.create.tabgroup }
+#### Add a Tab Group { #dashboard.create.tabgroup }
 
-여러 차트를 탭으로 묶어 한 자리에서 전환하며 볼 수 있습니다. 편집 패널의 **LAYOUT ELEMENTS** 탭에서 **Tab**을 클릭하면 캔버스에 탭 그룹이 추가됩니다.
+You can group multiple charts into tabs and switch between them in one place. Click **Tab** in the **LAYOUT ELEMENTS** tab of the edit panel to add a tab group to the canvas.
 
-- 탭 그룹의 **탭 추가**로 탭을 늘립니다. 탭이 2개 이상일 때 각 탭에 삭제 아이콘이 표시되며, 탭이 하나만 남으면 삭제할 수 없습니다.
-- 탭 이름은 탭을 더블클릭하여 변경합니다.
-- 편집 패널의 차트를 탭 영역으로 끌어다 놓으면 해당 탭에 배치됩니다. 이미 캔버스에 있는 차트는 차트 제목 왼쪽의 핸들을 끌어 탭으로 옮기고, 탭에 담긴 차트도 같은 방법으로 캔버스에 되돌립니다.
-- 탭 그룹은 차트와 마찬가지로 우측 상단의 휴지통 아이콘을 클릭하여 대시보드에서 삭제합니다.
+- Use **Add Tab** in the tab group to add more tabs. When there are two or more tabs, a delete icon appears on each tab. You cannot delete a tab if only one tab remains.
+- Double-click a tab to change its name.
+- Drag a chart from the edit panel and drop it onto the tab area to place it in the tab. To move a chart that is already on the canvas into a tab, drag the handle on the left of the chart title. You can also move a chart from a tab back to the canvas in the same way.
+- To delete a tab group from the dashboard, click the trash icon in the top right corner, just as you would for a chart.
 
 <a id="dashboard.create.layout"></a>
-#### 레이아웃 조정 { #dashboard.create.layout }
+#### Adjust the Layout { #dashboard.create.layout }
 
-캔버스에 배치한 차트는 드래그하여 위치를 옮기고 모서리를 끌어 크기를 조정합니다. 차트 우측 상단의 휴지통 아이콘을 클릭하면 대시보드에서 삭제됩니다.
+Drag a chart placed on the canvas to reposition it, and drag its corners to resize it. Click the trash icon in the top right corner of a chart to delete it from the dashboard.
 
 <a id="dashboard.create.save"></a>
-#### 대시보드 저장 { #dashboard.create.save }
+#### Save the Dashboard { #dashboard.create.save }
 
-구성 완료 후 헤더의 **저장** 버튼을 클릭합니다.
+After completing the configuration, click the **Save** button in the header.
 
 <a id="dashboard.view"></a>
-### 대시보드 열람 { #dashboard.view }
+### View a Dashboard { #dashboard.view }
 
-대시보드 목록에서 대시보드를 클릭하여 상세 화면으로 진입합니다.
+Click a dashboard in the dashboard list to open the details screen.
 
 <a id="dashboard.edit"></a>
-### 대시보드 편집 { #dashboard.edit }
+### Edit a Dashboard { #dashboard.edit }
 
-대시보드 상세 화면에서 **편집 모드 토글**을 클릭하여 편집 모드로 전환합니다.
+On the dashboard details screen, click the **Edit Mode** toggle to switch to edit mode.
 
-편집 모드에서는 다음 조작이 가능합니다.
+In edit mode, you can perform the following operations:
 
-- 차트 추가·삭제·위치 변경
-- 대시보드 이름 변경
+- Add, delete, or reposition charts
+- Change the dashboard name
 
-대시보드에 배치된 차트를 수정하려면 편집 모드를 끕니다. 편집 모드가 꺼져 있으면 각 차트에 더보기 메뉴가 표시되며, **차트 수정**을 선택하면 차트 편집 페이지로 이동합니다. 탭 그룹 안의 차트도 같은 방법으로 이동하며, 차트 편집 후 저장하면 대시보드에 변경 사항이 반영됩니다.
+To modify a chart placed on the dashboard, turn off edit mode. When edit mode is off, a more options menu appears on each chart. Choose **Edit Chart** to go to the chart editing page. Charts inside a tab group can be accessed in the same way. After editing and saving a chart, the changes are reflected on the dashboard.
 
 <a id="dashboard.delete"></a>
-### 대시보드 삭제 { #dashboard.delete }
+### Delete a Dashboard { #dashboard.delete }
 
-1. 대시보드 목록에서 삭제할 대시보드를 선택합니다.
-2. **삭제** 버튼을 클릭합니다.
-3. 확인 모달에서 **확인**을 클릭합니다.
+1. In the dashboard list, select the dashboard to delete.
+2. Click the **Delete** button.
+3. Click **Confirm** in the confirmation modal.
 
 <a id="app"></a>
-## 앱 { #app }
 
-콘솔 경로: **Machine Learning > NHN Cloud Foundry > 앱** 탭
+## App { #app }
 
-AI 모델을 활용한 추천 시스템 서빙 파이프라인을 생성하고 관리합니다.
+Console path: **Machine Learning > NHN Cloud Foundry > App** tab
+
+Create and manage recommendation system serving pipelines that use AI models.
 
 <a id="app.list"></a>
-### 앱 목록 { #app.list }
+### App List { #app.list }
 
-| 칼럼 | 설명 |
+| Column | Description |
 | --- | --- |
-| 앱 유형 | 앱의 유형 |
-| 앱 ID | 앱 고유 식별자 |
-| 앱 이름 | 앱 식별 이름 |
-| 앱 설명 | 앱 설명 |
-| 상태 | 앱 상태 |
-| 생성일 | 앱 생성 일시 |
+| App type | Type of the app |
+| App ID | Unique identifier of the app |
+| App name | Name that identifies the app |
+| App description | Description of the app |
+| Status | Current app status |
+| Created on | Date and time the app was created |
 
 <a id="app.list.status"></a>
-#### 앱 상태 { #app.list.status }
+#### App Status { #app.list.status }
 
-앱 상태 배지에 마우스를 올리면 툴팁으로 상세 설명을 확인할 수 있습니다.
+Hover over the app status badge to view a detailed description in a tooltip.
 
-| 값 | 설명 |
+| Value | Description |
 | --- | --- |
-| 초기화 중 | 앱 초기화 진행 중 |
-| 학습 중 | AI 모델 학습 진행 중 |
-| 배포 중 | 앱 배포 진행 중 |
-| 활성화 중 | 앱 활성화 진행 중 |
-| 활성 | 앱 활성 상태 |
-| 삭제 중 | 앱 삭제 진행 중 |
-| 실패 | 앱 처리 중 오류 발생 |
-| 알 수 없음 | 상태 정보 확인 불가 |
+| Initializing | App initialization in progress |
+| Training | AI model training in progress |
+| Deploying | App deployment in progress |
+| Activating | App activation in progress |
+| Active | App is active |
+| Deleting | App deletion in progress |
+| Failed | An error occurred while processing the app |
+| Unknown | Status information is unavailable |
 
-- 앱 생성 후 자동으로 학습 및 배포가 진행됩니다.
-- 각 단계에서 오류 발생 시 실패 상태로 전환됩니다.
+- After an app is created, training and deployment proceed automatically.
+- If an error occurs at any stage, the app transitions to the Failed status.
 
-!!! tip "알아두기"
-    앱 생성 직후 진행되는 학습·배포는 앱을 준비하는 과정으로, 이 시점에는 추천 모델이 아직 학습되지 않은 상태입니다. 추천 API를 호출하면 응답은 반환되지만 학습된 모델의 추천 결과가 아닙니다.
-    첫 학습은 배치 스케줄에 지정한 시각에 실행되며(상태: 학습 중 → 배포 중 → 활성화 중 → 활성), 학습된 모델이 배포된 이후부터 유효한 추천 결과를 조회할 수 있습니다.
+!!! tip "Note"
+    The training and deployment that occur immediately after app creation are part of the preparation process. At this point, the recommendation model has not yet been trained. If you call the recommendation API, a response is returned, but it does not contain results from a trained model.
+    The first training run executes at the time specified in the batch schedule (status: Training → Deploying → Activating → Active). Valid recommendation results are available only after the trained model has been deployed.
 
 <a id="app.create"></a>
-### 앱 생성 { #app.create }
+### Create App { #app.create }
 
-**앱 생성** 버튼을 클릭하면 앱 생성 화면으로 전환됩니다. 앱 생성은 3단계로 진행됩니다.
+Click the **Create App** button to go to the app creation screen. App creation proceeds in three steps.
 
-| 단계 | 설명 |
+| Step | Description |
 | --- | --- |
-| 기본 설정 | 앱 이름, 설명, 유형 선택 |
-| 상세 설정 | 모델 선택, 서빙 리소스·배치 스케줄, 데이터 연결, 추가 설정 |
-| 최종 검토 | 입력 내용 확인 및 생성 |
+| Basic Settings | Select app name, description, and type |
+| Detail Settings | Select model, serving resources, batch schedule, data connections, and additional settings |
+| Final Review | Review input and create |
 
 <a id="app.create.basic"></a>
-#### 기본 설정 { #app.create.basic }
+#### Basic Settings { #app.create.basic }
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 앱 이름 | O | 앱을 식별하기 위한 이름(최대 255자). 한글, 일본어, 영문, 숫자, 공백, -, _ 사용 |
-| 앱 설명 | O | 앱 설명 |
-| 앱 유형 | O | **추천 시스템** 선택 |
+| App name | O | Name to identify the app (up to 255 characters). Supports Korean, Japanese, English, numbers, spaces, hyphens (-), and underscores (_). |
+| App description | O | Description of the app |
+| App type | O | Select **Recommendation System** |
 
 <a id="app.create.detail"></a>
-#### 상세 설정 { #app.create.detail }
+#### Detail Settings { #app.create.detail }
 
-**모델 추가** 버튼으로 모델 카드를 추가합니다. 한 앱에 여러 모델을 함께 구성할 수 있으며, 모델 카드마다 아래 섹션들을 설정합니다.
+Click the **Add Model** button to add a model card. You can configure multiple models in a single app, and each model card has the sections described below.
 
 <a id="app.create.detail.model"></a>
-##### 기본 모델 설정 { #app.create.detail.model }
+##### Basic Model Settings { #app.create.detail.model }
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 모델 이름 | O | 사용할 추천 모델 선택 |
-| Longtail 모드 | X | 사용 시 인기도가 낮은 아이템도 추천에 포함 |
+| Model name | O | Select the recommendation model to use |
+| Longtail mode | X | When enabled, includes low-popularity items in recommendations |
 
-선택할 수 있는 모델은 다음과 같습니다.
+The following models are available:
 
-| 이름 | 설명 |
+| Name | Description |
 | --- | --- |
-| Cold User | 신규 유저 등 아직 활동 이력이 적은 유저에게 아이템 자체의 속성을 기반으로 추천 |
-| Warm User(Transformer) | 유저가 최근 인터랙션한 아이템의 순서를 기반으로 다음 아이템 추천 |
+| Cold User | Recommends items to users with little activity history (e.g., new users) based on item attributes. |
+| Warm User (Transformer) | Recommends the next item based on the sequence of items that a user recently interacted with. |
 
-같은 모델이라도 Longtail 모드가 다르면 별도 모델로 추가할 수 있습니다.
+The same model with a different Longtail mode setting can be added as a separate model.
 
 <a id="app.create.detail.resources"></a>
-##### 서빙 리소스 설정 { #app.create.detail.resources }
+##### Serving Resource Settings { #app.create.detail.resources }
 
-모델별 서빙 컨테이너에 할당할 리소스를 지정합니다. 입력하지 않으면 기본값이 적용됩니다.
+Specify the resources to allocate to the serving container for each model. If left blank, the default values are applied.
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| CPU request / CPU limit | X | Core 단위. 기본값 2 / 4 |
-| 메모리 request / 메모리 limit | X | Gi 단위. 기본값 4 / 4 |
+| CPU request / CPU limit | X | In cores. Default: 2 / 4 |
+| Memory request / Memory limit | X | In Gi. Default: 4 / 4 |
 
-`request`는 `limit`을 초과할 수 없습니다.
+The `request` value cannot exceed the `limit` value.
 
 <a id="app.create.detail.schedule"></a>
-##### 배치 스케줄 설정 { #app.create.detail.schedule }
+##### Batch Schedule Settings { #app.create.detail.schedule }
 
-모델을 다시 학습하는 배치의 실행 주기를 설정합니다. 기본으로 활성화되어 있으며, 토글로 끌 수 있습니다.
-모델의 첫 학습도 이 스케줄에 지정한 시각에 실행되며, 첫 학습이 완료되기 전의 추천 응답은 학습된 모델의 결과가 아닙니다.
+Set the execution frequency for the batch that retrains the model. This is enabled by default and can be turned off with the toggle.
+The first training run for the model also executes at the time specified in this schedule. Recommendation responses returned before the first training is complete are not results from a trained model.
 
-| 주기 | 설정 항목 |
+| Frequency | Settings |
 | --- | --- |
-| 매일 | 시, 분 |
-| 매주 | 요일, 시, 분 |
-| 매시간 | 시간 간격, 분 |
+| Daily | Hour, Minute |
+| Weekly | Day of week, Hour, Minute |
+| Hourly | Hour interval, Minute |
 
-설정한 시각은 접속한 브라우저의 시간대 기준으로 적용됩니다.
+The configured time is applied based on the time zone of the browser you are using.
 
 <a id="app.create.detail.connection"></a>
-##### 데이터 연결 설정 { #app.create.detail.connection }
+##### Data Connection Settings { #app.create.detail.connection }
 
-선택한 모델에 따라 필요한 데이터 소스를 연결합니다.
+Connect the data sources required by the selected model.
 
-일반 추천 모델:
+General recommendation model:
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 사용자 데이터소스 | O | 사용자 정보 데이터 소스 |
-| 사용자 ID 칼럼 | O | 사용자 식별 칼럼 |
-| 사용자 Feature 칼럼 | X | 추가 사용자 특성 칼럼(여러 개 선택 가능) |
-| 아이템 데이터소스 | O | 아이템 정보 데이터 소스 |
-| 아이템 ID 칼럼 | O | 아이템 식별 칼럼 |
-| 아이템 Feature 칼럼 | X | 추가 아이템 특성 칼럼(여러 개 선택 가능) |
-| 히스토리 데이터소스 | O | 사용자-아이템 상호작용 데이터 소스 |
-| 히스토리 사용자 ID 칼럼 | O | 히스토리에서 사용자를 식별하는 칼럼 |
-| 히스토리 아이템 ID 칼럼 | O | 히스토리에서 아이템을 식별하는 칼럼 |
-| 시간 칼럼 | X | 상호작용 시간 칼럼 |
-| 히스토리 Feature 칼럼 | X | 추가 상호작용 특성 칼럼 |
+| User data source | O | Data source for user information |
+| User ID column | O | Column that identifies users |
+| User feature column | X | Additional user attribute columns (multiple selections allowed) |
+| Item data source | O | Data source for item information |
+| Item ID column | O | Column that identifies items |
+| Item feature column | X | Additional item attribute columns (multiple selections allowed) |
+| History data source | O | Data source for user-item interaction |
+| History user ID column | O | Column that identifies users in the history |
+| History item ID column | O | Column that identifies items in the history |
+| Time column | X | Column for interaction time |
+| History feature column | X | Additional interaction attribute columns |
 
-태그 임베딩 모델:
+Tag embedding model:
 
-| 항목 | 필수 | 설명 |
+| Item | Required | Description |
 | --- | --- | --- |
-| 태그 데이터소스 | O | 태그 정보 데이터 소스 |
-| 속성 칼럼 | O | 태그 값 칼럼 |
-| 아이템 ID 칼럼 | O | 아이템 식별 칼럼 |
-| 시간 칼럼 | X | 시간 칼럼 |
+| Tag data source | O | Data source for tag information |
+| Attribute column | O | Column for tag values |
+| Item ID column | O | Column that identifies items |
+| Time column | X | Time column |
 
 <a id="app.create.detail.extra"></a>
-##### 추가 설정(Skills) { #app.create.detail.extra }
+##### Additional Settings (Skills) { #app.create.detail.extra }
 
-추천 사유(reason) 구성에 사용할 스킬·카테고리 데이터를 연결하는 선택 설정입니다. **필드 추가** 버튼으로 추가합니다.
+This is an optional setting for connecting skill and category data used to construct recommendation reasons (reason). Click the **Add Field** button to add entries.
 
-| 항목 | 설명 |
+| Item | Description |
 | --- | --- |
-| 스킬 데이터소스 | 스킬 정보 테이블. 스킬 ID 칼럼과 스킬 칼럼 지정 |
-| 기본 스킬 카테고리 / 공통 스킬 카테고리 | 스킬 분류 테이블. 스킬 ID 칼럼과 스킬 라벨 칼럼 지정 |
-| 사용자 그룹 데이터소스 | 추천 대상 사용자를 묶는 단위(예: 부서, 학년, 관심사 그룹). 사용자 그룹 ID 칼럼과 스킬 칼럼 지정 |
-| 사용자별 관심 스킬 데이터소스 | 사용자별 관심 스킬 테이블. 추천 API에 관심 스킬이 전달되지 않았을 때 이 테이블을 조회해 관심 기반 추천 사유 생성 |
-| 사용자 속성 매핑 | 추천 API의 userAttributes에서 각 항목을 전달할 키 이름 지정 |
-| 추천 사유 템플릿 데이터소스 | 추천 사유 문구 템플릿 테이블. 미선택 시 추천 결과에 사유 미포함 |
-| 콜드스타트 데이터소스 | 이 테이블에 있는 사용자 ID만 콜드스타터로 판정. 데이터소스와 사용자 ID 칼럼 함께 선택 필요 |
+| Skill data source | Skill information table. Specify the skill ID column and skill column. |
+| Default skill category / Common skill category | Skill classification table. Specify the skill ID column and skill label column. |
+| User group data source | A unit that groups users targeted for recommendations (e.g., department, grade, interest group). Specify the user group ID column and skill column. |
+| User interest skill data source | Table of interest skills per user. When no interest skill is passed to the recommendation API, this table is queried to generate interest-based recommendation reasons. |
+| User attribute mapping | Specifies the key name for passing each item in the userAttributes of the recommendation API. |
+| Recommendation reason template data source | Table of recommendation reason phrase templates. If not selected, reasons are not included in recommendation results. |
+| Cold start data source | Only user IDs in this table are identified as cold starters. Both the data source and user ID column must be selected. |
 
 <a id="app.create.review"></a>
-#### 최종 검토 { #app.create.review }
+#### Final Review { #app.create.review }
 
-| 검토 항목 | 설명 |
+| Review Item | Description |
 | --- | --- |
-| 기본 설정 | 앱 이름, 설명, 유형 |
-| 모델 설정 | 선택한 모델, 서빙 리소스, 배치 스케줄, 데이터 연결 정보 |
-| 추가 설정 | 스킬 테이블 등 추가 설정 |
+| Basic Settings | App name, description, and type |
+| Model Settings | Selected model, serving resources, batch schedule, and data connection information |
+| Additional Settings | Additional settings such as skill tables |
 
-**저장** 버튼을 클릭하면 앱이 생성됩니다. 성공 시 완료 모달이 표시되고 목록으로 이동하며, 실패 시 오류 메시지가 표시됩니다.
+Click the **Save** button to create the app. On success, a completion modal is displayed and you are redirected to the list. On failure, an error message is displayed.
 
 <a id="app.delete"></a>
-### 앱 삭제 { #app.delete }
+### Delete App { #app.delete }
 
-1. 삭제할 앱의 체크박스를 선택합니다.
-2. **삭제** 버튼을 클릭합니다.
-3. 확인 모달에서 **확인**을 클릭합니다.
+1. Select the checkbox of the app to delete.
+2. Click the **Delete** button.
+3. Click **Confirm** in the confirmation modal.
 
-!!! danger "주의"
-    삭제된 앱은 복구할 수 없습니다. 연결된 서빙 파이프라인도 함께 삭제됩니다.
+!!! danger "Caution"
+    Deleted apps cannot be recovered. The associated serving pipeline is also deleted.
 
 <a id="app.detail"></a>
-### 앱 상세 { #app.detail }
+### App Details { #app.detail }
 
-앱 목록에서 앱을 클릭하면 상세 화면으로 이동합니다. 상세 화면은 **추천 API 호출**과 **앱 정보** 두 개의 탭으로 구성됩니다.
+Click an app in the app list to go to the details screen. The details screen consists of two tabs: **Recommendation API Call** and **App Info**.
 
 <a id="app.detail.recommend"></a>
-#### 추천 API 호출 { #app.detail.recommend }
+#### Recommendation API Call { #app.detail.recommend }
 
-추천 요청 파라미터를 입력해 추천 API를 직접 호출하고 결과를 확인할 수 있습니다. 화면은 입력 폼, 요청 미리보기, 추천 결과 세 영역으로 구성됩니다.
+You can call the recommendation API directly by entering request parameters and view the results. The screen consists of three areas: input form, request preview, and recommendation results.
 
-입력 폼:
+Input form:
 
-| 항목 | 설명 |
+| Item | Description |
 | --- | --- |
-| 추천 앱 ID | 호출 대상 앱 ID. 현재 앱으로 자동 입력 |
-| 사용자 ID | 추천 대상 사용자 선택 |
-| 추천 모드 | Normal Flow(이력 기반), Cold Start(속성 기반) 중 선택 |
-| 최대 추천 수 | 응답에 포함할 최대 아이템 수(1~100, 기본값 10) |
-| Longtail 모드 | 인기 없는 항목까지 포함해 추천 다양성 향상. Cold Start 모드에서는 사용 불가 |
-| context | 추천 요청의 맥락 정보(현재·최근 본 아이템 등)를 필드 단위로 추가 |
-| userAttributes | 사용자 속성 정보(그룹, 나이, 관심사 등)를 필드 단위로 추가 |
-| options | 추천 요청 옵션을 필드 단위로 추가 |
+| Recommendation app ID | App ID to call. Automatically populated with the current app. |
+| User ID | Select the user to receive recommendations. |
+| Recommendation mode | Choose between Normal Flow (history-based) and Cold Start (attribute-based). |
+| Maximum recommendations | Maximum number of items to include in the response (1–100, default: 10). |
+| Longtail mode | Improves recommendation diversity by including unpopular items. Not available in Cold Start mode. |
+| context | Add contextual information for the recommendation request (e.g., current or recently viewed items) on a field-by-field basis. |
+| userAttributes | Add user attribute information (e.g., group, age, interests) on a field-by-field basis. |
+| options | Add recommendation request options on a field-by-field basis. |
 
-- **요청 미리보기**: 입력 값으로 구성된 실제 API 요청 JSON을 보여줍니다. **복사** 버튼으로 복사해 API 연동 개발에 활용할 수 있습니다.
-- **추천 결과**: **추천 요청** 버튼을 클릭하면 순위, 아이템 키, 점수와 추천 사유가 표시되며, 총 결과 수와 응답 시간도 함께 확인할 수 있습니다.
+- **Request Preview**: Displays the actual API request JSON built from your input. You can copy it using the **Copy** button and use it for API integration development.
+- **Recommendation Results**: Click the **Request Recommendation** button to display rankings, item keys, scores, and recommendation reasons. The total result count and response time are also shown.
 
-!!! tip "알아두기"
-    추천 API 호출은 앱이 활성 상태일 때만 가능합니다.
+!!! tip "Note"
+    Recommendation API calls are only available when the app is in the Active status.
 
 <a id="app.detail.info"></a>
-#### 앱 정보 { #app.detail.info }
+#### App Info { #app.detail.info }
 
-앱 ID, 앱 이름, 상태, 앱 유형, 설명, 생성일, 수정일, 버전과 입력·출력 데이터 소스를 확인할 수 있습니다.
+You can view the app ID, app name, status, app type, description, creation date, modification date, version, and input and output data sources.
 
-- 입력 데이터 소스: 모델 학습에 사용하는 데이터 소스입니다. 추천 앱은 모델별로 구분해 표시됩니다.
-- 출력 데이터 소스: 추천 결과가 저장되는 데이터 소스입니다.
+- Input data source: The data sources used for model training. For recommendation apps, data sources are displayed separately by model.
+- Output data source: The data source where recommendation results are stored.
