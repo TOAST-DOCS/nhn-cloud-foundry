@@ -407,7 +407,7 @@ The job status (`status`) can have the following values:
 <a id="recommendation.api"></a>
 ## Recommendation API { #recommendation.api }
 
-Requests recommendation results from the recommendation system app that you created. If the user's interaction history is sufficient, the server performs model-based inference (Normal Flow); if the history is insufficient, it performs attribute-based inference (Cold Start).
+Requests recommendation results from the recommendation system app that you created. If the user's interaction history is sufficient, the server performs model-based inference (Sequential); if the history is insufficient, it performs attribute-based inference (Cold Start).
 
 <a id="recommendation.api.recommend"></a>
 ### Request Recommendations { #recommendation.api.recommend }
