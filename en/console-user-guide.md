@@ -3,7 +3,6 @@
 <!-- pre-align:aligned sig=a160539b5f44 -->
 
 <a id="foundry.console.guide"></a>
-
 ## Machine Learning > NHN Cloud Foundry > Console User Guide { #foundry.console.guide }
 
 This document describes how to manage data sources, pipelines, analytics (queries, charts, and dashboards), and apps in the NHN Cloud Foundry console.
@@ -15,7 +14,6 @@ In the settings tables, the Required column indicates the following:
 - `O*`: Required or optional depending on other settings
 
 <a id="status"></a>
-
 ## Status { #status }
 
 Console path: **Machine Learning > NHN Cloud Foundry > Status** tab
@@ -54,7 +52,6 @@ After activation, the Status tab displays the following information:
     Deactivating the service deletes all created resources, and this action cannot be undone.
 
 <a id="datasource"></a>
-
 ## Data Source { #datasource }
 
 Console path: **Machine Learning > NHN Cloud Foundry > Data Source** tab
@@ -247,7 +244,6 @@ Click the **Add field** button in the **Catalog** tab of the Details view.
     You can update data not only through the console but also via the API. For details, see the 'Ingest API' section in the [API guide](../api-guide/#ingest.api).
 
 <a id="pipeline"></a>
-
 ## Pipeline { #pipeline }
 
 Console path: **Machine Learning > NHN Cloud Foundry > Pipeline** tab
@@ -255,7 +251,6 @@ Console path: **Machine Learning > NHN Cloud Foundry > Pipeline** tab
 A pipeline processes data from a data source through a workflow of connected nodes, transforming it into an analyzable dataset.
 
 <a id="pipeline.list"></a>
-
 ### Pipeline List { #pipeline.list }
 
 When you enter the pipeline menu, the list of created pipelines is displayed in table format.
@@ -278,7 +273,6 @@ When you enter the pipeline menu, the list of created pipelines is displayed in 
 You can create, modify, delete, enable, and disable pipelines from the toolbar. Enable and disable options are in the **More (⋯)** menu.
 
 <a id="pipeline.create"></a>
-
 ### Create a Pipeline { #pipeline.create }
 
 1. On the list screen, click the **Create Pipeline** button.
@@ -296,7 +290,6 @@ You can create, modify, delete, enable, and disable pipelines from the toolbar. 
     Saving the settings of an enabled pipeline disables the pipeline. Building by clicking the Run button automatically enables it again.
 
 <a id="pipeline.editor"></a>
-
 ### Pipeline editor { #pipeline.editor }
 
 This is the main editing screen that you enter when creating or editing a pipeline.
@@ -325,7 +318,6 @@ You can hover over the status badge to view a detailed description in a tooltip.
 | Deleting | Pipeline deletion in progress |
 
 <a id="pipeline.node"></a>
-
 ### Node configuration { #pipeline.node }
 
 A pipeline is configured by combining the following five node types.
@@ -613,7 +605,6 @@ The dataset name is used as both the data source name and the table name, so it 
     An executed dataset cannot be modified. Delete it and recreate it (the data source is retained).
 
 <a id="pipeline.schedule"></a>
-
 ### Configure a Schedule { #pipeline.schedule }
 
 Click the schedule icon in the right side panel to configure the batch schedule.
@@ -636,7 +627,6 @@ Date range settings:
 After the schedule is saved and executed for the first time, it runs at the configured interval.
 
 <a id="pipeline.resource"></a>
-
 ### Configure Computing Resources { #pipeline.resource }
 
 Click the computing resource icon in the right side panel to configure the computing resources to use when running the pipeline.
@@ -652,7 +642,6 @@ Click the computing resource icon in the right side panel to configure the compu
     If you change the resource settings, the changes are applied after a rebuild. You cannot change the resources before creating a pipeline.
 
 <a id="pipeline.run"></a>
-
 ### Run Pipeline { #pipeline.run }
 
 On the first run or after a settings change, the build and execution proceed together.
@@ -671,14 +660,12 @@ When the build is complete, pipelines with a schedule configured are automatical
 Click **Run History** on the tab bar to view the run ID, start/end time, duration, run status, and per-node execution details.
 
 <a id="pipeline.activation"></a>
-
 ### Activate/Deactivate { #pipeline.activation }
 
 - **Activate**: Select one pipeline from the list and click **Activate Pipeline** in the More (⋯) menu. The pipeline runs automatically according to the configured schedule.
 - **Deactivate**: Select one pipeline from the list and click **Deactivate Pipeline** in the More (⋯) menu. The pipeline does not run automatically even if a schedule is configured.
 
 <a id="pipeline.delete"></a>
-
 ### Delete Pipeline { #pipeline.delete }
 
 1. Select the pipeline to delete from the list (multiple selections allowed).
@@ -686,7 +673,6 @@ Click **Run History** on the tab bar to view the run ID, start/end time, duratio
 3. Click **Delete** in the confirmation modal.
 
 <a id="query"></a>
-
 ## Analysis - Query { #query }
 
 Console path: **Machine Learning > NHN Cloud Foundry > Analysis** tab > **Query** tab
@@ -754,7 +740,6 @@ This screen shows all queries that have been run. You can search by **Time** ran
 Click an item in the list to view query details. Click **Use Query** to load the query to the execution screen.
 
 <a id="chart"></a>
-
 ## Analysis - Chart { #chart }
 
 Console path: **Machine Learning > NHN Cloud Foundry > Analysis** tab > **Chart** tab
@@ -843,7 +828,6 @@ Click a chart in the chart list to open the edit screen.
     Deleting a chart that is in use on a dashboard will also remove it from that dashboard.
 
 <a id="dashboard"></a>
-
 ## Analytics - Dashboard { #dashboard }
 
 Console path: **Machine Learning > NHN Cloud Foundry > Analytics** tab > **Dashboard** tab
@@ -922,7 +906,6 @@ To modify a chart placed on the dashboard, turn off edit mode. When edit mode is
 3. Click **Confirm** in the confirmation modal.
 
 <a id="app"></a>
-
 ## App { #app }
 
 Console path: **Machine Learning > NHN Cloud Foundry > App** tab
