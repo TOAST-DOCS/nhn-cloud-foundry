@@ -7,9 +7,9 @@ NHN Cloud Foundry가 제공하는 API를 설명합니다.
 
 | API | 설명 |
 | --- | --- |
-| Ingest API | 이미 만든 데이터 소스에 데이터를 수집합니다. 스냅샷 파일 업로드를 제공합니다. |
-| 추천 조회 API | 생성한 추천 시스템 앱에 추천 결과를 요청합니다. |
-| 추천 이벤트 API | 추천 결과에 사용자가 보인 반응 이벤트를 수집합니다. |
+| Ingest API | 이미 만든 데이터 소스에 데이터 수집. 스냅샷 파일 업로드 제공 |
+| 추천 조회 API | 생성한 추천 시스템 앱에 추천 결과 요청 |
+| 추천 이벤트 API | 추천 결과에 사용자가 보인 반응 이벤트 수집 |
 
 <a id="auth.common"></a>
 ## 인증 및 공통 사항 { #auth.common }
@@ -21,7 +21,7 @@ API를 사용하려면 **Appkey**와 **인증 토큰**이 필요합니다.
 
 - Appkey는 NHN Cloud 콘솔의 **Machine Learning > NHN Cloud Foundry** 페이지 상단 **URL & Appkey** 메뉴에서 확인할 수 있습니다.
 - API는 **gateway-public** 엔드포인트를 사용합니다.
-- 인증 토큰(`X-NHN-Authorization` 헤더의 Bearer 토큰) 발급 방법은 [User Access Key 토큰](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/user-access-key-token/) 가이드를 참고하세요.
+- 인증 토큰(`X-NHN-Authorization` 헤더의 Bearer 토큰) 발급 방법은 [User Access Key 토큰](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/user-access-key-token/) 가이드를 참고합니다.
 
 <a id="auth.common.request"></a>
 ### 요청 공통 사항 { #auth.common.request }
@@ -112,11 +112,11 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| fileName | String | O | 파일 이름. 허용 문자: 영문, 숫자, 점(.), 언더스코어(_), 하이픈(-) |
+| fileName | String | O | 파일 이름. 허용 문자: 영문, 숫자, 점(.), 밑줄(_), 하이픈(-) |
 | fileSize | Long | O | 파일 크기(bytes). 최소 1, 최대 10GB |
 | contentType | String | X | Content-Type(기본값: application/octet-stream) |
 
-Response(SINGLE):
+응답 예시(SINGLE):
 
 ```json
 {
@@ -144,7 +144,7 @@ Response(SINGLE):
 }
 ```
 
-Response(MULTIPART):
+응답 예시(MULTIPART):
 
 ```json
 {
@@ -183,7 +183,7 @@ Response(MULTIPART):
 
 | 필드 | 설명 |
 | --- | --- |
-| body.jobId | 작업 ID. 이후 complete / 상태 조회 요청에 사용합니다 |
+| body.jobId | 작업 ID. 이후 complete/상태 조회 요청에 사용 |
 | body.uploadType | 업로드 타입. SINGLE(100MB 이하) 또는 MULTIPART(100MB 초과) |
 | body.uploadUrl | 업로드 URL(단일 업로드 시) |
 | body.uploadId | 멀티파트 업로드 ID(멀티파트 업로드 시) |
@@ -286,9 +286,9 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | jobId | String | O | 작업 ID(init 응답의 jobId) |
 | fileName | String | O | 파일 이름 |
 | uploadId | String | X | 멀티파트 업로드 ID(멀티파트 업로드 시에만 필요) |
-| partETags | Array | X | 파트별 ETag 목록(멀티파트 업로드 시에만 필요, partNumber 순) |
+| partETags | Array | X | 파트별 ETag 목록(멀티파트 업로드 시에만 필요, partNumber순) |
 
-Response:
+응답 예시:
 
 ```json
 {
@@ -305,7 +305,7 @@ Response:
 
 | 필드 | 설명 |
 | --- | --- |
-| body.jobId | 작업 ID. [작업 상태 조회](#ingest.snapshot.job.status)에 사용합니다 |
+| body.jobId | 작업 ID. [작업 상태 조회](#ingest.snapshot.job.status)에 사용 |
 
 <a id="ingest.snapshot.cancel"></a>
 #### 업로드 취소 { #ingest.snapshot.cancel }
@@ -345,7 +345,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
   -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
 ```
 
-Response:
+응답 예시:
 
 ```json
 {
@@ -396,12 +396,12 @@ Response:
 
 | 값 | 설명 |
 | --- | --- |
-| UPLOADING | 파일을 업로드하고 있습니다. |
-| QUEUED | 업로드가 완료되어 적재 대기 중입니다. |
-| STAGED | 처리 준비가 완료되었습니다. |
-| RUNNING | 데이터를 적재하고 있습니다. |
-| COMPLETED | 작업이 정상적으로 완료되었습니다. |
-| FAILED | 작업이 실패했습니다. |
+| UPLOADING | 파일 업로드 중 |
+| QUEUED | 업로드 완료, 적재 대기 중 |
+| STAGED | 처리 준비 완료 |
+| RUNNING | 데이터 적재 중 |
+| COMPLETED | 작업 정상 완료 |
+| FAILED | 작업 실패 |
 
 <a id="recommendation.api"></a>
 ## 추천 조회 API { #recommendation.api }
@@ -438,22 +438,22 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| userId | String | O | 추천 대상 사용자 ID. 익명 사용자에게 추천을 요청하려면 빈 문자열("")로 보냅니다 |
+| userId | String | O | 추천 대상 사용자 ID. 익명 사용자에게 추천을 요청하려면 빈 문자열("") 지정 |
 | context.currentItemKey | String | X | 현재 보고 있는 아이템 키 |
 | context.recentlyViewed | Array | X | 최근 조회한 아이템 키 목록 |
-| context.availableItems | Array | X | 추천 대상 아이템 키 목록. 지정하면 이 목록에 포함된 아이템 중에서만 추천합니다 |
+| context.availableItems | Array | X | 추천 대상 아이템 키 목록. 지정하면 이 목록에 포함된 아이템 중에서만 추천 |
 | context.pageType | String | X | 현재 페이지 유형(자유 형식. 예: home, item_detail) |
 | context.sessionId | String | X | 세션 ID |
-| userAttributes | Object | X | 사용자 속성 정보. Cold Start 추론에 사용됩니다 |
-| options.maxRecommendations | Integer | X | 최대 추천 수(1~100). 100을 초과하는 값은 오류 없이 100으로 조정되며, 지정하지 않으면 100이 적용됩니다. 추천 가능한 아이템이 이 값보다 적으면 실제 아이템 수만큼만 반환합니다 |
-| options.mode | String | X | 추론 방식 지정. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) 중 하나. 지정하지 않으면 서버가 자동으로 결정합니다 |
-| options.longtail | Boolean | X | 인기가 낮은 항목까지 포함해 추천 다양성을 높입니다. sequential일 때만 적용됩니다 |
-| options.excludeItemKeys | Array | X | 추천에서 제외할 아이템 키 목록. 제외한 아이템은 최대 추천 수에 포함되지 않습니다 |
+| userAttributes | Object | X | 사용자 속성 정보(Cold Start 추론에 사용) |
+| options.maxRecommendations | Integer | X | 최대 추천 수(1~100). 100을 초과하는 값은 오류 없이 100으로 조정, 미지정 시 100 적용. 추천 가능한 아이템이 이 값보다 적으면 실제 아이템 수만큼만 반환 |
+| options.mode | String | X | 추론 방식 지정. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) 중 하나. 미지정 시 서버가 자동 결정 |
+| options.longtail | Boolean | X | 인기가 낮은 항목까지 포함해 추천 다양성 향상. sequential일 때만 적용 |
+| options.excludeItemKeys | Array | X | 추천에서 제외할 아이템 키 목록. 제외한 아이템은 최대 추천 수에 미포함 |
 
 !!! tip "알아두기"
     `userAttributes` 스키마는 향후 선호도 유도(Preference Elicitation) 구현 방향에 따라 수집 방식이나 필드 종류가 변경될 수 있습니다.
 
-Response:
+응답 예시:
 
 ```json
 {
@@ -485,9 +485,9 @@ Response:
 | body.recommendations[].score | 추천 점수(0.0~1.0) |
 | body.recommendations[].position | 추천 순위 |
 | body.metadata.modelVersion | 사용된 모델 버전 |
-| body.metadata.requestId | 요청 추적 ID. 추천 이벤트 API 전송 시 이 값을 사용합니다 |
+| body.metadata.requestId | 요청 추적 ID. 추천 이벤트 API 전송 시 이 값 사용 |
 | body.metadata.inferenceType | 추론 유형. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) |
-| body.metadata.abTestGroup | A/B 테스트 그룹(현재는 빈 값으로 반환됩니다) |
+| body.metadata.abTestGroup | A/B 테스트 그룹(현재는 빈 값 반환) |
 
 <a id="recommendation.event.api"></a>
 ## 추천 이벤트 API { #recommendation.event.api }
@@ -524,7 +524,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 
 | 필드 | 필수 | 설명 |
 | --- | --- | --- |
-| eventType | O | 이벤트 유형. 자유롭게 정의할 수 있습니다(예: CLICK, PURCHASE, IMPRESSION). 영문·숫자·언더스코어만 사용(^[A-Za-z0-9_]+$), 최대 64자. 대소문자는 구분하지 않으며 대문자로 정규화되어 저장됩니다. REQUEST, RESPONSE는 예약어로 사용할 수 없습니다 |
+| eventType | O | 이벤트 유형. 자유롭게 정의 가능(예: CLICK, PURCHASE, IMPRESSION). 영문·숫자·밑줄(_)만 사용(^[A-Za-z0-9_]+$), 최대 64자. 대소문자 구분 없이 대문자로 정규화되어 저장. REQUEST, RESPONSE는 예약어로 사용 불가 |
 | requestId | O | 추천 API 응답의 body.metadata.requestId 값(opaque string, 최대 128자) |
 | itemKey | O | 사용자가 반응한 추천 아이템의 itemKey |
 | userId | X | 추천 API 응답의 body.userId 값 |
