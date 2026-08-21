@@ -3,7 +3,6 @@
 <!-- pre-align:aligned sig=876ecae2be90 -->
 
 <a id="foundry.api.guide"></a>
-
 ## Machine Learning > NHN Cloud Foundry > API ガイド { #foundry.api.guide }
 
 NHN Cloud Foundry が提供する API について説明します。
@@ -15,7 +14,6 @@ NHN Cloud Foundry が提供する API について説明します。
 | レコメンデーションイベント API | 推薦結果に対するユーザーの反応イベントの収集 |
 
 <a id="auth.common"></a>
-
 ## 認証および共通事項 { #auth.common }
 
 <a id="auth.common.preparation"></a>
@@ -68,7 +66,6 @@ https://{gateway-public-host}/api/v1.0
 | body | Object/Array | API ごとのレスポンスデータ |
 
 <a id="ingest.api"></a>
-
 ## Ingest API { #ingest.api }
 
 Ingest API は、コンソールで作成済みのデータソースにデータを取り込むための API です。
@@ -409,7 +406,6 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 | FAILED | ジョブ失敗 |
 
 <a id="recommendation.api"></a>
-
 ## レコメンデーション照会 API { #recommendation.api }
 
 作成したレコメンデーションシステムアプリにレコメンデーション結果をリクエストします。ユーザーの履歴が十分な場合はモデルベース (Normal Flow)、不足している場合は属性ベース (Cold Start) で推論します。
@@ -496,7 +492,6 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | body.metadata.abTestGroup | A/B テストグループ (現在は空の値を返します) |
 
 <a id="recommendation.event.api"></a>
-
 ## 推薦イベント API { #recommendation.event.api }
 
 推薦結果に対するユーザーの反応（クリックなど）のイベントを収集します。収集されたイベントデータを使用して、推薦の成功率を分析できます。
