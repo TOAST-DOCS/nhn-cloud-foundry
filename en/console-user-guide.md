@@ -7,6 +7,10 @@
 
 This document describes how to manage data sources, pipelines, analytics (queries, charts, and dashboards), and apps in the NHN Cloud Foundry console.
 
+!!! danger "Caution"
+    When using this service, do not enter any information that contains personal information.
+    This service does not provide separate security measures for personal information entered by customers, so refrain from entering and storing any information that contains personal information.
+
 In the settings tables, the Required column indicates the following:
 
 - `O`: Required entry
@@ -790,7 +794,7 @@ The required settings for each chart visualization type are as follows:
 | Chart Visualization Type | Required Settings |
 | --- | --- |
 | Line, Bar | X-axis (time axis), Aggregation Interval, at least one Column |
-| Pie | At least one Column, at least one Group Key |
+| Pie | Base time column, at least one column, at least one group key |
 | Scatter | At least one Column |
 
 When a sort is specified for a Bar chart, the top N categories are displayed instead of the time axis.
