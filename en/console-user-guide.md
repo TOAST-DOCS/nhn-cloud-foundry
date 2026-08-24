@@ -7,10 +7,6 @@
 
 This document describes how to manage data sources, pipelines, analytics (queries, charts, and dashboards), and apps in the NHN Cloud Foundry console.
 
-!!! danger "Caution"
-    When using this service, do not enter any information that contains personal information.
-    This service does not provide separate security measures for personal information entered by customers, so refrain from entering and storing any information that contains personal information.
-
 In the settings tables, the Required column indicates the following:
 
 - `O`: Required entry
@@ -61,6 +57,10 @@ After activation, the Status tab displays the following information:
 Console path: **Machine Learning > NHN Cloud Foundry > Data Source** tab
 
 A data source is the unit that stores data for analysis in NHN Cloud Foundry. You can create, view, and delete data sources in the console.
+
+!!! danger "Caution"
+    When using this service, make sure not to enter information that contains personal data.
+    This service does not provide separate security measures for personal data entered by customers. Refrain from entering and storing information that contains personal data.
 
 <a id="datasource.list"></a>
 ### Data Source List { #datasource.list }
