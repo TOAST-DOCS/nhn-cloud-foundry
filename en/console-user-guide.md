@@ -8,8 +8,8 @@
 This document describes how to manage data sources, pipelines, analytics (queries, charts, and dashboards), and apps in the NHN Cloud Foundry console.
 
 !!! danger "Caution"
-    본 서비스 이용 시 개인정보가 포함된 정보를 입력하지 않도록 유의하여 주시기 바랍니다.
-    본 서비스는 고객이 입력하는 개인정보에 대한 별도의 안전성 확보조치를 제공하지 않으므로, 개인정보가 포함된 정보의 입력 및 저장을 권장하지 않습니다.
+    Do not enter information that includes personal data when using this service.
+    This service does not provide separate security measures for personal data entered by customers. We recommend that you do not enter or store information that includes personal data.
 
 In the settings tables, the Required column indicates the following:
 
