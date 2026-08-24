@@ -8,10 +8,6 @@
 NHN Cloud Foundry is a service that integrates customer data and uses machine learning models (such as recommendation, time-series forecasting/anomaly detection, and structured data classification/numerical prediction) to support effective decision-making.
 You can load data, process it through a visual workflow, and then analyze it using queries, charts, and dashboards, or create an app connected to a recommendation model to use recommendation results in your service.
 
-!!! danger "Caution"
-    Do not enter any information that contains personal data when using this service.
-    This service does not provide separate security measures for personal data entered by customers. Refrain from entering or storing any information that contains personal data.
-
 <a id="main.feature"></a>
 ## Main features { #main.feature }
 
@@ -31,6 +27,10 @@ When you create a data source by defining a schema, the data is loaded into a ta
 Data sources are created in the console, and you can upload data at the same time.
 To add or update data in an existing data source, use the Ingest API.
 Two methods are provided: snapshot upload, which replaces all data, and event method, which adds new data while retaining existing data.
+
+!!! danger "Caution"
+    Do not enter information that contains personal data when using this service.
+    This service does not provide separate security measures for personal data entered by customers, so refrain from entering or storing information that contains personal data.
 
 <a id="pipeline"></a>
 ## Pipeline { #pipeline }
