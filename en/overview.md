@@ -9,8 +9,8 @@ NHN Cloud Foundry is a service that integrates customer data and uses machine le
 You can load data, process it through a visual workflow, and then analyze it using queries, charts, and dashboards, or create an app connected to a recommendation model to use recommendation results in your service.
 
 !!! danger "Caution"
-    본 서비스 이용 시 개인정보가 포함된 정보를 입력하지 않도록 유의하여 주시기 바랍니다.
-    본 서비스는 고객이 입력하는 개인정보에 대한 별도의 안전성 확보조치를 제공하지 않으므로, 개인정보가 포함된 정보의 입력 및 저장을 권장하지 않습니다.
+    본 서비스 이용 시 개인정보가 포함된 정보를 입력하지 않도록 유의하세요.
+    본 서비스는 고객이 입력하는 개인정보에 대한 별도의 안전성 확보조치를 제공하지 않으므로, 개인정보가 포함된 정보의 입력과 저장을 삼가 주세요.
 
 <a id="main.feature"></a>
 ## Main features { #main.feature }
