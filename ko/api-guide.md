@@ -411,10 +411,50 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 <a id="event.ingest.api"></a>
 ### 이벤트 수집 { #event.ingest.api }
 
-기존 데이터를 유지한 채 변경 이벤트를 전송합니다. 타입이 파일인 데이터 소스에서 사용하며, 콘솔에서 **Event API**를 먼저 활성화해야 합니다.
+기존 데이터를 유지한 채 변경 이벤트를 전송합니다. 타입이 파일인 데이터 소스에서 사용하며, **Event API**를 먼저 활성화해야 합니다. 활성화는 콘솔의 이벤트 설정 탭 또는 아래 활성화 API로 합니다.
 
 !!! danger "주의"
     Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 또한 활성화 상태에서는 데이터 소스 스키마 변경(카탈로그 필드 추가)이 제한되므로, 필드를 추가하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](../console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
+
+<a id="event.ingest.api.enable"></a>
+#### Event API 활성화·비활성화 { #event.ingest.api.enable }
+
+| 메서드 | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/enable |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/disable |
+
+curl 예시:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/events/enable" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
+```
+
+응답 예시:
+
+```json
+{
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 0,
+    "resultMessage": "SUCCESS"
+  },
+  "body": {
+    "enabled": false,
+    "status": "ENABLING"
+  }
+}
+```
+
+| 필드 | 설명 |
+| --- | --- |
+| body.enabled | 이벤트 수집 가능 여부 |
+| body.status | 활성화 상태. DISABLED, ENABLING, ENABLED, ENABLE_FAILED |
+
+- 활성화는 비동기로 진행됩니다. 요청 직후 응답은 `enabled`가 false, `status`가 ENABLING이며, ENABLED가 된 뒤부터 이벤트를 수집합니다.
+- 활성화가 진행 중일 때 다시 활성화를 요청하면 거절됩니다. 진행 상황은 콘솔의 이벤트 설정 탭에서 확인할 수 있습니다.
 
 <a id="event.ingest.api.send"></a>
 #### 이벤트 단건 전송 { #event.ingest.api.send }

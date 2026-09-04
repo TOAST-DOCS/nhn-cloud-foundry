@@ -277,6 +277,7 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
     스냅샷 업로드 후 Event API를 다시 활성화하면 이벤트 수집 위치가 최신 오프셋으로 초기화됩니다.
 
 이벤트를 전송하는 방법은 [API 가이드](../api-guide/#event.ingest.api)의 '이벤트 수집'을 참고합니다.
+활성화와 비활성화는 [API 가이드](../api-guide/#event.ingest.api.enable)의 'Event API 활성화·비활성화'로도 할 수 있습니다.
 
 <a id="datasource.detail.ingest"></a>
 #### 수집 방법 { #datasource.detail.ingest }
