@@ -1434,7 +1434,6 @@ impressionsは最大10件、interactionsとfeedbackはタイプ別に最大10件
     学習周期変更モーダルで周期を変更せずに保存すると、「適用する変更はありません。」という案内が表示されます。
 
 <a id="app.detail.training.history"></a>
-
 ##### 学習成果物履歴 { #app.detail.training.history }
 
 一覧で学習モデルを選択すると、そのモデルの学習成果物履歴が表示されます。
