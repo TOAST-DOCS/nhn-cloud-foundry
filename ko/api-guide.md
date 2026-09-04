@@ -7,7 +7,7 @@ NHN Cloud Foundry가 제공하는 API를 설명합니다.
 
 | API | 설명 |
 | --- | --- |
-| Ingest API | 이미 만든 데이터 소스에 데이터 수집. 스냅샷 파일 업로드 제공 |
+| Ingest API | 이미 만든 데이터 소스에 데이터 수집. 스냅샷 파일 업로드, 이벤트 수집, 지표 수집 제공 |
 | 추천 조회 API | 생성한 추천 시스템 앱에 추천 결과 요청 |
 | 추천 이벤트 API | 추천 결과에 사용자가 보인 반응 이벤트 수집 |
 
@@ -66,11 +66,16 @@ https://{gateway-public-host}/api/v1.0
 <a id="ingest.api"></a>
 ## Ingest API { #ingest.api }
 
-Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재하는 API입니다.
-업로드한 파일로 데이터 소스의 데이터를 전부 교체하는 스냅샷 업로드 방식을 제공합니다.
+Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재하는 API입니다. 데이터 소스 타입에 따라 다음 방식을 제공합니다.
+
+| 방식 | 대상 데이터 소스 | 설명 |
+| --- | --- | --- |
+| 스냅샷 업로드 | 파일 | 업로드한 파일로 데이터를 전부 교체 |
+| 이벤트 수집 | 파일 | 기존 데이터를 유지한 채 변경 이벤트를 건별로 추가 |
+| 지표 수집 | Prometheus API | 지표(시계열) 데이터를 실시간으로 전송 |
 
 !!! danger "주의"
-    데이터 소스를 새로 만드는 API는 제공하지 않습니다. Ingest API를 사용하려면 콘솔에서 데이터 소스를 먼저 생성해야 하며, FILE 타입 데이터 소스만 사용할 수 있습니다.
+    데이터 소스를 새로 만드는 API는 제공하지 않습니다. Ingest API를 사용하려면 콘솔에서 데이터 소스를 먼저 생성해야 합니다.
 
 <a id="ingest.snapshot"></a>
 ### 스냅샷 업로드(파일 업로드) { #ingest.snapshot }
@@ -403,6 +408,201 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 | COMPLETED | 작업 정상 완료 |
 | FAILED | 작업 실패 |
 
+<a id="event.ingest.api"></a>
+### 이벤트 수집 { #event.ingest.api }
+
+기존 데이터를 유지한 채 변경 이벤트를 전송합니다. 타입이 파일인 데이터 소스에서 사용하며, **Event API**를 먼저 활성화해야 합니다. 활성화는 콘솔의 이벤트 설정 탭 또는 아래 활성화 API로 합니다.
+
+!!! danger "주의"
+    Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 또한 활성화 상태에서는 데이터 소스 스키마 변경(카탈로그 필드 추가)이 제한되므로, 필드를 추가하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](../console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
+
+<a id="event.ingest.api.enable"></a>
+#### Event API 활성화·비활성화 { #event.ingest.api.enable }
+
+| 메서드 | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/enable |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/disable |
+
+curl 예시:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/events/enable" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
+```
+
+응답 예시:
+
+```json
+{
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 0,
+    "resultMessage": "SUCCESS"
+  },
+  "body": {
+    "enabled": false,
+    "status": "ENABLING"
+  }
+}
+```
+
+| 필드 | 설명 |
+| --- | --- |
+| body.enabled | 이벤트 수집 가능 여부 |
+| body.status | 활성화 상태. DISABLED, ENABLING, ENABLED, ENABLE_FAILED |
+
+- 활성화는 비동기로 진행됩니다. 요청 직후 응답은 `enabled`가 false, `status`가 ENABLING이며, ENABLED가 된 뒤부터 이벤트를 수집합니다.
+- 활성화가 진행 중일 때 다시 활성화를 요청하면 거절됩니다. 진행 상황은 콘솔의 이벤트 설정 탭에서 확인할 수 있습니다.
+
+<a id="event.ingest.api.send"></a>
+#### 이벤트 단건 전송 { #event.ingest.api.send }
+
+| 메서드 | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events |
+
+curl 예시:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/events" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "operation": "INSERT",
+    "data": {
+      "userId": "user-12345",
+      "courseId": "course-java-101",
+      "action": "enroll",
+      "rating": 4.5
+    },
+    "eventTimestamp": "2026-08-25T10:30:00Z"
+  }'
+```
+
+| 필드 | 타입 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| operation | String | O | 작업 타입. INSERT, UPDATE, DELETE 중 하나 |
+| data | Object | O | 이벤트 데이터. 데이터 소스 스키마의 필드 이름을 키로 사용 |
+| eventTimestamp | String | X | 이벤트 발생 시각. 생략 시 서버 수신 시각 사용 |
+
+응답 예시:
+
+```json
+{
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 0,
+    "resultMessage": "SUCCESS"
+  },
+  "body": {
+    "eventId": "evt-550e8400-e29b-41d4-a716-446655440000",
+    "success": true,
+    "errorMessage": null
+  }
+}
+```
+
+| 필드 | 설명 |
+| --- | --- |
+| body.eventId | 이벤트 ID |
+| body.success | 처리 성공 여부 |
+| body.errorMessage | 실패 시 오류 메시지 |
+
+<a id="event.ingest.api.batch"></a>
+#### 이벤트 다건 전송 { #event.ingest.api.batch }
+
+| 메서드 | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/batch |
+
+여러 건의 변경 이벤트를 한 번에 전송합니다. 1회 요청당 최대 5,000건까지 전송할 수 있습니다.
+
+curl 예시:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/events/batch" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "events": [
+      {
+        "operation": "INSERT",
+        "data": { "hostname": "server-01", "portName": "eth0", "trafficIn": 1024.5 },
+        "eventTimestamp": "2026-08-25T10:30:00Z"
+      },
+      {
+        "operation": "UPDATE",
+        "data": { "hostname": "server-01", "portName": "eth1", "trafficIn": 2048.7 }
+      }
+    ]
+  }'
+```
+
+| 필드 | 타입 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| events | Array | O | 이벤트 목록. 1회 요청당 최대 5,000건이며 각 항목의 필드는 단건 전송과 동일 |
+
+응답의 `body`는 이벤트별 처리 결과 배열입니다.
+
+<a id="metrics.ingest.api"></a>
+### 지표 수집 { #metrics.ingest.api }
+
+타입이 Prometheus API인 데이터 소스로 지표 데이터를 전송합니다. 전송한 지표는 단변량 이상 탐지 앱의 입력으로 사용합니다.
+
+| 메서드 | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/metrics |
+
+curl 예시:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/metrics" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "metrics": [
+      {
+        "timestamp": 1776149886528,
+        "value": 4.99,
+        "labels": [
+          { "name": "__name__", "value": "cpu_usage" },
+          { "name": "instance_id", "value": "instance-001" }
+        ],
+        "metadata": { "resourceType": "Instance" }
+      }
+    ]
+  }'
+```
+
+| 필드 | 타입 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| metrics | Array | O | 지표 목록. 비어 있을 수 없으며 1회 요청당 최대 5,000건 |
+| metrics[].timestamp | Long | O | 메트릭 시각. 밀리초 epoch |
+| metrics[].value | Double | O | 측정값 |
+| metrics[].labels | Array | O | 라벨 목록. 라벨 조합이 시계열을, 그룹 라벨이 그룹을 결정 |
+| metrics[].labels[].name | String | O | 라벨 이름. 영문자 또는 _로 시작하고 영문자, 숫자, _만 사용 |
+| metrics[].labels[].value | String | O | 라벨 값. 쉼표와 등호는 사용 불가 |
+| metrics[].metadata | Object | X | 부가 정보. 해석하지 않고 그대로 저장·전달. identityKey 키는 시스템이 사용하므로 사용 불가 |
+
+성공하면 HTTP `202 Accepted`를 반환합니다.
+
+수집 규칙은 다음과 같습니다.
+
+- 한 요청에 여러 시계열의 지표를 함께 담을 수 있습니다. 시계열은 라벨 조합으로 구분되므로 시계열마다 요청을 나눌 필요가 없습니다.
+- `timestamp`는 밀리초 단위 epoch입니다. 초 단위로 보내면 잘못된 시각으로 저장됩니다.
+- 데이터 소스에 그룹 라벨을 지정했다면 항상 그 라벨을 포함해 전송합니다. 라벨이 빠지면 의도한 그룹에 속하지 않습니다.
+- `value`가 NaN 또는 Infinity인 항목은 저장하지 않고 건너뜁니다. 같은 요청의 나머지 항목은 정상 처리됩니다.
+- `202` 응답은 수신 완료를 뜻합니다. 저장은 잠시 뒤 반영되며, 같은 요청을 다시 보내면 같은 데이터가 중복 저장될 수 있습니다.
+- 전송이 지연된 데이터는 저장되지만 실시간 추론 대상에서 제외될 수 있습니다.
+
+!!! tip "알아두기"
+    적재는 전송 주기와 무관합니다. 다만 이 데이터 소스를 단변량 이상 탐지 앱에 연결했다면 같은 시계열을 1분 간격 이하로 끊김 없이 보내야 합니다. 앱이 지표를 1분 단위로 묶어 판정하므로, 그보다 긴 간격으로 보내면 빈 구간이 생겨 정확 모드에서 준비가 끝나지 않을 수 있습니다.
+
 <a id="recommendation.api"></a>
 ## 추천 조회 API { #recommendation.api }
 
@@ -444,11 +644,66 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | context.availableItems | Array | X | 추천 대상 아이템 키 목록. 지정하면 이 목록에 포함된 아이템 중에서만 추천 |
 | context.pageType | String | X | 현재 페이지 유형(자유 형식. 예: home, item_detail) |
 | context.sessionId | String | X | 세션 ID |
+| context.impressions | Array | X | 사용자에게 추천 결과로 노출된 아이템 목록 |
+| context.interactions | Array | X | 사용자가 아이템에 대해 수행한 행동 정보 |
+| context.feedback | Array | X | 사용자가 아이템에 남긴 평가 |
 | userAttributes | Object | X | 사용자 속성 정보(Cold Start 추론에 사용) |
 | options.maxRecommendations | Integer | X | 최대 추천 수(1~100). 100을 초과하는 값은 오류 없이 100으로 조정, 미지정 시 100 적용. 추천 가능한 아이템이 이 값보다 적으면 실제 아이템 수만큼만 반환 |
 | options.mode | String | X | 추론 방식 지정. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) 중 하나. 미지정 시 서버가 자동 결정 |
 | options.longtail | Boolean | X | 인기가 낮은 항목까지 포함해 추천 다양성 향상. sequential일 때만 적용 |
 | options.excludeItemKeys | Array | X | 추천에서 제외할 아이템 키 목록. 제외한 아이템은 최대 추천 수에 미포함 |
+
+<a id="recommendation.api.signal"></a>
+#### 행동 신호 { #recommendation.api.signal }
+
+`context.impressions`은 사용자에게 노출된 추천 정보를 바탕으로 추천 결과를 재정렬하는 데 사용됩니다.
+`context.interactions`, `context.feedback`은 사용자가 추천 결과에 보인 행위를 전달하는 필드로, 사용자 행위 기반 데이터를 모델 추론에 반영합니다.
+
+```json
+{
+  "userId": "user_12345",
+  "context": {
+    "impressions": [
+      {
+        "requestId": "req_xyz789",
+        "itemKeys": ["CONT0023", "CONT0045"],
+        "occurredAt": "2026-08-25T10:00:00+09:00"
+      }
+    ],
+    "interactions": [
+      {
+        "requestId": "req_xyz789",
+        "itemKey": "CONT0023",
+        "type": "CLICK",
+        "occurredAt": "2026-08-25T10:00:05+09:00"
+      }
+    ],
+    "feedback": [
+      {
+        "requestId": "req_xyz789",
+        "itemKey": "CONT0045",
+        "type": "NEGATIVE",
+        "occurredAt": "2026-08-25T10:00:10+09:00"
+      }
+    ]
+  }
+}
+```
+
+| 필드 | 타입 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| requestId | String | O | 해당 행동이 일어난 추천 응답의 body.metadata.requestId |
+| itemKeys | Array | O | 노출한 아이템 키 목록. 노출 순서대로 입력하며 impressions에서 사용 |
+| itemKey | String | O | 대상 아이템 키. interactions, feedback에서 사용 |
+| type | String | O | interactions는 CLICK, CONVERSION. feedback은 POSITIVE, NEGATIVE |
+| occurredAt | String | O | 행동이 일어난 시각 |
+
+- `occurredAt`은 시간대 오프셋을 포함한 ISO 8601 형식으로 보냅니다. 오프셋이 없으면 오류로 처리됩니다.
+- 세 필드 모두 `requestId`, `occurredAt`, 아이템 키가 모두 있어야 신호로 사용됩니다.
+- 각 필드는 오래된 것부터 최신 순서로 전달합니다.
+- `impressions`는 최대 10건이고 1건당 `itemKeys`는 최대 100개입니다. `interactions`와 `feedback`은 `type`별로 최대 10건입니다. 상한을 초과하면 요청이 거절됩니다.
+- 행동 신호는 이번 추천 요청의 추론 입력으로만 사용하고 저장하지 않습니다. 같은 아이템의 `feedback`이 바뀌면 가장 최근 값만 반영되므로, 효과를 유지하려면 매 요청 다시 전송합니다.
+- 반응 이벤트를 저장해 분석에 활용하려면 [추천 이벤트 API](#recommendation.event.api)를 함께 사용합니다.
 
 !!! tip "알아두기"
     `userAttributes` 스키마는 향후 선호도 유도(Preference Elicitation) 구현 방향에 따라 수집 방식이나 필드 종류가 변경될 수 있습니다.
