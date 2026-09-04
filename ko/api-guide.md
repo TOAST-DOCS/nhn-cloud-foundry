@@ -414,7 +414,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 기존 데이터를 유지한 채 변경 이벤트를 전송합니다. 타입이 파일인 데이터 소스에서 사용하며, 콘솔에서 **Event API**를 먼저 활성화해야 합니다.
 
 !!! danger "주의"
-    Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](../console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
+    Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 또한 활성화 상태에서는 데이터 소스 스키마 변경(카탈로그 필드 추가)이 제한되므로, 필드를 추가하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](../console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
 
 <a id="event.ingest.api.send"></a>
 #### 이벤트 단건 전송 { #event.ingest.api.send }
