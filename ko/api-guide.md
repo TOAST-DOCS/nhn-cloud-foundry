@@ -587,7 +587,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | metrics[].labels | Array | O | 라벨 목록. 라벨 조합이 시계열을, 그룹 라벨이 그룹을 결정 |
 | metrics[].labels[].name | String | O | 라벨 이름. 영문자 또는 _로 시작하고 영문자, 숫자, _만 사용 |
 | metrics[].labels[].value | String | O | 라벨 값. 쉼표와 등호는 사용 불가 |
-| metrics[].metadata | Object | X | 부가 정보. 해석하지 않고 그대로 저장·전달. `identityKey` 키는 시스템이 사용하므로 사용 불가 |
+| metrics[].metadata | Object | X | 부가 정보. 해석하지 않고 그대로 저장·전달. identityKey 키는 시스템이 사용하므로 사용 불가 |
 
 성공하면 HTTP `202 Accepted`를 반환합니다.
 
@@ -692,7 +692,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| requestId | String | O | 해당 행동이 일어난 추천 응답의 `body.metadata.requestId` |
+| requestId | String | O | 해당 행동이 일어난 추천 응답의 body.metadata.requestId |
 | itemKeys | Array | O | 노출한 아이템 키 목록. 노출 순서대로 입력하며 impressions에서 사용 |
 | itemKey | String | O | 대상 아이템 키. interactions, feedback에서 사용 |
 | type | String | O | interactions는 CLICK, CONVERSION. feedback은 POSITIVE, NEGATIVE |
