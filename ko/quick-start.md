@@ -248,6 +248,9 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
     ![단변량 이상 탐지 앱 정보](../static/images/quick-start/이상탐지앱정보.png){ height="70%" }
 
 2. **그룹 목록** 탭에서 그룹 상태를 확인합니다. 그룹은 지표가 들어온 뒤에 등록되므로 앱을 만든 직후에는 목록이 비어 있습니다. 활성화 대기 중은 판정에 사용할 데이터를 모으는 중이고, 활성화가 되면 탐지 결과가 전송됩니다.
+
+    ![그룹 목록](../static/images/quick-start/이상탐지그룹목록.png){ height="70%" }
+
 3. 탐지 결과인 이상 점수와 임계값은 지정한 Prometheus로 전송되며, 결과 데이터 소스에도 저장됩니다. 저장된 결과는 **분석** 탭의 쿼리나 차트로 조회합니다.
 
 각 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.detail.univariate)의 '단변량 이상 탐지 앱 상세'를 참고합니다.
