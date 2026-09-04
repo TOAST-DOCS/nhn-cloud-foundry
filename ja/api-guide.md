@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=876ecae2be90 -->
+<!-- pre-align:aligned sig=403401ac9ba3 -->
 
 <a id="foundry.api.guide"></a>
 ## Machine Learning > NHN Cloud Foundry > API ガイド { #foundry.api.guide }
@@ -9,7 +9,7 @@ NHN Cloud Foundry が提供する API について説明します。
 
 | API | 説明 |
 | --- | --- |
-| Ingest API | 作成済みのデータソースへのデータ取り込み。スナップショットファイルのアップロードを提供 |
+| Ingest API | 作成済みのデータソースへのデータ収集。スナップショットファイルのアップロード、イベント収集、指標収集を提供 |
 | レコメンデーション照会 API | 作成したレコメンデーションシステムアプリへの推薦結果のリクエスト |
 | レコメンデーションイベント API | 推薦結果に対するユーザーの反応イベントの収集 |
 
@@ -68,11 +68,16 @@ https://{gateway-public-host}/api/v1.0
 <a id="ingest.api"></a>
 ## Ingest API { #ingest.api }
 
-Ingest API は、コンソールで作成済みのデータソースにデータを取り込むための API です。
-アップロードしたファイルでデータソースのデータをすべて置き換えるスナップショットアップロード方式を提供します。
+Ingest APIは、コンソールで作成済みのデータソースにデータを積載するAPIです。データソースのタイプに応じて、次の方式を提供します。
+
+| 方式 | 対象データソース | 説明 |
+| --- | --- | --- |
+| スナップショットのアップロード | ファイル | アップロードしたファイルでデータをすべて置き換え |
+| イベント収集 | ファイル | 既存のデータを維持したまま、変更イベントを1件ずつ追加 |
+| 指標収集 | Prometheus API | 指標(時系列)データをリアルタイムで転送 |
 
 !!! danger "注意"
-    データソースを新規に作成する API は提供していません。Ingest API を使用するには、コンソールであらかじめデータソースを作成する必要があります。また、FILE タイプのデータソースのみ使用できます。
+    データソースを新規作成する API は提供していません。Ingest API を使用するには、コンソールでデータソースを先に作成する必要があります。
 
 <a id="ingest.snapshot"></a>
 ### スナップショットアップロード（ファイルアップロード） { #ingest.snapshot }
@@ -405,6 +410,201 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 | COMPLETED | ジョブ正常完了 |
 | FAILED | ジョブ失敗 |
 
+<a id="event.ingest.api"></a>
+### イベント収集 { #event.ingest.api }
+
+既存のデータを維持したまま変更イベントを送信します。タイプがファイルのデータソースで使用し、**Event API** を先に有効化する必要があります。有効化はコンソールのイベント設定タブまたは以下の有効化 API で行います。
+
+!!! danger "注意"
+    Event API を有効化すると、スナップショットのアップロードが遮断されます。また、アクティブ状態ではデータソーススキーマの変更（カタログフィールドの追加）が制限されるため、フィールドを追加するには Event API を先に無効化する必要があります。有効化・無効化の方法については、[コンソールユーザーガイド](../console-user-guide/#datasource.detail.event)の「イベント設定」を参照してください。
+
+<a id="event.ingest.api.enable"></a>
+#### Event API 有効化・無効化 { #event.ingest.api.enable }
+
+| メソッド | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/enable |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/disable |
+
+curl 例:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/events/enable" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
+```
+
+レスポンス例:
+
+```json
+{
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 0,
+    "resultMessage": "SUCCESS"
+  },
+  "body": {
+    "enabled": false,
+    "status": "ENABLING"
+  }
+}
+```
+
+| フィールド | 説明 |
+| --- | --- |
+| body.enabled | イベント収集可否 |
+| body.status | 有効化状態。DISABLED、ENABLING、ENABLED、ENABLE_FAILED |
+
+- 有効化は非同期で処理されます。リクエスト直後のレスポンスでは `enabled` が false、`status` が ENABLING となり、ENABLED になった後からイベントを収集します。
+- 有効化が進行中に再度有効化をリクエストすると、リクエストは拒否されます。進行状況はコンソールのイベント設定タブで確認できます。
+
+<a id="event.ingest.api.send"></a>
+#### イベント単件送信 { #event.ingest.api.send }
+
+| メソッド | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events |
+
+curl 例:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/events" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "operation": "INSERT",
+    "data": {
+      "userId": "user-12345",
+      "courseId": "course-java-101",
+      "action": "enroll",
+      "rating": 4.5
+    },
+    "eventTimestamp": "2026-08-25T10:30:00Z"
+  }'
+```
+
+| フィールド | タイプ | 必須 | 説明 |
+| --- | --- | --- | --- |
+| operation | String | O | 作業タイプ。INSERT、UPDATE、DELETE のいずれか |
+| data | Object | O | イベントデータ。データソーススキーマのフィールド名をキーとして使用 |
+| eventTimestamp | String | X | イベント発生日時。省略時はサーバー受信日時を使用 |
+
+レスポンス例:
+
+```json
+{
+  "header": {
+    "isSuccessful": true,
+    "resultCode": 0,
+    "resultMessage": "SUCCESS"
+  },
+  "body": {
+    "eventId": "evt-550e8400-e29b-41d4-a716-446655440000",
+    "success": true,
+    "errorMessage": null
+  }
+}
+```
+
+| フィールド | 説明 |
+| --- | --- |
+| body.eventId | イベントID |
+| body.success | 処理成否 |
+| body.errorMessage | 失敗時のエラーメッセージ |
+
+<a id="event.ingest.api.batch"></a>
+#### 複数イベントの一括送信 { #event.ingest.api.batch }
+
+| メソッド | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/events/batch |
+
+複数の変更イベントを一度に送信します。1回のリクエストにつき最大 5,000 件まで送信できます。
+
+curl 例:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/events/batch" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "events": [
+      {
+        "operation": "INSERT",
+        "data": { "hostname": "server-01", "portName": "eth0", "trafficIn": 1024.5 },
+        "eventTimestamp": "2026-08-25T10:30:00Z"
+      },
+      {
+        "operation": "UPDATE",
+        "data": { "hostname": "server-01", "portName": "eth1", "trafficIn": 2048.7 }
+      }
+    ]
+  }'
+```
+
+| フィールド | タイプ | 必須 | 説明 |
+| --- | --- | --- | --- |
+| events | Array | O | イベント一覧。1回のリクエストにつき最大 5,000 件で、各項目のフィールドは単件送信と同じ |
+
+レスポンスの `body` はイベントごとの処理結果の配列です。
+
+<a id="metrics.ingest.api"></a>
+### 指標収集 { #metrics.ingest.api }
+
+タイプが Prometheus API のデータソースに指標データを転送します。転送した指標は、単変量異常検知アプリの入力として使用します。
+
+| メソッド | URI |
+| --- | --- |
+| POST | /api/v1.0/data-sources/{dataSourceId}/ingest/metrics |
+
+curl の例:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/metrics" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "metrics": [
+      {
+        "timestamp": 1776149886528,
+        "value": 4.99,
+        "labels": [
+          { "name": "__name__", "value": "cpu_usage" },
+          { "name": "instance_id", "value": "instance-001" }
+        ],
+        "metadata": { "resourceType": "Instance" }
+      }
+    ]
+  }'
+```
+
+| フィールド | タイプ | 必須 | 説明 |
+| --- | --- | --- | --- |
+| metrics | Array | O | 指標リスト。空にはできず、1 回のリクエストあたり最大 5,000 件 |
+| metrics[].timestamp | Long | O | メトリクスのタイムスタンプ。ミリ秒 epoch |
+| metrics[].value | Double | O | 測定値 |
+| metrics[].labels | Array | O | ラベルリスト。ラベルの組み合わせが時系列を、グループラベルがグループを決定 |
+| metrics[].labels[].name | String | O | ラベル名。英字または _ で始まり、英字・数字・_ のみ使用可 |
+| metrics[].labels[].value | String | O | ラベル値。カンマと等号は使用不可 |
+| metrics[].metadata | Object | X | 付加情報。解釈せずそのまま保存・転送。identityKey キーはシステムが使用するため使用不可 |
+
+成功すると HTTP `202 Accepted` を返します。
+
+収集ルールは次のとおりです。
+
+- 1 回のリクエストに複数の時系列の指標をまとめて含めることができます。時系列はラベルの組み合わせで区別されるため、時系列ごとにリクエストを分ける必要はありません。
+- `timestamp` はミリ秒単位の epoch です。秒単位で送信すると、誤ったタイムスタンプで保存されます。
+- データソースにグループラベルを指定している場合は、常にそのラベルを含めて転送します。ラベルが欠けると、意図したグループに属しません。
+- `value` が NaN または Infinity の項目は保存せずにスキップします。同じリクエストの残りの項目は正常に処理されます。
+- `202` レスポンスは受信完了を意味します。保存はしばらくして反映され、同じリクエストを再度送信すると同じデータが重複して保存される場合があります。
+- 遅延して転送されたデータは保存されますが、リアルタイム推論の対象から除外される場合があります。
+
+!!! tip "ヒント"
+    積載は転送周期に依存しません。ただし、このデータソースを単変量異常検知アプリに接続している場合は、同じ時系列を 1 分間隔以下で途切れなく送信する必要があります。アプリが指標を 1 分単位にまとめて判定するため、それより長い間隔で送信すると空白区間が生じ、精確モードで準備が完了しない場合があります。
+
 <a id="recommendation.api"></a>
 ## レコメンデーション照会 API { #recommendation.api }
 
@@ -446,14 +646,69 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | context.availableItems | Array | X | レコメンデーション対象のアイテムキーのリスト。指定した場合、このリストに含まれるアイテムの中からのみレコメンデーションします。 |
 | context.pageType | String | X | 現在のページタイプ (自由形式。例: home、item_detail) |
 | context.sessionId | String | X | セッションID |
+| context.impressions | Array | X | ユーザーに推薦結果として表示されたアイテムのリスト |
+| context.interactions | Array | X | ユーザーがアイテムに対して行ったアクションの情報 |
+| context.feedback | Array | X | ユーザーがアイテムに付けた評価 |
 | userAttributes | Object | X | ユーザー属性情報 (Cold Start 推論に使用) |
 | options.maxRecommendations | Integer | X | 最大レコメンデーション数 (1〜100)。100を超える値はエラーなく100に調整されます。未指定の場合は100が適用されます。レコメンデーション可能なアイテムがこの値より少ない場合は、実際のアイテム数のみ返します。 |
 | options.mode | String | X | 推論方式を指定します。sequential (履歴ベース)、cold_start (属性ベース)、popular (人気ベース) のいずれか。未指定の場合はサーバーが自動で決定します。 |
 | options.longtail | Boolean | X | 人気の低いアイテムも含めてレコメンデーションの多様性を向上させます。sequential の場合のみ適用されます。 |
 | options.excludeItemKeys | Array | X | レコメンデーションから除外するアイテムキーのリスト。除外したアイテムは最大レコメンデーション数に含まれません。 |
 
+<a id="recommendation.api.signal"></a>
+#### 行動シグナル { #recommendation.api.signal }
+
+`context.impressions` は、ユーザーに表示された推薦情報をもとに推薦結果を再順位付けするために使用されます。
+`context.interactions`、`context.feedback` は、ユーザーが推薦結果に対して示した行動を渡すフィールドで、ユーザー行動ベースのデータをモデル推論に反映します。
+
+```json
+{
+  "userId": "user_12345",
+  "context": {
+    "impressions": [
+      {
+        "requestId": "req_xyz789",
+        "itemKeys": ["CONT0023", "CONT0045"],
+        "occurredAt": "2026-08-25T10:00:00+09:00"
+      }
+    ],
+    "interactions": [
+      {
+        "requestId": "req_xyz789",
+        "itemKey": "CONT0023",
+        "type": "CLICK",
+        "occurredAt": "2026-08-25T10:00:05+09:00"
+      }
+    ],
+    "feedback": [
+      {
+        "requestId": "req_xyz789",
+        "itemKey": "CONT0045",
+        "type": "NEGATIVE",
+        "occurredAt": "2026-08-25T10:00:10+09:00"
+      }
+    ]
+  }
+}
+```
+
+| フィールド | タイプ | 必須 | 説明 |
+| --- | --- | --- | --- |
+| requestId | String | O | 該当の行動が発生した推薦レスポンスの body.metadata.requestId |
+| itemKeys | Array | O | 表示したアイテムキーのリスト。表示順に入力し、impressions で使用 |
+| itemKey | String | O | 対象アイテムキー。interactions、feedback で使用 |
+| type | String | O | interactions は CLICK、CONVERSION。feedback は POSITIVE、NEGATIVE |
+| occurredAt | String | O | 行動が発生した日時 |
+
+- `occurredAt` はタイムゾーンオフセットを含む ISO 8601 形式で送信します。オフセットがない場合はエラーとして処理されます。
+- 3 つのフィールドはいずれも `requestId`、`occurredAt`、アイテムキーがすべて揃っている場合にのみシグナルとして使用されます。
+- 各フィールドは古いものから新しい順に渡します。
+- `impressions` は最大 10 件で、1 件あたりの `itemKeys` は最大 100 個です。`interactions` と `feedback` は `type` ごとに最大 10 件です。上限を超えるとリクエストが拒否されます。
+- 行動シグナルは今回の推薦リクエストの推論入力としてのみ使用し、保存しません。同じアイテムの `feedback` が変わった場合は最新の値のみ反映されるため、効果を維持するにはリクエストのたびに再送信します。
+- 反応イベントを保存して分析に活用するには、[推薦イベント API](#recommendation.event.api) を併用します。
+
 !!! tip "ヒント"
-    `userAttributes` スキーマは、今後の選好度誘導 (Preference Elicitation) の実装方向に応じて、収集方式やフィールドの種類が変更される可能性があります。
+    `userAttributes` スキーマは、今後の選好誘導（Preference Elicitation）の実装方針によって、収集方式やフィールドの種類が変更される場合があります。
 
 レスポンス例:
 
@@ -482,14 +737,14 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 
 | フィールド | 説明 |
 | --- | --- |
-| body.userId | リクエストしたユーザーID |
-| body.recommendations[].itemKey | レコメンデーションアイテムキー |
-| body.recommendations[].score | レコメンデーションスコア (0.0〜1.0) |
-| body.recommendations[].position | レコメンデーション順位 |
+| body.userId | リクエストしたユーザー ID |
+| body.recommendations[].itemKey | 推薦アイテムキー |
+| body.recommendations[].score | 推薦スコア（0.0〜1.0） |
+| body.recommendations[].position | 推薦順位 |
 | body.metadata.modelVersion | 使用されたモデルバージョン |
-| body.metadata.requestId | リクエスト追跡ID。レコメンデーションイベントAPI送信時にこの値を使用します。 |
-| body.metadata.inferenceType | 推論タイプ。sequential (履歴ベース)、cold_start (属性ベース)、popular (人気ベース) |
-| body.metadata.abTestGroup | A/B テストグループ (現在は空の値を返します) |
+| body.metadata.requestId | リクエスト追跡 ID。推薦イベント API 送信時にこの値を使用 |
+| body.metadata.inferenceType | 推論タイプ。sequential（履歴ベース）、cold_start（属性ベース）、popular（人気ベース） |
+| body.metadata.abTestGroup | A/B テストグループ（現在は空の値を返す） |
 
 <a id="recommendation.event.api"></a>
 ## 推薦イベント API { #recommendation.event.api }

@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=876ecae2be90 -->
+<!-- pre-align:aligned sig=403401ac9ba3 -->
 
 <a id="foundry.api.guide"></a>
 ## Machine Learning > NHN Cloud Foundry > API 가이드 { #foundry.api.guide }
