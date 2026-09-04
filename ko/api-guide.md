@@ -417,7 +417,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
     Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](../console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
 
 <a id="event.ingest.api.send"></a>
-#### 이벤트 전송(단건) { #event.ingest.api.send }
+#### 이벤트 단건 전송 { #event.ingest.api.send }
 
 | 메서드 | URI |
 | --- | --- |
@@ -472,7 +472,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | body.errorMessage | 실패 시 오류 메시지 |
 
 <a id="event.ingest.api.batch"></a>
-#### 이벤트 전송(다건) { #event.ingest.api.batch }
+#### 이벤트 다건 전송 { #event.ingest.api.batch }
 
 | 메서드 | URI |
 | --- | --- |
@@ -504,22 +504,14 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| events | Array | O | 이벤트 목록(최대 5,000건). 각 항목의 필드는 단건 전송과 동일 |
+| events | Array | O | 이벤트 목록. 1회 요청당 최대 5,000건이며 각 항목의 필드는 단건 전송과 동일 |
 
 응답의 `body`는 이벤트별 처리 결과 배열입니다.
-
-주요 오류 코드는 다음과 같습니다.
-
-| resultCode | 설명 |
-| --- | --- |
-| 4000001 | 잘못된 요청 |
-| 4005011 | Event API가 활성화되지 않은 상태 |
-| 4005012 | 유효하지 않은 operation |
 
 <a id="metrics.ingest.api"></a>
 ### 지표 수집 { #metrics.ingest.api }
 
-타입이 Prometheus API인 데이터 소스로 지표(시계열) 데이터를 전송합니다. 전송한 지표는 단변량 이상 탐지 앱의 입력으로 사용합니다.
+타입이 Prometheus API인 데이터 소스로 지표 데이터를 전송합니다. 전송한 지표는 단변량 이상 탐지 앱의 입력으로 사용합니다.
 
 | 메서드 | URI |
 | --- | --- |
@@ -550,11 +542,11 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
 | metrics | Array | O | 지표 목록. 비어 있을 수 없으며 1회 요청당 최대 5,000건 |
-| metrics[].timestamp | Long | O | 메트릭 시각(밀리초 epoch) |
+| metrics[].timestamp | Long | O | 메트릭 시각. 밀리초 epoch |
 | metrics[].value | Double | O | 측정값 |
 | metrics[].labels | Array | O | 라벨 목록. 라벨 조합이 시계열을, 그룹 라벨이 그룹을 결정 |
 | metrics[].labels[].name | String | O | 라벨 이름. 영문자 또는 _로 시작하고 영문자, 숫자, _만 사용 |
-| metrics[].labels[].value | String | O | 라벨 값. 쉼표(,)와 등호(=)는 사용 불가 |
+| metrics[].labels[].value | String | O | 라벨 값. 쉼표와 등호는 사용 불가 |
 | metrics[].metadata | Object | X | 부가 정보. 해석하지 않고 그대로 저장·전달. `identityKey` 키는 시스템이 사용하므로 사용 불가 |
 
 성공하면 HTTP `202 Accepted`를 반환합니다.
@@ -566,17 +558,6 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 - `value`가 NaN 또는 Infinity인 항목은 저장하지 않고 건너뜁니다. 같은 요청의 나머지 항목은 정상 처리됩니다.
 - `202` 응답은 수신 완료를 뜻합니다. 저장은 잠시 뒤 반영되며, 같은 요청을 다시 보내면 같은 데이터가 중복 저장될 수 있습니다.
 - 전송이 지연된 데이터는 저장되지만 실시간 추론 대상에서 제외될 수 있습니다.
-
-!!! danger "주의"
-    오류 응답의 HTTP 상태 코드는 200입니다. 성공과 실패는 HTTP 상태 코드가 아니라 응답 본문의 `header.resultCode`로 판정해야 합니다.
-
-주요 오류 코드는 다음과 같습니다.
-
-| resultCode | 설명 |
-| --- | --- |
-| 4000001 | 필수 필드 누락, 라벨 이름 규칙 위반, 라벨 값에 쉼표·등호 포함, 항목 수 상한 초과, 빈 배열, 필수 헤더 누락, 본문 형식 오류 |
-| 4005011 | 데이터 소스가 지표를 받을 수 있는 상태가 아님 |
-| 5006001~5006005 | 전송 처리 실패 |
 
 <a id="recommendation.api"></a>
 ## 추천 조회 API { #recommendation.api }
@@ -667,14 +648,17 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
 | requestId | String | O | 해당 행동이 일어난 추천 응답의 `body.metadata.requestId` |
-| itemKeys | Array | O | 노출한 아이템 키 목록(노출 순서대로). impressions에서 사용 |
+| itemKeys | Array | O | 노출한 아이템 키 목록. 노출 순서대로 입력하며 impressions에서 사용 |
 | itemKey | String | O | 대상 아이템 키. interactions, feedback에서 사용 |
 | type | String | O | interactions는 CLICK, CONVERSION. feedback은 POSITIVE, NEGATIVE |
 | occurredAt | String | O | 행동이 일어난 시각 |
 
 - `occurredAt`은 시간대 오프셋을 포함한 ISO 8601 형식으로 보냅니다. 오프셋이 없으면 오류로 처리됩니다.
 - 세 필드 모두 `requestId`, `occurredAt`, 아이템 키가 모두 있어야 신호로 사용됩니다.
-- `impressions`는 최근 20건까지만 사용하며, 그보다 많이 보내면 오래된 항목부터 제외됩니다.
+- 각 필드는 오래된 것부터 최신 순서로 전달합니다.
+- `impressions`는 최대 10건이고 1건당 `itemKeys`는 최대 100개입니다. `interactions`와 `feedback`은 `type`별로 최대 10건입니다. 상한을 초과하면 요청이 거절됩니다.
+- 행동 신호는 이번 추천 요청의 추론 입력으로만 사용하고 저장하지 않습니다. 같은 아이템의 `feedback`이 바뀌면 가장 최근 값만 반영되므로, 효과를 유지하려면 매 요청 다시 전송합니다.
+- 반응 이벤트를 저장해 분석에 활용하려면 [추천 이벤트 API](#recommendation.event.api)를 함께 사용합니다.
 
 !!! tip "알아두기"
     `userAttributes` 스키마는 향후 선호도 유도(Preference Elicitation) 구현 방향에 따라 수집 방식이나 필드 종류가 변경될 수 있습니다.

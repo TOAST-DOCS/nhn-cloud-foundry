@@ -8,7 +8,7 @@
 ### 2026. 09. XX. { #foundry.release.notes.2026.09.xx }
 
 <a id="foundry.release.notes.2026.09.xx.feature"></a>
-#### 기능 추가 { #foundry.release.notes.2026.09.xx.feature }
+#### 신규 기능 추가 { #foundry.release.notes.2026.09.xx.feature }
 
 - 앱에 **단변량 이상 탐지** 유형을 추가했습니다. 수집한 지표를 시계열마다 학습해 이상 점수와 기준값을 계산하고, 지정한 Prometheus로 전송하는 동시에 결과 데이터 소스에 저장합니다.
 - 지표(시계열) 데이터를 실시간으로 받는 **Prometheus API** 유형의 데이터 소스를 추가했습니다. 데이터 소스 자세히 보기의 **수집 방법** 탭에서 전송 방법을 확인할 수 있습니다.
@@ -18,7 +18,7 @@
 - 추천 조회 API의 `context`에 행동 신호(`impressions`, `interactions`, `feedback`)를 추가했습니다. 전달한 신호는 추천 결과의 순서를 조정하는 데 사용됩니다.
 
 <a id="foundry.release.notes.2026.09.xx.improvement"></a>
-#### 기능 개선 { #foundry.release.notes.2026.09.xx.improvement }
+#### 기능 개선/변경 { #foundry.release.notes.2026.09.xx.improvement }
 
 - 차트 조회에 실패하면 쿼리 엔진이 반환한 오류 내용을 화면에 표시하도록 개선했습니다.
 - 차트 목록의 데이터 소스 칼럼을 ID 대신 이름으로 표시합니다.
