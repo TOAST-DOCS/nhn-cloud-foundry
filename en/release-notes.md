@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=2d6933bd5d2d -->
+<!-- pre-align:aligned sig=0dde8a7f55cd -->
 
 <a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > Release Notes { #foundry }
