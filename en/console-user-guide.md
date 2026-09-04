@@ -225,10 +225,10 @@ In the detail settings, you specify the following two items.
 | Series identification labels | O | Specifies which label combination distinguishes a single time series. Select either **Use all labels** or **Specify manually**. The default is **Use all labels**. |
 | Group labels | X | The unit for grouping and managing time series. Time series with the same specified label values form one group. If left empty, the entire data source becomes one group. |
 
-- Series identification labels: Learning and inference are performed separately for each time series. **Use all labels** treats time series with different label combinations as distinct. **Specify manually** groups only data with the same specified label values into one time series, and the remaining labels are not used for differentiation.
-- Group labels: For example, if you specify a rule ID label, one group is created for each rule value. If left empty, the entire data source is automatically registered as one group when you create an app.
-- Label names must start with a letter or `_`, and can only contain letters, numbers, and `_`. Enter multiple labels separated by commas. The same label cannot be entered twice.
-- If you select **Specify manually** for series identification labels and a group label is not included in that list, a warning is displayed. We recommend that you also include group labels in the series identification labels, since time series from different groups may be merged into the same series.
+- Series identification labels: Training and inference are performed separately for each time series. **Use all labels** treats data with different label combinations as different time series. **Manual assign** groups only data with the same specified label values into one time series, and does not use the remaining labels for differentiation.
+- Group labels: For example, if you specify a rule ID label, one group is created for each rule value. If left empty, the entire data source becomes a single group. A group is registered only when metrics arrive.
+- Label names must start with an English letter or `_`, and can only contain English letters, numbers, and `_`. To specify multiple labels, separate them with commas. You cannot enter the same label twice.
+- If you have set series identification labels to **Manual assign** and a group label is not included in that list, a warning is displayed. We recommend that you include the group label in the series identification labels, as data from different groups may be merged into the same time series.
 
 !!! tip "Tips"
     For information on how to send data to a Prometheus API data source, refer to the **Collection Method** tab in the details view or the "Metric Collection" section in the [API Guide](../api-guide/#metrics.ingest.api).
@@ -292,6 +292,9 @@ This section explains how to send metrics to a data source of the Prometheus API
 | Request header | X-NC-APP-KEY header populated with the app key for this data source |
 | Request body example | Example request body that reflects the group label of this data source |
 | Rule | Notes related to time units, labels, additional information, values, and responses |
+
+!!! danger "Caution"
+    Only the app key is shown in the request header section. When sending metrics, you must also include the authentication token header `X-NHN-Authorization`. If you send only the app key, the request will be rejected.
 
 For details on the request format, see "Metric Collection" in the [API Guide](../api-guide/#metrics.ingest.api).
 
@@ -1303,8 +1306,8 @@ Univariate anomaly detection:
 | Default Setting | App name, description, type |
 | Detailed Settings | Metric Data Source, model resources, retraining cycle, detection options, result transfer settings |
 
-- If no retraining interval is specified, it is displayed as 'Not Specified (Default Interval)'.
-- Static headers and dynamic headers are displayed as 'Set' or 'None' instead of values.
+- If no retraining cycle is specified, it is displayed as 'Not specified (default cycle)'.
+- Static headers and dynamic headers are displayed as 'Set', 'None', or a hyphen instead of the entered values.
 
 Click the **Save** button to create the app. On success, a completion modal is displayed and you are redirected to the list. On failure, an error message is displayed.
 
@@ -1475,7 +1478,7 @@ The header displays the app name, status, app type, app ID, creation date, modif
 | Model Resources | Upper limits for CPU and memory used for training and inference |
 | Device | CPU or GPU |
 | Training Status | Waiting for training, Training, Training complete, Retraining stopped, Training failed, Deleted |
-| Last Training Date and Time | The most recent time training was performed |
+| Last Training Date | Last time when training was performed |
 | Retraining Interval | In the format 'Every day at 03:00', 'Every Monday at 03:00', or 'Every 6 hours'. If not specified, displays 'Not configured' |
 | Transfer Mode | Accurate mode, Immediate mode |
 | Score Scale | Raw value or 0–100 scale |
@@ -1519,11 +1522,12 @@ Status:
 | Activation Pending | The group is turned on, but results are not yet being sent because data is still being collected |
 | Inactive | A group that has been turned off and is not in use |
 
-- If you assign a group label to the data source, one group is created for each value. If no label is assigned, the entire data source is automatically registered as a single group when the app is created, and it operates without requiring manual activation.
-- Errors are determined at the group level. If inference stops for even one time series in a group, the entire group enters an error state, and it returns to normal only after that time series recovers.
-- You can narrow the list by filtering by status or by searching by group key or group hash.
-- You can adjust the number of items displayed per page (20, 50, or 100 items; default is 20).
-- If no groups are registered, the message 'No groups registered.' is displayed. If no groups match the search or filter conditions, the message 'No groups match the conditions.' is displayed.
+- If a group label is specified in a data source, one group is created for each value. If no group label is specified, the entire data source becomes a single group.
+- Groups are registered when metrics arrive, not when the app is created. Immediately after creating an app, the list is empty.
+- Errors are evaluated at the group level. If even one time series within a group stops being inferred, the entire group is marked as an error, and it returns to normal only when that time series recovers.
+- You can narrow down the list by filtering by status or by searching by group key or group hash.
+- You can adjust the number of items displayed per page (20, 50, or 100; default is 20).
+- If no groups are registered, the message "No registered groups. Groups will appear here when data arrives and groups are registered." is displayed. If no groups match the search or filter conditions, the message "No groups match the conditions." is displayed.
 
 <a id="app.detail.univariate.groups.hash"></a>
 ##### Hash Calculator { #app.detail.univariate.groups.hash }
