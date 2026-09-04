@@ -640,8 +640,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | context.availableItems | Array | X | 추천 대상 아이템 키 목록. 지정하면 이 목록에 포함된 아이템 중에서만 추천 |
 | context.pageType | String | X | 현재 페이지 유형(자유 형식. 예: home, item_detail) |
 | context.sessionId | String | X | 세션 ID |
-| context.impressions | Array | X | 사용자에게 노출한 아이템 목록 |
-| context.interactions | Array | X | 사용자가 아이템에 보인 반응 |
+| context.impressions | Array | X | 사용자에게 추천 결과로 노출된 아이템 목록 |
+| context.interactions | Array | X | 사용자가 아이템에 대해 수행한 행동 정보 |
 | context.feedback | Array | X | 사용자가 아이템에 남긴 평가 |
 | userAttributes | Object | X | 사용자 속성 정보(Cold Start 추론에 사용) |
 | options.maxRecommendations | Integer | X | 최대 추천 수(1~100). 100을 초과하는 값은 오류 없이 100으로 조정, 미지정 시 100 적용. 추천 가능한 아이템이 이 값보다 적으면 실제 아이템 수만큼만 반환 |
@@ -652,7 +652,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 <a id="recommendation.api.signal"></a>
 #### 행동 신호 { #recommendation.api.signal }
 
-`context.impressions`, `context.interactions`, `context.feedback`은 직전 추천 결과에 사용자가 보인 행동을 전달하는 필드입니다. 전달한 신호는 추천 결과의 순서를 조정하는 데 사용됩니다.
+`context.impressions`은 사용자에게 노출된 추천 정보를 바탕으로 추천 결과를 재정렬하는 데 사용됩니다.
+`context.interactions`, `context.feedback`은 사용자가 추천 결과에 보인 행위를 전달하는 필드로, 사용자 행위 기반 데이터를 모델 추론에 반영합니다.
 
 ```json
 {
