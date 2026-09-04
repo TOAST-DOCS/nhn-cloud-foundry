@@ -185,12 +185,16 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
 3. 스키마는 고정이므로 직접 입력하지 않습니다. 상세 설정에서 시리즈 식별 라벨과 그룹 라벨을 지정합니다.
 4. **추가** 버튼을 클릭하고, 목록에서 상태가 `COMPLETED`가 될 때까지 기다립니다.
 
+    ![지표 데이터 소스 생성](../static/images/quick-start/지표데이터소스생성.png){ height="70%" }
+
 각 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#datasource.create.detail.prometheus)의 'Prometheus API 상세 설정'을 참고합니다.
 
 <a id="univariate.ingest"></a>
 ### 2. 지표 전송하기 { #univariate.ingest }
 
 생성한 데이터 소스의 자세히 보기로 이동해 **수집 방법** 탭을 엽니다. 엔드포인트와 요청 헤더, 요청 본문 예시를 **복사** 버튼으로 복사해 지표를 전송합니다.
+
+![수집 방법](../static/images/quick-start/수집방법.png){ height="70%" }
 
 ```bash
 curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
@@ -223,7 +227,11 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
 
 1. 기본 설정에 앱 이름과 설명을 입력하고, 앱 유형으로 **단변량 이상 탐지**를 선택합니다.
 2. 상세 설정에서 앞서 만든 지표 데이터 소스를 선택합니다. 모델 자원과 재학습 주기, 탐지 옵션, 결과 전송을 지정합니다.
+    ![앱 생성 - 기본 설정](../static/images/quick-start/이상탐지앱생성1.png){ height="70%" }
+
 3. 최종 검토에서 입력 내용을 확인하고 **저장** 버튼을 클릭합니다.
+
+    ![앱 생성 - 상세 설정](../static/images/quick-start/이상탐지앱생성2.png){ height="70%" }
 
 각 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.create.detail.univariate)의 '단변량 이상 탐지 상세 설정'을 참고합니다.
 
@@ -236,6 +244,9 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
 앱 목록에서 생성한 앱을 클릭해 상세 화면으로 이동합니다.
 
 1. **앱 정보** 탭에서 학습 상태와 그룹 현황을 확인합니다.
+
+    ![단변량 이상 탐지 앱 정보](../static/images/quick-start/이상탐지앱정보.png){ height="70%" }
+
 2. **그룹 목록** 탭에서 그룹 상태를 확인합니다. 활성화 대기 중은 판정에 사용할 데이터를 모으는 중이고, 활성화가 되면 탐지 결과가 전송됩니다.
 3. 탐지 결과인 이상 점수와 임계값은 지정한 Prometheus로 전송되며, 결과 데이터 소스에도 저장됩니다. 저장된 결과는 **분석** 탭의 쿼리나 차트로 조회합니다.
 
