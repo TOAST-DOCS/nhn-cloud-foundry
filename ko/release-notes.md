@@ -6,24 +6,20 @@
 <a id="foundry.release.notes.2026.09.18"></a>
 ### 2026. 09. 18. { #foundry.release.notes.2026.09.18 }
 
-<a id="foundry.release.notes.2026.09.18.feature"></a>
-#### 신규 기능 추가 { #foundry.release.notes.2026.09.18.feature }
+<a id="foundry.release.notes.2026.09.18.chart"></a>
+#### 분석 / 차트 { #foundry.release.notes.2026.09.18.chart }
 
-- 앱에 **단변량 이상 탐지** 유형을 추가했습니다. 수집한 지표에서 이상 점수와 기준값을 계산해 지정한 Prometheus로 전송하고, 결과 데이터 소스에도 저장합니다.
-- 지표를 실시간으로 받는 **Prometheus API** 유형의 데이터 소스를 추가했습니다.
-- 데이터 소스 자세히 보기에 **이벤트 설정** 탭을 추가했습니다. Event API를 활성화하면 기존 데이터를 유지한 채 변경 이벤트를 수집할 수 있습니다.
-- 추천 시스템 앱 상세에 **학습 관리** 탭을 추가했습니다. 학습 주기 변경, 자동 재학습 중지·재개, 학습 실행, 산출물 이력 조회를 지원합니다.
-- 앱 생성 화면에 **리소스 확인**을 추가했습니다. 앱을 만들기 전에 생성 가능 여부를 확인할 수 있습니다.
-- 추천 조회 API의 `context`에 행동 신호(`impressions`, `interactions`, `feedback`)를 추가했습니다.
+- 차트 설정이 잘못된 경우 화면에 사유가 표시되며, 한 차트의 조회 실패가 다른 차트에 영향을 주지 않습니다.
 
-<a id="foundry.release.notes.2026.09.18.improvement"></a>
-#### 기능 개선/변경 { #foundry.release.notes.2026.09.18.improvement }
+<a id="foundry.release.notes.2026.09.18.recommendation"></a>
+#### 추천 앱 { #foundry.release.notes.2026.09.18.recommendation }
 
-- 차트 조회에 실패하면 쿼리 엔진이 반환한 오류 내용을 화면에 표시합니다.
-- 차트 목록의 데이터 소스를 ID 대신 이름으로 표시합니다.
-- 차트 편집 화면에서 데이터 소스 설정을 잠금 상태로 표시합니다.
-- 콘솔에 표시되는 날짜와 시각을 접속한 브라우저의 시간대 기준으로 통일했습니다.
-- 지표 수집 API의 요청 제약을 정비했습니다.
+- 추천 API 요청에 노출(impressions), 상호작용(interactions), 피드백(feedback) 정보를 전달하면 추천 결과에 반영됩니다.
+
+<a id="foundry.release.notes.2026.09.18.univariate"></a>
+#### 단변량 시계열 이상탐지 앱 { #foundry.release.notes.2026.09.18.univariate }
+
+- 단변량 시계열 이상탐지 앱이 추가되었습니다.
 
 <a id="foundry.release.notes.2026.08.25"></a>
 ### 2026. 08. 25. { #foundry.release.notes.2026.08.25 }
