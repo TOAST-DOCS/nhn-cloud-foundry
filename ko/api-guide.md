@@ -63,6 +63,8 @@ https://{gateway-public-host}/api/v1.0
 | header.resultMessage | String | 결과 메시지. 성공 시 SUCCESS, 실패 시 오류 상세 |
 | body | Object/Array | API별 응답 데이터 |
 
+요청이 거절되어도 HTTP 상태 코드는 `200`으로 반환될 수 있습니다. 성공 여부는 HTTP 상태 코드가 아니라 `header.isSuccessful`과 `header.resultCode`로 판정합니다. 인증 토큰이 없거나 만료된 경우에는 HTTP `401`을 반환합니다.
+
 <a id="ingest.api"></a>
 ## Ingest API { #ingest.api }
 
@@ -589,10 +591,11 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | metrics[].labels[].value | String | O | 라벨 값. 쉼표와 등호는 사용 불가 |
 | metrics[].metadata | Object | X | 부가 정보. 해석하지 않고 그대로 저장·전달. identityKey 키는 시스템이 사용하므로 사용 불가 |
 
-성공하면 HTTP `202 Accepted`를 반환합니다.
+성공하면 HTTP `202 Accepted`를 반환합니다. 요청이 거절되면 HTTP `200`에 `header.isSuccessful`이 `false`로 반환되므로 `header`로 성공 여부를 판정합니다.
 
 수집 규칙은 다음과 같습니다.
 
+- 필수 필드 누락, 라벨 이름·값 규칙 위반, 1회 요청 5,000건 초과, 필수 헤더 누락은 요청 전체가 거절되며 어떤 항목도 저장되지 않습니다.
 - 한 요청에 여러 시계열의 지표를 함께 담을 수 있습니다. 시계열은 라벨 조합으로 구분되므로 시계열마다 요청을 나눌 필요가 없습니다.
 - 같은 시계열은 1분에 한 번만 보냅니다. 더 촘촘한 주기로 수집한다면 1분 평균으로 합쳐 보냅니다. 같은 분에 값이 여러 개 오면 먼저 도착한 값만 분석에 쓰이고 나머지는 버려집니다.
 - `timestamp`는 밀리초 단위 epoch입니다. 초 단위로 보내면 잘못된 시각으로 저장됩니다.
