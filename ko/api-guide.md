@@ -607,6 +607,59 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 !!! tip "알아두기"
     적재는 전송 주기와 무관합니다. 다만 이 데이터 소스를 단변량 이상 탐지 앱에 연결했다면 같은 시계열을 1분에 하나씩 끊김 없이 보내야 합니다. 앱이 지표를 1분 단위로 묶어 판정하므로, 그보다 긴 간격으로 보내면 빈 구간이 생겨 정확 모드에서 준비가 끝나지 않을 수 있습니다.
 
+<a id="univariate.api"></a>
+## 단변량 이상 탐지 API { #univariate.api }
+
+<a id="univariate.group.api"></a>
+### 그룹 사용 시작·중지·삭제 { #univariate.group.api }
+
+단변량 이상 탐지 앱의 그룹을 사용 시작, 중지, 삭제합니다. 세 API의 요청 형식은 같고 경로만 다릅니다.
+
+| 메서드 | URI |
+| --- | --- |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/disable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/delete |
+
+`servingPipelineId`는 콘솔 앱 상세에 표시되는 앱 ID입니다.
+
+curl 예시:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "groupKey": [
+      { "name": "region", "value": ["kr1", "jp1"] }
+    ]
+  }'
+```
+
+| 필드 | 타입 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| groupKey | Array | 조건부 | 대상 그룹을 지정하는 라벨 목록. 데이터 소스에 그룹 라벨을 지정한 경우에만 사용 |
+| groupKey[].name | String | O | 그룹 라벨 이름. 데이터 소스에 지정한 그룹 라벨과 이름이 정확히 일치해야 함 |
+| groupKey[].value | Array | O | 그 라벨의 값 목록. 값 하나가 그룹 하나에 대응 |
+
+성공하면 `header.isSuccessful`이 `true`로 반환되며 `body`는 없습니다.
+
+요청 규칙은 다음과 같습니다.
+
+- 데이터 소스에 그룹 라벨을 지정하지 않았으면 `groupKey`를 보내지 않습니다. 데이터 소스 전체가 하나의 그룹이므로 그 그룹이 대상이 됩니다. `groupKey`를 함께 보내면 요청이 거절됩니다.
+- 데이터 소스에 그룹 라벨을 지정했으면 `groupKey`는 필수이며, 보낸 라벨 이름의 집합이 데이터 소스의 그룹 라벨과 정확히 같아야 합니다. 같은 라벨 이름을 두 번 보내면 거절됩니다.
+- 그룹 라벨이 여러 개면 값 목록을 같은 순서끼리 묶어 그룹을 만듭니다. 예를 들어 `rule_id`에 `["a", "b"]`, `instance_id`에 `["q", "w"]`를 보내면 `(a, q)`와 `(b, w)` 두 그룹이 대상입니다. 모든 라벨의 값 개수가 같아야 하며 다르면 거절됩니다.
+- 값 목록이 비어 있으면 거절됩니다. 같은 그룹이 여러 번 지정되면 한 번만 처리됩니다.
+- 등록되지 않은 그룹을 중지하거나 삭제하면 오류가 반환됩니다.
+
+!!! tip "알아두기"
+    지표가 들어오면 그룹은 자동으로 등록되어 동작합니다. 이 API는 특정 그룹만 골라 사용 시작, 중지, 삭제할 때 사용하며 콘솔에는 이 조작이 없습니다. 등록된 그룹과 상태는 콘솔 앱 상세의 **그룹 목록** 탭에서 확인합니다.
+
+!!! danger "주의"
+    그룹을 중지해도 탐지 결과 전송이 멈추지는 않습니다. 그룹 목록에 표시되는 상태만 비활성화로 바뀝니다.
+    삭제한 그룹은 상태 기록과 함께 사라지며 복구할 수 없습니다.
+
 <a id="recommendation.api"></a>
 ## 추천 조회 API { #recommendation.api }
 
