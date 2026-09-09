@@ -63,6 +63,8 @@ https://{gateway-public-host}/api/v1.0
 | header.resultMessage | String | 결과 메시지. 성공 시 SUCCESS, 실패 시 오류 상세 |
 | body | Object/Array | API별 응답 데이터 |
 
+요청이 거절되어도 HTTP 상태 코드는 `200`으로 반환될 수 있습니다. 성공 여부는 HTTP 상태 코드가 아니라 `header.isSuccessful`과 `header.resultCode`로 판정합니다. 인증 토큰이 없거나 만료된 경우에는 HTTP `401`을 반환합니다.
+
 <a id="ingest.api"></a>
 ## Ingest API { #ingest.api }
 
@@ -589,11 +591,13 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | metrics[].labels[].value | String | O | 라벨 값. 쉼표와 등호는 사용 불가 |
 | metrics[].metadata | Object | X | 부가 정보. 해석하지 않고 그대로 저장·전달. identityKey 키는 시스템이 사용하므로 사용 불가 |
 
-성공하면 HTTP `202 Accepted`를 반환합니다.
+성공하면 HTTP `202 Accepted`를 반환합니다. 요청이 거절되면 HTTP `200`에 `header.isSuccessful`이 `false`로 반환되므로 `header`로 성공 여부를 판정합니다.
 
 수집 규칙은 다음과 같습니다.
 
+- 필수 필드 누락, 라벨 이름·값 규칙 위반, 1회 요청 5,000건 초과, 필수 헤더 누락은 요청 전체가 거절되며 어떤 항목도 저장되지 않습니다.
 - 한 요청에 여러 시계열의 지표를 함께 담을 수 있습니다. 시계열은 라벨 조합으로 구분되므로 시계열마다 요청을 나눌 필요가 없습니다.
+- 같은 시계열은 1분에 한 번만 보냅니다. 더 짧은 주기로 수집한다면 1분 평균으로 합쳐 보냅니다. 같은 분에 값이 여러 개 오면 먼저 도착한 값만 분석에 쓰이고 나머지는 버려집니다.
 - `timestamp`는 밀리초 단위 epoch입니다. 초 단위로 보내면 잘못된 시각으로 저장됩니다.
 - 데이터 소스에 그룹 라벨을 지정했다면 항상 그 라벨을 포함해 전송합니다. 라벨이 빠지면 의도한 그룹에 속하지 않습니다.
 - `value`가 NaN 또는 Infinity인 항목은 저장하지 않고 건너뜁니다. 같은 요청의 나머지 항목은 정상 처리됩니다.
@@ -601,7 +605,60 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 - 전송이 지연된 데이터는 저장되지만 실시간 추론 대상에서 제외될 수 있습니다.
 
 !!! tip "알아두기"
-    적재는 전송 주기와 무관합니다. 다만 이 데이터 소스를 단변량 이상 탐지 앱에 연결했다면 같은 시계열을 1분 간격 이하로 끊김 없이 보내야 합니다. 앱이 지표를 1분 단위로 묶어 판정하므로, 그보다 긴 간격으로 보내면 빈 구간이 생겨 정확 모드에서 준비가 끝나지 않을 수 있습니다.
+    적재는 전송 주기와 무관합니다. 다만 이 데이터 소스를 단변량 이상 탐지 앱에 연결했다면 같은 시계열을 1분에 하나씩 끊김 없이 보내야 합니다. 앱이 지표를 1분 단위로 묶어 판정하므로, 그보다 긴 간격으로 보내면 빈 구간이 생겨 정확 모드에서 준비가 끝나지 않을 수 있습니다.
+
+<a id="univariate.api"></a>
+## 단변량 이상 탐지 API { #univariate.api }
+
+<a id="univariate.group.api"></a>
+### 그룹 사용 시작·중지·삭제 { #univariate.group.api }
+
+단변량 이상 탐지 앱의 그룹을 사용 시작, 중지, 삭제합니다. 세 API의 요청 형식은 같고 경로만 다릅니다.
+
+| 메서드 | URI |
+| --- | --- |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/disable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/delete |
+
+`servingPipelineId`는 콘솔 앱 상세에 표시되는 앱 ID입니다.
+
+curl 예시:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "groupKey": [
+      { "name": "region", "value": ["kr1", "jp1"] }
+    ]
+  }'
+```
+
+| 필드 | 타입 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| groupKey | Array | 조건부 | 대상 그룹을 지정하는 라벨 목록. 데이터 소스에 그룹 라벨을 지정한 경우에만 사용 |
+| groupKey[].name | String | O | 그룹 라벨 이름. 데이터 소스에 지정한 그룹 라벨과 이름이 정확히 일치해야 함 |
+| groupKey[].value | Array | O | 그 라벨의 값 목록. 값 하나가 그룹 하나에 대응 |
+
+성공하면 `header.isSuccessful`이 `true`로 반환되며 `body`는 없습니다.
+
+요청 규칙은 다음과 같습니다.
+
+- 데이터 소스에 그룹 라벨을 지정하지 않았으면 `groupKey`를 보내지 않습니다. 데이터 소스 전체가 하나의 그룹이므로 그 그룹이 대상이 됩니다. `groupKey`를 함께 보내면 요청이 거절됩니다.
+- 데이터 소스에 그룹 라벨을 지정했으면 `groupKey`는 필수이며, 보낸 라벨 이름의 집합이 데이터 소스의 그룹 라벨과 정확히 같아야 합니다. 같은 라벨 이름을 두 번 보내면 거절됩니다.
+- 그룹 라벨이 여러 개면 값 목록을 같은 순서끼리 묶어 그룹을 만듭니다. 예를 들어 `rule_id`에 `["a", "b"]`, `instance_id`에 `["q", "w"]`를 보내면 `(a, q)`와 `(b, w)` 두 그룹이 대상입니다. 모든 라벨의 값 개수가 같아야 하며 다르면 거절됩니다.
+- 값 목록이 비어 있으면 거절됩니다. 같은 그룹이 여러 번 지정되면 한 번만 처리됩니다.
+- 등록되지 않은 그룹을 중지하거나 삭제하면 오류가 반환됩니다.
+
+!!! tip "알아두기"
+    지표가 들어오면 그룹은 자동으로 등록되어 동작합니다. 이 API는 특정 그룹만 골라 사용 시작, 중지, 삭제할 때 사용하며 콘솔에는 이 조작이 없습니다. 등록된 그룹과 상태는 콘솔 앱 상세의 **그룹 목록** 탭에서 확인합니다.
+
+!!! danger "주의"
+    그룹을 중지해도 탐지 결과 전송이 멈추지는 않습니다. 그룹 목록에 표시되는 상태만 비활성화로 바뀝니다.
+    삭제한 그룹은 상태 기록과 함께 사라지며 복구할 수 없습니다.
 
 <a id="recommendation.api"></a>
 ## 추천 조회 API { #recommendation.api }
