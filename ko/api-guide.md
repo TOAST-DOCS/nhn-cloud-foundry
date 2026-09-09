@@ -490,6 +490,9 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | data | Object | O | 이벤트 데이터. 데이터 소스 스키마의 필드 이름을 키로 사용 |
 | eventTimestamp | String | X | 이벤트 발생 시각. 생략 시 서버 수신 시각 사용 |
 
+- `operation`은 대소문자를 구분하지 않습니다. 허용하지 않는 값을 보내면 요청이 거절됩니다.
+- 데이터 소스에 기본 키 필드를 지정하지 않았으면 `INSERT`만 보낼 수 있습니다. `UPDATE`와 `DELETE`는 거절됩니다. 기본 키를 지정한 데이터 소스는 세 작업을 모두 사용할 수 있습니다.
+
 응답 예시:
 
 ```json
