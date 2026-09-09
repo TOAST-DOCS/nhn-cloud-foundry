@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=0dde8a7f55cd -->
+<!-- pre-align:aligned sig=d0204fbdb5fa -->
 
 <a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > リリースノート { #foundry }
@@ -8,24 +8,20 @@
 <a id="foundry.release.notes.2026.09.18"></a>
 ### 2026. 09. 18. { #foundry.release.notes.2026.09.18 }
 
-<a id="foundry.release.notes.2026.09.18.feature"></a>
-#### 新規機能追加 { #foundry.release.notes.2026.09.18.feature }
+<a id="foundry.release.notes.2026.09.18.chart"></a>
+#### 分析 / チャート { #foundry.release.notes.2026.09.18.chart }
 
-- アプリに**単変量異常検出**タイプを追加しました。収集したメトリクスから異常スコアと基準値を計算し、指定した Prometheus に転送するとともに、結果データソースにも保存します。
-- メトリクスをリアルタイムで受信する **Prometheus API** タイプのデータソースを追加しました。
-- データソースの詳細画面に**イベント設定**タブを追加しました。Event API を有効化すると、既存データを維持したまま変更イベントを収集できます。
-- 推薦システムアプリの詳細に**学習管理**タブを追加しました。学習サイクルの変更、自動再学習の停止・再開、学習の実行、成果物履歴の照会をサポートします。
-- アプリ作成画面に**リソース確認**を追加しました。アプリを作成する前に、作成可否を確認できます。
-- 推薦照会 API の `context` に行動シグナル（`impressions`、`interactions`、`feedback`）を追加しました。
+- チャートの設定が正しくない場合、画面に理由が表示されます。また、1つのチャートの照会失敗が他のチャートに影響を与えません。
 
-<a id="foundry.release.notes.2026.09.18.improvement"></a>
-#### 機能改善/変更 { #foundry.release.notes.2026.09.18.improvement }
+<a id="foundry.release.notes.2026.09.18.recommendation"></a>
+#### 推薦アプリ { #foundry.release.notes.2026.09.18.recommendation }
 
-- チャートの照会に失敗した場合、クエリエンジンが返したエラー内容を画面に表示します。
-- チャート一覧のデータソースを ID の代わりに名前で表示します。
-- チャート編集画面でデータソースの設定をロック状態で表示します。
-- コンソールに表示される日付と時刻を、アクセスしたブラウザのタイムゾーン基準に統一しました。
-- 指標収集 API のリクエスト制約を整備しました。
+- 推薦 API リクエストに表示（impressions）、インタラクション（interactions）、フィードバック（feedback）情報を渡すと、推薦結果に反映されます。
+
+<a id="foundry.release.notes.2026.09.18.univariate"></a>
+#### 単変量時系列異常検出アプリ { #foundry.release.notes.2026.09.18.univariate }
+
+- 単変量時系列異常検出アプリが追加されました。
 
 <a id="foundry.release.notes.2026.08.25"></a>
 ### 2026. 08. 25. { #foundry.release.notes.2026.08.25 }

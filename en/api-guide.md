@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=403401ac9ba3 -->
+<!-- pre-align:aligned sig=47be59ae2082 -->
 
 <a id="foundry.api.guide"></a>
 ## Machine Learning > NHN Cloud Foundry > API Guide { #foundry.api.guide }
@@ -64,6 +64,8 @@ All API responses consist of a `header` and a `body`.
 | header.resultCode | Integer | Result code. 0 for success; error code for failure. |
 | header.resultMessage | String | Result message. SUCCESS for success; error details for failure. |
 | body | Object/Array | Response data for each API |
+
+Even if a request is rejected, the HTTP status code may be returned as `200`. Whether the request was successful is determined not by the HTTP status code, but by `header.isSuccessful` and `header.resultCode`. If the authentication token is missing or expired, HTTP `401` is returned.
 
 <a id="ingest.api"></a>
 ## Ingest API { #ingest.api }
@@ -591,19 +593,74 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | metrics[].labels[].value | String | O | Label value. Commas and equals signs cannot be used |
 | metrics[].metadata | Object | X | Additional information. Stored and delivered as-is without interpretation. The identityKey key is reserved for system use and cannot be used |
 
-Returns HTTP `202 Accepted` on success.
+On success, returns HTTP `202 Accepted`. If the request is rejected, HTTP `200` is returned with `header.isSuccessful` set to `false`, so use `header` to determine whether the request succeeded.
 
 The collection rules are as follows:
 
-- A single request can contain metrics from multiple time series. Because time series are distinguished by label combinations, you do not need to split requests by time series.
-- `timestamp` is a millisecond-unit epoch. If you send it in seconds, it will be stored with an incorrect timestamp.
-- If you have specified group labels for the data source, always include those labels when sending data. If a label is missing, the data will not belong to the intended group.
-- Items where `value` is NaN or Infinity are skipped and not stored. The remaining items in the same request are processed normally.
-- A `202` response indicates that the data has been received. Storage is reflected shortly after, and resending the same request may result in duplicate data being stored.
-- Data that is sent with a delay is stored, but may be excluded from real-time inference.
+- If required fields are missing, label name or value rules are violated, a single request exceeds 5,000 items, or required headers are missing, the entire request is rejected and no items are saved.
+- You can include metrics from multiple time series in a single request. Because time series are distinguished by label combinations, you do not need to send a separate request for each time series.
+- Send data for the same time series only once per minute. If you collect data at a shorter interval, combine it into a 1-minute average before sending. If multiple values arrive within the same minute, only the first value received is used for analysis, and the rest are discarded.
+- `timestamp` is an epoch value in milliseconds. If you send it in seconds, it will be saved as an incorrect time.
+- If you have specified a group label in the Data Source, always include that label when sending data. If the label is missing, the data will not belong to the intended group.
+- Items where `value` is NaN or Infinity are skipped and not saved. The remaining items in the same request are processed normally.
+- A `202` response indicates that the data has been received. The data will be saved after a short delay. If you send the same request again, the same data may be stored in duplicate.
+- Data that arrives late is saved, but may be excluded from real-time inference.
 
 !!! tip "Tips"
-    Loading is independent of the transmission interval. However, if this data source is connected to a univariate anomaly detection app, you must send data for the same time series continuously at intervals of one minute or less. Because the app evaluates metrics in one-minute buckets, sending data at longer intervals creates gaps and may prevent preparation from completing in precision mode.
+    Loading is independent of the transmission interval. However, if you have connected this data source to a univariate anomaly detection app, you must send the same time series continuously, one per minute without interruption. Because the app groups metrics in 1-minute increments for evaluation, sending them at longer intervals creates gaps that may prevent the exact mode from completing its preparation.
+
+<a id="univariate.api"></a>
+## Univariate Anomaly Detection API { #univariate.api }
+
+<a id="univariate.group.api"></a>
+### Enable, Disable, and Delete Groups { #univariate.group.api }
+
+Enables, disables, and deletes groups in the univariate anomaly detection app. All three APIs share the same request format — only the path differs.
+
+| Method | URI |
+| --- | --- |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/disable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/delete |
+
+`servingPipelineId` is the app ID displayed in the app details in the console.
+
+curl example:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "groupKey": [
+      { "name": "region", "value": ["kr1", "jp1"] }
+    ]
+  }'
+```
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| groupKey | Array | Conditional | List of labels that specify the target groups. Used only when group labels are specified in the data source. |
+| groupKey[].name | String | O | Group label name. Must exactly match the group label name specified in the data source. |
+| groupKey[].value | Array | O | List of values for the label. Each value corresponds to one group. |
+
+If successful, `header.isSuccessful` returns `true`, and there is no `body`.
+
+The request rules are as follows:
+
+- If no group labels are specified in the data source, do not send `groupKey`. The entire data source is treated as a single group and becomes the target. The request is rejected if `groupKey` is included.
+- If group labels are specified in the data source, `groupKey` is required, and the set of label names you send must exactly match the group labels of the data source. The request is rejected if the same label name is sent more than once.
+- If there are multiple group labels, groups are formed by pairing values at the same index across each label's value list. For example, if `["a", "b"]` is sent for `rule_id` and `["q", "w"]` for `instance_id`, the two target groups are `(a, q)` and `(b, w)`. All labels must have the same number of values; the request is rejected if the counts differ.
+- The request is rejected if a value list is empty. If the same group is specified more than once, it is processed only once.
+- An error is returned if you attempt to disable or delete a group that is not registered.
+
+!!! tip "Note"
+    When metrics arrive, groups are automatically registered and start operating. Use this API to selectively enable, disable, or delete specific groups — these operations are not available in the console. You can check registered groups and their status on the **Group List** tab in the app details in the console.
+
+!!! danger "Warning"
+    Disabling a group does not stop the transmission of detection results. Only the status displayed in the group list changes to inactive.
+    Deleted groups disappear along with their status records and cannot be recovered.
 
 <a id="recommendation.api"></a>
 ## Recommendation API { #recommendation.api }

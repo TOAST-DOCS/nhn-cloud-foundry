@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=0dde8a7f55cd -->
+<!-- pre-align:aligned sig=d0204fbdb5fa -->
 
 <a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > 릴리스 노트 { #foundry }
