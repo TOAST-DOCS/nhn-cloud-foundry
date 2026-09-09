@@ -490,6 +490,9 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | data | Object | O | Event data. Uses the field names of the data source schema as keys |
 | eventTimestamp | String | X | Timestamp of the event. If omitted, the server's received time is used |
 
+- `operation` is case-insensitive. If you send a value that is not allowed, the request will be rejected.
+- If no primary key field is specified for the data source, only `INSERT` can be sent. `UPDATE` and `DELETE` will be rejected. A data source with a primary key specified can use all three operations.
+
 Response example:
 
 ```json
@@ -604,6 +607,59 @@ The collection rules are as follows:
 
 !!! tip "Tips"
     Loading is independent of the transmission interval. However, if this data source is connected to a univariate anomaly detection app, you must send data for the same time series continuously at intervals of one minute or less. Because the app evaluates metrics in one-minute buckets, sending data at longer intervals creates gaps and may prevent preparation from completing in precision mode.
+
+<a id="univariate.api"></a>
+## Univariate Anomaly Detection API { #univariate.api }
+
+<a id="univariate.group.api"></a>
+### Enable, Disable, and Delete Groups { #univariate.group.api }
+
+Enables, disables, and deletes groups for the univariate anomaly detection app. The three APIs share the same request format; only the path differs.
+
+| Method | URI |
+| --- | --- |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/disable |
+| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/delete |
+
+`servingPipelineId` is the app ID displayed in the app details in the console.
+
+cURL example:
+
+```bash
+curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable" \
+  -H "X-NC-APP-KEY: {appKey}" \
+  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "groupKey": [
+      { "name": "region", "value": ["kr1", "jp1"] }
+    ]
+  }'
+```
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| groupKey | Array | Conditional | List of labels that specify the target group. Used only when group labels are specified in the data source. |
+| groupKey[].name | String | O | Group label name. Must exactly match the group label name specified in the data source. |
+| groupKey[].value | Array | O | List of values for that label. Each value corresponds to one group. |
+
+On success, `header.isSuccessful` returns `true` and there is no `body`.
+
+The request rules are as follows:
+
+- If no group labels are specified in the data source, do not send `groupKey`. The entire data source is treated as a single group and becomes the target. If `groupKey` is included, the request is rejected.
+- If group labels are specified in the data source, `groupKey` is required, and the set of label names sent must exactly match the group labels of the data source. Sending the same label name twice is rejected.
+- If there are multiple group labels, values at the same position are paired to form a group. For example, if `["a", "b"]` is sent for `rule_id` and `["q", "w"]` for `instance_id`, the two target groups are `(a, q)` and `(b, w)`. All labels must have the same number of values; otherwise, the request is rejected.
+- If a value list is empty, the request is rejected. If the same group is specified more than once, it is processed only once.
+- Stopping or deleting a group that is not registered returns an error.
+
+!!! tip "Note"
+    When metrics arrive, groups are automatically registered and start operating. This API is used to selectively enable, disable, or delete specific groups; this operation is not available in the console. You can check registered groups and their status on the **Group List** tab in the app details in the console.
+
+!!! danger "Warning"
+    Disabling a group does not stop the transmission of detection results. Only the status displayed in the group list changes to disabled.
+    A deleted group is permanently removed along with its status history and cannot be recovered.
 
 <a id="recommendation.api"></a>
 ## Recommendation API { #recommendation.api }
