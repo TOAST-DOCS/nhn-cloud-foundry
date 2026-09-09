@@ -239,7 +239,7 @@ Prometheus API 유형은 수집 API가 보내는 레코드 형태가 정해져 �
 **추가** 버튼을 클릭하면 완료 창에 데이터 소스 준비 상태와 **수집 방법**(엔드포인트, 요청 헤더, 요청 본문 예시, 규칙)이 표시됩니다. '준비가 끝났습니다.'로 바뀌면 안내된 방법으로 지표를 보낼 수 있습니다.
 
 !!! tip "알아두기"
-    Prometheus API 데이터 소스에 데이터를 보내는 방법은 생성 완료 창, 자세히 보기의 **수집 방법** 탭 또는 [API 가이드](../api-guide/#metrics.ingest.api)의 '지표 수집'을 참고합니다.
+    Prometheus API 데이터 소스에 데이터를 보내는 방법은 생성 완료 창, 자세히 보기의 **수집 방법** 탭 또는 [API 가이드](./api-guide/#metrics.ingest.api)의 '지표 수집'을 참고합니다.
 
 <a id="datasource.delete"></a>
 ### 데이터 소스 삭제 { #datasource.delete }
@@ -288,8 +288,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
     활성화 상태에서는 데이터 소스 스키마 변경도 제한됩니다. 카탈로그에 필드를 추가하려면 Event API를 먼저 비활성화해야 합니다.
     스냅샷 업로드 후 Event API를 다시 활성화하면 이벤트 수집 위치가 최신 오프셋으로 초기화됩니다.
 
-이벤트를 전송하는 방법은 [API 가이드](../api-guide/#event.ingest.api)의 '이벤트 수집'을 참고합니다.
-활성화와 비활성화는 [API 가이드](../api-guide/#event.ingest.api.enable)의 'Event API 활성화·비활성화'로도 할 수 있습니다.
+이벤트를 전송하는 방법은 [API 가이드](./api-guide/#event.ingest.api)의 '이벤트 수집'을 참고합니다.
+활성화와 비활성화는 [API 가이드](./api-guide/#event.ingest.api.enable)의 'Event API 활성화·비활성화'로도 할 수 있습니다.
 
 <a id="datasource.detail.ingest"></a>
 #### 수집 방법 { #datasource.detail.ingest }
@@ -308,7 +308,7 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 !!! danger "주의"
     `X-NHN-Authorization` 헤더의 토큰 자리에는 발급한 인증 토큰을 넣어야 합니다. 앱 키만 보내면 요청이 거절됩니다.
 
-자세한 요청 형식은 [API 가이드](../api-guide/#metrics.ingest.api)의 '지표 수집'을 참고합니다.
+자세한 요청 형식은 [API 가이드](./api-guide/#metrics.ingest.api)의 '지표 수집'을 참고합니다.
 
 <a id="datasource.edit"></a>
 ### 데이터 갱신 { #datasource.edit }
@@ -349,7 +349,7 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 - Event API가 활성화된 데이터 소스는 필드를 추가할 수 없습니다. Event API를 먼저 비활성화합니다.
 
 !!! tip "알아두기"
-    콘솔뿐 아니라 API로도 데이터를 갱신할 수 있습니다. 사용 방법은 [API 가이드](../api-guide/#ingest.api)의 'Ingest API'를 참고합니다.
+    콘솔뿐 아니라 API로도 데이터를 갱신할 수 있습니다. 사용 방법은 [API 가이드](./api-guide/#ingest.api)의 'Ingest API'를 참고합니다.
 
 <a id="pipeline"></a>
 ## 파이프라인 { #pipeline }
@@ -1572,7 +1572,7 @@ impressions는 최대 10건, interactions와 feedback은 유형별로 최대 10�
 - 그룹 키, 활성화 시각, 비활성화 시각, 생성일, 변경일 칼럼은 머리글을 클릭해 정렬할 수 있습니다. 정렬은 전체 그룹 기준이며, 정렬을 바꾸면 1페이지로 이동합니다. 값, 그룹 해시, 상태 칼럼은 정렬할 수 없고, 값은 그룹 키 칼럼에서 정렬합니다.
 - 페이지당 표시 개수를 조절할 수 있습니다(20개, 50개, 100개 / 기본 20개).
 - 등록된 그룹이 없으면 '등록된 그룹이 없습니다. 데이터가 들어오고 그룹이 등록되면 여기에 표시됩니다.'가, 검색·필터 조건에 맞는 그룹이 없으면 '조건에 맞는 그룹이 없습니다.'가 표시됩니다.
-- 특정 그룹만 골라 사용 시작, 중지, 삭제하려면 [API 가이드](../api-guide/#univariate.group.api)의 '그룹 사용 시작·중지·삭제'를 참고합니다. 콘솔에는 이 조작이 없습니다.
+- 특정 그룹만 골라 사용 시작, 중지, 삭제하려면 [API 가이드](./api-guide/#univariate.group.api)의 '그룹 사용 시작·중지·삭제'를 참고합니다. 콘솔에는 이 조작이 없습니다.
 
 <a id="app.detail.univariate.groups.hash"></a>
 ##### 해시 계산기 { #app.detail.univariate.groups.hash }

@@ -241,7 +241,7 @@ Under the group label, the **View Example** row displays how many series and gro
 Click **Add** to open the completion window, which displays the data source readiness status and the **Collection Method** (endpoint, request headers, request body example, and rules). Once the status changes to "Ready," you can send metrics using the provided method.
 
 !!! tip "Tips"
-    For information on how to send data to the Prometheus API data source, see the **Collection Method** tab in the creation completion window or Details view, or see "Metric Collection" in the [API Guide](../api-guide/#metrics.ingest.api).
+    For information on how to send data to the Prometheus API data source, see the **Collection Method** tab in the creation completion window or Details view, or see "Metric Collection" in the [API Guide](./api-guide/#metrics.ingest.api).
 
 <a id="datasource.delete"></a>
 ### Delete a Data Source { #datasource.delete }
@@ -290,8 +290,8 @@ The Event API is a feature that collects real-time event data via HTTP API. Use 
     Changing the data source schema is also restricted while the Event API is enabled. To add fields to the catalog, you must first disable the Event API.
     If you re-enable the Event API after uploading a snapshot, the event collection offset is reset to the latest offset.
 
-For information about how to send events, see "Event Ingestion" in the [API Guide](../api-guide/#event.ingest.api).
-You can also enable and disable the Event API via "Enable/Disable Event API" in the [API Guide](../api-guide/#event.ingest.api.enable).
+For information about how to send events, see "Event Ingestion" in the [API Guide](./api-guide/#event.ingest.api).
+You can also enable and disable the Event API via "Enable/Disable Event API" in the [API Guide](./api-guide/#event.ingest.api.enable).
 
 <a id="datasource.detail.ingest"></a>
 #### Collect metrics { #datasource.detail.ingest }
@@ -310,7 +310,7 @@ The same information is also displayed in the completion window immediately afte
 !!! danger "Caution"
     The issued authentication token must be placed in the token position of the `X-NHN-Authorization` header. If you send only the app key, the request will be rejected.
 
-For details on the request format, see "Metric Collection" in the [API Guide](../api-guide/#metrics.ingest.api).
+For details on the request format, see "Metric Collection" in the [API Guide](./api-guide/#metrics.ingest.api).
 
 <a id="datasource.edit"></a>
 ### Update Data { #datasource.edit }
@@ -351,7 +351,7 @@ Click the **Add field** button in the **Catalog** tab of the Details view.
 - You cannot add fields to a data source with the Event API enabled. Disable the Event API first.
 
 !!! tip "Note"
-    You can update data not only through the console but also via the API. For details, see the 'Ingest API' section in the [API guide](../api-guide/#ingest.api).
+    You can update data not only through the console but also via the API. For details, see the 'Ingest API' section in the [API guide](./api-guide/#ingest.api).
 
 <a id="pipeline"></a>
 ## Pipeline { #pipeline }
@@ -1574,7 +1574,7 @@ Status:
 - You can sort the Group Key, Activation Time, Deactivation Time, Created On, and Modified On columns by clicking the column header. Sorting applies to all groups, and changing the sort order navigates to page 1. The Value, Group Hash, and Status columns cannot be sorted; values are sorted within the Group Key column.
 - You can adjust the number of items displayed per page (20, 50, or 100; default is 20).
 - If no groups are registered, the message "No groups are registered. Groups will appear here when data arrives and groups are registered." is displayed. If no groups match the search or filter conditions, "No groups match the conditions." is displayed.
-- To start, stop, or delete specific groups individually, refer to "Start, Stop, and Delete Groups" in the [API Guide](../api-guide/#univariate.group.api). These operations are not available in the console.
+- To start, stop, or delete specific groups individually, refer to "Start, Stop, and Delete Groups" in the [API Guide](./api-guide/#univariate.group.api). These operations are not available in the console.
 
 <a id="app.detail.univariate.groups.hash"></a>
 ##### Hash Calculator { #app.detail.univariate.groups.hash }
