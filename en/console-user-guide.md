@@ -159,10 +159,11 @@ See the table below for available types and their descriptions:
 
 Specify the primary key field as follows:
 
-- When you select a CSV file, a dropdown is automatically created with the first column selected. Click the dropdown to change to a different column.
-- Click the **Add primary key** button to add another dropdown and specify two or more columns as a composite key. Columns already selected will not appear as options in other dropdowns.
-- If all dropdowns are cleared, no primary key will be specified.
-- For files without a header, columns are displayed with their sequence number and the value from the first data row.
+- When you select a CSV file, a dropdown is automatically created with the first column. Click the dropdown to change to a different column.
+- Adding a dropdown with the **Add Primary Key** button allows you to group and designate two or more columns. Columns that are already selected do not appear as candidates in other dropdowns.
+- Clearing all dropdowns leaves the primary key unspecified.
+- If you do not specify a primary key, you can only add data via the Event API. Events that modify or delete existing rows are rejected.
+- For files without a header, columns are displayed with their sequential numbers and the values from the first data row.
 
 Enter the schema using one of the following methods:
 
