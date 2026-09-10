@@ -52,7 +52,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ## 1. 데이터 소스 생성하기 { #datasource.create }
 
 **Machine Learning > NHN Cloud Foundry > 데이터 소스** 탭으로 이동합니다.
-각 설정 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#datasource.create)의 '데이터 소스 생성'을 참고합니다.
+각 설정 항목의 자세한 설명은 [콘솔 유저 가이드](./console-user-guide/#datasource.create)의 '데이터 소스 생성'을 참고합니다.
 
 1. **데이터 소스 생성** 버튼을 클릭합니다.
 
@@ -77,7 +77,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ## 2. 앱 생성하기 { #app.create }
 
 **Machine Learning > NHN Cloud Foundry > 앱** 탭으로 이동한 뒤 **앱 생성** 버튼을 클릭합니다.
-각 설정 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.create)의 '앱 생성'을 참고합니다.
+각 설정 항목의 자세한 설명은 [콘솔 유저 가이드](./console-user-guide/#app.create)의 '앱 생성'을 참고합니다.
 
 <a id="app.create.basic"></a>
 ### 기본 설정 { #app.create.basic }
@@ -118,7 +118,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 
 ![앱 목록](../static/images/quick-start/앱목록.png){ height="70%" }
 
-상태 값의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.list.status)의 '앱 상태'를 참고합니다.
+상태 값의 자세한 설명은 [콘솔 유저 가이드](./console-user-guide/#app.list.status)의 '앱 상태'를 참고합니다.
 
 !!! tip "알아두기"
     앱 생성 직후의 학습·배포는 앱을 준비하는 과정입니다. 추천 모델의 첫 학습은 배치 스케줄 설정에 지정한 시각에 실행되며, 그 전에는 추천 API가 응답을 반환하더라도 학습된 모델의 추천 결과가 아닙니다.
@@ -127,7 +127,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ## 4. 추천 결과 조회하기 { #recommendation.query }
 
 앱이 활성 상태가 되면 콘솔의 추천 API 호출 화면에서 추천 결과를 확인하거나, 추천 조회 API를 호출하여 추천 결과를 조회할 수 있습니다.
-각 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.detail.recommend)의 '추천 API 호출'을 참고합니다.
+각 항목의 자세한 설명은 [콘솔 유저 가이드](./console-user-guide/#app.detail.recommend)의 '추천 API 호출'을 참고합니다.
 
 1. 앱 목록에서 생성한 앱을 클릭해 상세 화면의 **추천 API 호출** 탭으로 이동합니다.
 2. 사용자 ID를 입력하고 추천 모드와 최대 추천 수를 지정합니다.
@@ -136,7 +136,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
     ![추천 API 호출](../static/images/quick-start/추천API호출.png){ height="70%" }
 
 **요청 미리보기**에는 입력 값으로 구성된 실제 API 요청 JSON이 표시됩니다. **복사** 버튼으로 복사해 API 연동 개발에 활용할 수 있습니다.
-추천 조회 API를 직접 호출하는 방법은 [API 가이드](../api-guide/#recommendation.api)의 '추천 조회 API'를 참고합니다.
+추천 조회 API를 직접 호출하는 방법은 [API 가이드](./api-guide/#recommendation.api)의 '추천 조회 API'를 참고합니다.
 
 응답에는 요청 식별자(`metadata.requestId`)와 추천 아이템 목록(`recommendations[].itemKey`)이 포함됩니다. 이 값은 다음 단계의 추천 이벤트 전송에 사용됩니다.
 
@@ -148,7 +148,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 ## 5. 추천 이벤트 수집하기 { #recommendation.event }
 
 사용자가 추천 결과를 클릭하는 등 반응이 발생하면 추천 이벤트 API로 전송합니다. 적재된 이벤트 데이터로 추천 성공률을 분석할 수 있습니다.
-요청 필드의 자세한 설명은 [API 가이드](../api-guide/#recommendation.event.api)의 '추천 이벤트 API'를 참고합니다.
+요청 필드의 자세한 설명은 [API 가이드](./api-guide/#recommendation.event.api)의 '추천 이벤트 API'를 참고합니다.
 
 ```bash
 curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
@@ -191,7 +191,7 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
 
     ![지표 데이터 소스 생성](../static/images/quick-start/지표데이터소스생성.png){ height="70%" }
 
-각 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#datasource.create.detail.prometheus)의 'Prometheus API 상세 설정'을 참고합니다.
+각 항목의 자세한 설명은 [콘솔 유저 가이드](./console-user-guide/#datasource.create.detail.prometheus)의 'Prometheus API 상세 설정'을 참고합니다.
 
 <a id="univariate.ingest"></a>
 ### 2. 지표 전송하기 { #univariate.ingest }
@@ -219,7 +219,7 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
   }'
 ```
 
-요청 형식의 자세한 설명은 [API 가이드](../api-guide/#metrics.ingest.api)의 '지표 수집'을 참고합니다.
+요청 형식의 자세한 설명은 [API 가이드](./api-guide/#metrics.ingest.api)의 '지표 수집'을 참고합니다.
 
 !!! tip "알아두기"
     앱을 만든 뒤에는 같은 시계열의 지표를 1분에 하나씩 끊김 없이 보냅니다. 그보다 긴 간격으로 보내면 빈 구간이 생겨 정확 모드에서 준비가 끝나지 않을 수 있고, 1분 안에 여러 값을 보내면 먼저 도착한 값만 쓰입니다. 더 짧은 주기로 수집한다면 1분 평균으로 합쳐 보냅니다.
@@ -242,7 +242,7 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
 3. 최종 검토에서 입력 내용을 확인하고 **저장** 버튼을 클릭합니다.
     - 완료 창에 학습·배포 진행과 결과가 나가기까지 걸리는 시간이 안내됩니다. 그동안 지표를 계속 보냅니다.
 
-각 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.create.detail.univariate)의 '단변량 이상 탐지 상세 설정'을 참고합니다.
+각 항목의 자세한 설명은 [콘솔 유저 가이드](./console-user-guide/#app.create.detail.univariate)의 '단변량 이상 탐지 상세 설정'을 참고합니다.
 
 !!! tip "알아두기"
     지표 데이터 소스 하나에는 단변량 이상 탐지 앱을 하나만 만들 수 있습니다. 결과 전송의 전송 모드는 기본값인 정확 모드를 권장하며, 준비가 끝나기 전 값이라도 바로 받아 보려면 즉시 모드를 선택합니다.
@@ -266,4 +266,4 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
 3. 탐지 결과인 이상 점수와 임계값은 지정한 Prometheus로 전송되며, 결과 데이터 소스에도 저장됩니다.
 4. 저장된 결과는 **분석** 탭의 쿼리나 차트로 조회합니다.
 
-각 항목의 자세한 설명은 [콘솔 유저 가이드](../console-user-guide/#app.detail.univariate)의 '단변량 이상 탐지 앱 상세'를 참고합니다.
+각 항목의 자세한 설명은 [콘솔 유저 가이드](./console-user-guide/#app.detail.univariate)의 '단변량 이상 탐지 앱 상세'를 참고합니다.

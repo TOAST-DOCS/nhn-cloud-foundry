@@ -23,7 +23,7 @@ API を使用するには、**Appkey** と**認証トークン**が必要です�
 
 - Appkey は、NHN Cloud コンソールの **[Machine Learning > NHN Cloud Foundry]** ページ上部の **[URL & Appkey]** メニューで確認できます。
 - API は **gateway-public** エンドポイントを使用します。
-- 認証トークン（`X-NHN-Authorization` ヘッダーの Bearer トークン）の発行方法については、[User Access Key トークン](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/user-access-key-token/) ガイドを参照してください。
+- 認証トークン（`X-NHN-Authorization` ヘッダーの Bearer トークン）の発行方法については、[User Access Key トークン](/nhncloud/ja/public-api/user-access-key-token/) ガイドを参照してください。
 
 <a id="auth.common.request"></a>
 ### リクエスト共通事項 { #auth.common.request }
@@ -418,7 +418,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 既存のデータを維持したまま変更イベントを送信します。タイプがファイルのデータソースで使用し、**Event API** を先に有効化する必要があります。有効化はコンソールのイベント設定タブまたは以下の有効化 API で行います。
 
 !!! danger "注意"
-    Event API を有効化すると、スナップショットのアップロードが遮断されます。また、アクティブ状態ではデータソーススキーマの変更（カタログフィールドの追加）が制限されるため、フィールドを追加するには Event API を先に無効化する必要があります。有効化・無効化の方法については、[コンソールユーザーガイド](../console-user-guide/#datasource.detail.event)の「イベント設定」を参照してください。
+    Event API を有効化すると、スナップショットのアップロードが遮断されます。また、アクティブ状態ではデータソーススキーマの変更（カタログフィールドの追加）が制限されるため、フィールドを追加するには Event API を先に無効化する必要があります。有効化・無効化の方法については、[コンソールユーザーガイド](./console-user-guide/#datasource.detail.event)の「イベント設定」を参照してください。
 
 <a id="event.ingest.api.enable"></a>
 #### Event API 有効化・無効化 { #event.ingest.api.enable }

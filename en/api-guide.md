@@ -23,7 +23,7 @@ To use the APIs, you need an **Appkey** and an **authentication token**.
 
 - You can find the Appkey in the **URL & Appkey** menu at the top of the **Machine Learning > NHN Cloud Foundry** page in the NHN Cloud console.
 - The APIs use the **gateway-public** endpoint.
-- For information on issuing an authentication token (Bearer token in the `X-NHN-Authorization` header), see the [User Access Key Token](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/user-access-key-token/) guide.
+- For information on issuing an authentication token (Bearer token in the `X-NHN-Authorization` header), see the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token/) guide.
 
 <a id="auth.common.request"></a>
 ### Common Request Information { #auth.common.request }
@@ -418,7 +418,7 @@ The job status (`status`) can have the following values:
 Sends change events while retaining existing data. This is used with data sources of the file type, and you must first enable the **Event API**. You can enable it from the event settings tab in the console or by using the activation API below.
 
 !!! danger "Caution"
-    Enabling the Event API blocks snapshot uploads. In addition, modifying the data source schema (adding catalog fields) is restricted while the Event API is enabled, so you must disable the Event API before adding fields. For instructions on how to enable and disable the Event API, see "Event Settings" in the [Console User Guide](../console-user-guide/#datasource.detail.event).
+    Enabling the Event API blocks snapshot uploads. In addition, modifying the data source schema (adding catalog fields) is restricted while the Event API is enabled, so you must disable the Event API before adding fields. For instructions on how to enable and disable the Event API, see "Event Settings" in the [Console User Guide](./console-user-guide/#datasource.detail.event).
 
 <a id="event.ingest.api.enable"></a>
 #### Enable/Disable Event API { #event.ingest.api.enable }

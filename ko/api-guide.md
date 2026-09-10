@@ -21,7 +21,7 @@ API를 사용하려면 **Appkey**와 **인증 토큰**이 필요합니다.
 
 - Appkey는 NHN Cloud 콘솔의 **Machine Learning > NHN Cloud Foundry** 페이지 상단 **URL & Appkey** 메뉴에서 확인할 수 있습니다.
 - API는 **gateway-public** 엔드포인트를 사용합니다.
-- 인증 토큰(`X-NHN-Authorization` 헤더의 Bearer 토큰) 발급 방법은 [User Access Key 토큰](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/user-access-key-token/) 가이드를 참고합니다.
+- 인증 토큰(`X-NHN-Authorization` 헤더의 Bearer 토큰) 발급 방법은 [User Access Key 토큰](/nhncloud/ko/public-api/user-access-key-token/) 가이드를 참고합니다.
 
 <a id="auth.common.request"></a>
 ### 요청 공통 사항 { #auth.common.request }
@@ -416,7 +416,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 기존 데이터를 유지한 채 변경 이벤트를 전송합니다. 타입이 파일인 데이터 소스에서 사용하며, **Event API**를 먼저 활성화해야 합니다. 활성화는 콘솔의 이벤트 설정 탭 또는 아래 활성화 API로 합니다.
 
 !!! danger "주의"
-    Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 또한 활성화 상태에서는 데이터 소스 스키마 변경(카탈로그 필드 추가)이 제한되므로, 필드를 추가하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](../console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
+    Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 또한 활성화 상태에서는 데이터 소스 스키마 변경(카탈로그 필드 추가)이 제한되므로, 필드를 추가하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](./console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
 
 <a id="event.ingest.api.enable"></a>
 #### Event API 활성화·비활성화 { #event.ingest.api.enable }
