@@ -416,7 +416,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 기존 데이터를 유지한 채 변경 이벤트를 전송합니다. 타입이 파일인 데이터 소스에서 사용하며, **Event API**를 먼저 활성화해야 합니다. 활성화는 콘솔의 이벤트 설정 탭 또는 아래 활성화 API로 합니다.
 
 !!! danger "주의"
-    Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 또한 활성화 상태에서는 데이터 소스 스키마 변경(카탈로그 필드 추가)이 제한되므로, 필드를 추가하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](./console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
+    Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 또한 스키마 변경이 제한되므로, 스키마를 변경하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](./console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
 
 <a id="event.ingest.api.enable"></a>
 #### Event API 활성화·비활성화 { #event.ingest.api.enable }
@@ -556,7 +556,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 <a id="metrics.ingest.api"></a>
 ### 지표 수집 { #metrics.ingest.api }
 
-타입이 Prometheus API인 데이터 소스로 지표 데이터를 전송합니다. 전송한 지표는 단변량 이상 탐지 앱의 입력으로 사용합니다.
+타입이 Prometheus API인 데이터 소스로 지표 데이터를 전송합니다. 전송한 지표는 분석 메뉴에서 조회할 수 있고, 단변량 시계열 이상탐지 앱의 입력으로도 사용할 수 있습니다.
 
 | 메서드 | URI |
 | --- | --- |
@@ -608,15 +608,15 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 - 전송이 지연된 데이터는 저장되지만 실시간 추론 대상에서 제외될 수 있습니다.
 
 !!! tip "알아두기"
-    적재는 전송 주기와 무관합니다. 다만 이 데이터 소스를 단변량 이상 탐지 앱에 연결했다면 같은 시계열을 1분에 하나씩 끊김 없이 보내야 합니다. 앱이 지표를 1분 단위로 묶어 판정하므로, 그보다 긴 간격으로 보내면 빈 구간이 생겨 정확 모드에서 준비가 끝나지 않을 수 있습니다.
+    적재는 전송 주기와 무관합니다. 다만 이 데이터 소스를 단변량 시계열 이상탐지 앱에 연결했다면 같은 시계열을 1분에 하나씩 끊김 없이 보내야 합니다. 앱이 지표를 1분 단위로 묶어 판정하므로, 그보다 긴 간격으로 보내면 빈 구간이 생겨 정확 모드에서 준비가 끝나지 않을 수 있습니다.
 
 <a id="univariate.api"></a>
-## 단변량 이상 탐지 API { #univariate.api }
+## 단변량 시계열 이상탐지 API { #univariate.api }
 
 <a id="univariate.group.api"></a>
 ### 그룹 사용 시작·중지·삭제 { #univariate.group.api }
 
-단변량 이상 탐지 앱의 그룹을 사용 시작, 중지, 삭제합니다. 세 API의 요청 형식은 같고 경로만 다릅니다.
+단변량 시계열 이상탐지 앱의 그룹을 사용 시작, 중지, 삭제합니다. 세 API의 요청 형식은 같고 경로만 다릅니다.
 
 | 메서드 | URI |
 | --- | --- |
@@ -712,6 +712,9 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | options.mode | String | X | 추론 방식 지정. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) 중 하나. 미지정 시 서버가 자동 결정 |
 | options.longtail | Boolean | X | 인기가 낮은 항목까지 포함해 추천 다양성 향상. sequential일 때만 적용 |
 | options.excludeItemKeys | Array | X | 추천에서 제외할 아이템 키 목록. 제외한 아이템은 최대 추천 수에 미포함 |
+
+- `options.mode`를 지정하지 않으면 서버가 추론 방식을 정합니다. 이때 정해진 방식의 모델이 앱에 없으면 앱에 연동된 다른 방식으로 대신 추천합니다. 실제로 사용한 방식은 응답의 `body.metadata.inferenceType`에서 확인합니다.
+- 요청한 방식의 모델이 앱에 없고 대신할 방식도 없으면 HTTP `503`과 결과 코드 `5030001`을 반환합니다. 앱에 어떤 모델이 만들어져 있는지와 학습이 끝났는지 확인한 뒤 다시 호출합니다. `options.mode`로 방식을 지정한 요청은 대체하지 않으므로 이 응답을 받을 수 있습니다.
 
 <a id="recommendation.api.signal"></a>
 #### 행동 신호 { #recommendation.api.signal }
