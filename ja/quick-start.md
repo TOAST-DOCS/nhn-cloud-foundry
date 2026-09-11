@@ -54,7 +54,7 @@ NHN Cloud Foundry はコンソールから直接有効化することはでき�
 ## 1. データソースの作成 { #datasource.create }
 
 **[Machine Learning > NHN Cloud Foundry > データソース]** タブに移動します。
-各設定項目の詳細については、[コンソールユーザーガイド](../console-user-guide/#datasource.create)の「データソースの作成」を参照してください。
+各設定項目の詳細については、[コンソールユーザーガイド](./console-user-guide/#datasource.create)の「データソースの作成」を参照してください。
 
 1. **[データソースの作成]** ボタンをクリックします。
 
@@ -79,7 +79,7 @@ NHN Cloud Foundry はコンソールから直接有効化することはでき�
 ## 2. アプリの作成 { #app.create }
 
 **[Machine Learning > NHN Cloud Foundry > アプリ]** タブに移動し、**[アプリの作成]** ボタンをクリックします。
-各設定項目の詳細については、[コンソールユーザーガイド](../console-user-guide/#app.create)の「アプリの作成」を参照してください。
+各設定項目の詳細については、[コンソールユーザーガイド](./console-user-guide/#app.create)の「アプリの作成」を参照してください。
 
 <a id="app.create.basic"></a>
 ### 基本設定 { #app.create.basic }
@@ -120,7 +120,7 @@ NHN Cloud Foundry はコンソールから直接有効化することはでき�
 
 ![アプリ一覧](../static/images/quick-start/앱목록.png){ height="70%" }
 
-ステータス値の詳細については、[コンソールユーザーガイド](../console-user-guide/#app.list.status)の「アプリのステータス」を参照してください。
+ステータス値の詳細については、[コンソールユーザーガイド](./console-user-guide/#app.list.status)の「アプリのステータス」を参照してください。
 
 !!! tip "ヒント"
     アプリ作成直後の学習・デプロイは、アプリを準備するプロセスです。レコメンドモデルの初回学習は、バッチスケジュール設定で指定した時刻に実行されます。それ以前にレコメンド API がレスポンスを返しても、学習済みモデルのレコメンド結果ではありません。
@@ -129,7 +129,7 @@ NHN Cloud Foundry はコンソールから直接有効化することはでき�
 ## 4. レコメンド結果の照会 { #recommendation.query }
 
 アプリがアクティブ状態になると、コンソールのレコメンド API 呼び出し画面でレコメンド結果を確認するか、レコメンド照会 API を呼び出してレコメンド結果を照会できます。
-各項目の詳細については、[コンソールユーザーガイド](../console-user-guide/#app.detail.recommend)の「レコメンド API 呼び出し」を参照してください。
+各項目の詳細については、[コンソールユーザーガイド](./console-user-guide/#app.detail.recommend)の「レコメンド API 呼び出し」を参照してください。
 
 1. アプリ一覧で作成したアプリをクリックし、詳細画面の **[レコメンド API 呼び出し]** タブに移動します。
 2. ユーザー ID を入力し、レコメンドモードと最大レコメンド数を指定します。
@@ -138,7 +138,7 @@ NHN Cloud Foundry はコンソールから直接有効化することはでき�
     ![レコメンド API 呼び出し](../static/images/quick-start/추천API호출.png){ height="70%" }
 
 **[リクエストプレビュー]** には、入力値で構成された実際の API リクエスト JSON が表示されます。**[コピー]** ボタンでコピーして、API 連携開発に活用できます。
-レコメンド照会 API を直接呼び出す方法については、[API ガイド](../api-guide/#recommendation.api)の「レコメンド照会 API」を参照してください。
+レコメンド照会 API を直接呼び出す方法については、[API ガイド](./api-guide/#recommendation.api)の「レコメンド照会 API」を参照してください。
 
 レスポンスには、リクエスト識別子（`metadata.requestId`）とレコメンドアイテム一覧（`recommendations[].itemKey`）が含まれます。この値は、次のステップのレコメンドイベント送信に使用されます。
 
@@ -150,7 +150,7 @@ NHN Cloud Foundry はコンソールから直接有効化することはでき�
 ## 5. レコメンドイベントの収集 { #recommendation.event }
 
 ユーザーがレコメンド結果をクリックするなどの反応が発生した場合、レコメンドイベント API で送信します。蓄積されたイベントデータを使用して、レコメンドの成功率を分析できます。
-リクエストフィールドの詳細については、[API ガイド](../api-guide/#recommendation.event.api)の「レコメンドイベント API」を参照してください。
+リクエストフィールドの詳細については、[API ガイド](./api-guide/#recommendation.event.api)の「レコメンドイベント API」を参照してください。
 
 ```bash
 curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
@@ -193,7 +193,7 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
 
     ![指標データソースの作成](../static/images/quick-start/지표데이터소스생성.png){ height="70%" }
 
-各項目の詳細については、[コンソールユーザーガイド](../console-user-guide/#datasource.create.detail.prometheus)の「Prometheus API 詳細設定」を参照してください。
+各項目の詳細については、[コンソールユーザーガイド](./console-user-guide/#datasource.create.detail.prometheus)の「Prometheus API 詳細設定」を参照してください。
 
 <a id="univariate.ingest"></a>
 ### 2. 指標の転送 { #univariate.ingest }
@@ -221,7 +221,7 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
   }'
 ```
 
-リクエスト形式の詳細については、[APIガイド](../api-guide/#metrics.ingest.api)の「指標収集」を参照してください。
+リクエスト形式の詳細については、[APIガイド](./api-guide/#metrics.ingest.api)の「指標収集」を参照してください。
 
 !!! tip "知っておくべきこと"
     アプリを作成した後は、同じ時系列のメトリクスを1分ごとに途切れなく送信します。それより長い間隔で送信すると空白区間が生じ、正確モードで準備が完了しない場合があります。また、1分以内に複数の値を送信すると、最初に到着した値のみが使用されます。より短い周期で収集する場合は、1分間の平均にまとめて送信します。
@@ -244,7 +244,7 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
 3. 最終確認で入力内容を確認し、**[保存]** ボタンを押します。
     - 完了ウィンドウには、学習・デプロイの進行と結果が表示されるまでの所要時間が案内されます。その間もメトリクスを送信し続けます。
 
-各項目の詳細については、[コンソールユーザーガイド](../console-user-guide/#app.create.detail.univariate)の「単変量異常検知 詳細設定」を参照してください。
+各項目の詳細については、[コンソールユーザーガイド](./console-user-guide/#app.create.detail.univariate)の「単変量異常検知 詳細設定」を参照してください。
 
 !!! tip "ヒント"
     指標データソース1つに対して、単変量異常検知アプリは1つのみ作成できます。結果転送の転送モードはデフォルトの正確モードを推奨します。準備が完了する前の値をすぐに受け取りたい場合は、即時モードを選択します。
@@ -268,4 +268,4 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
 3. 検知結果である異常スコアとしきい値は、指定した Prometheus に送信され、結果データソースにも保存されます。
 4. 保存された結果は、**[分析]** タブのクエリやチャートで照会します。
 
-各項目の詳細については、[コンソールユーザーガイド](../console-user-guide/#app.detail.univariate)の「単変量異常検知アプリの詳細」を参照してください。
+各項目の詳細については、[コンソールユーザーガイド](./console-user-guide/#app.detail.univariate)の「単変量異常検知アプリの詳細」を参照してください。

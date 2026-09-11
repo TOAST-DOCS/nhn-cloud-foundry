@@ -75,7 +75,7 @@ The anomaly scores and threshold values from the detection results are sent to t
 NHN Cloud Foundry provides APIs in addition to the console.
 You can use the Ingest API to load snapshots, events, and metrics into a data source that you have already created, as well as APIs to request recommendation results from a created app and to send user reaction events.
 
-For more information, see the [API Guide](../api-guide/).
+For more information, see the [API Guide](./api-guide/).
 
 <a id="target"></a>
 ## Target users { #target }

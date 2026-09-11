@@ -23,7 +23,7 @@ To use the APIs, you need an **Appkey** and an **authentication token**.
 
 - You can find the Appkey in the **URL & Appkey** menu at the top of the **Machine Learning > NHN Cloud Foundry** page in the NHN Cloud console.
 - The APIs use the **gateway-public** endpoint.
-- For information on issuing an authentication token (Bearer token in the `X-NHN-Authorization` header), see the [User Access Key Token](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/user-access-key-token/) guide.
+- For information on issuing an authentication token (Bearer token in the `X-NHN-Authorization` header), see the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token/) guide.
 
 <a id="auth.common.request"></a>
 ### Common Request Information { #auth.common.request }
@@ -418,7 +418,7 @@ The job status (`status`) can have the following values:
 Sends change events while retaining existing data. This is used with data sources of the file type, and you must first enable the **Event API**. You can enable it from the event settings tab in the console or by using the activation API below.
 
 !!! danger "Caution"
-    Enabling the Event API blocks snapshot uploads. In addition, modifying the data source schema (adding catalog fields) is restricted while the Event API is enabled, so you must disable the Event API before adding fields. For instructions on how to enable and disable the Event API, see "Event Settings" in the [Console User Guide](../console-user-guide/#datasource.detail.event).
+    Enabling the Event API blocks snapshot uploads. In addition, modifying the data source schema (adding catalog fields) is restricted while the Event API is enabled, so you must disable the Event API before adding fields. For instructions on how to enable and disable the Event API, see "Event Settings" in the [Console User Guide](./console-user-guide/#datasource.detail.event).
 
 <a id="event.ingest.api.enable"></a>
 #### Enable/Disable Event API { #event.ingest.api.enable }
@@ -611,59 +611,6 @@ The collection rules are as follows:
 
 !!! tip "Tips"
     Loading is independent of the transmission interval. However, if you have connected this data source to a univariate anomaly detection app, you must send the same time series continuously, one per minute without interruption. Because the app groups metrics in 1-minute increments for evaluation, sending them at longer intervals creates gaps that may prevent the exact mode from completing its preparation.
-
-<a id="univariate.api"></a>
-## Univariate Anomaly Detection API { #univariate.api }
-
-<a id="univariate.group.api"></a>
-### Enable, Disable, and Delete Groups { #univariate.group.api }
-
-Enables, disables, and deletes groups in the univariate anomaly detection app. All three APIs share the same request format — only the path differs.
-
-| Method | URI |
-| --- | --- |
-| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable |
-| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/disable |
-| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/delete |
-
-`servingPipelineId` is the app ID displayed in the app details in the console.
-
-curl example:
-
-```bash
-curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable" \
-  -H "X-NC-APP-KEY: {appKey}" \
-  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "groupKey": [
-      { "name": "region", "value": ["kr1", "jp1"] }
-    ]
-  }'
-```
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| groupKey | Array | Conditional | List of labels that specify the target groups. Used only when group labels are specified in the data source. |
-| groupKey[].name | String | O | Group label name. Must exactly match the group label name specified in the data source. |
-| groupKey[].value | Array | O | List of values for the label. Each value corresponds to one group. |
-
-If successful, `header.isSuccessful` returns `true`, and there is no `body`.
-
-The request rules are as follows:
-
-- If no group labels are specified in the data source, do not send `groupKey`. The entire data source is treated as a single group and becomes the target. The request is rejected if `groupKey` is included.
-- If group labels are specified in the data source, `groupKey` is required, and the set of label names you send must exactly match the group labels of the data source. The request is rejected if the same label name is sent more than once.
-- If there are multiple group labels, groups are formed by pairing values at the same index across each label's value list. For example, if `["a", "b"]` is sent for `rule_id` and `["q", "w"]` for `instance_id`, the two target groups are `(a, q)` and `(b, w)`. All labels must have the same number of values; the request is rejected if the counts differ.
-- The request is rejected if a value list is empty. If the same group is specified more than once, it is processed only once.
-- An error is returned if you attempt to disable or delete a group that is not registered.
-
-!!! tip "Note"
-    When metrics arrive, groups are automatically registered and start operating. Use this API to selectively enable, disable, or delete specific groups — these operations are not available in the console. You can check registered groups and their status on the **Group List** tab in the app details in the console.
-
-!!! danger "Warning"
-    Disabling a group does not stop the transmission of detection results. Only the status displayed in the group list changes to inactive.
-    Deleted groups disappear along with their status records and cannot be recovered.
 
 <a id="univariate.api"></a>
 ## Univariate Anomaly Detection API { #univariate.api }

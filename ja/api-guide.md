@@ -23,7 +23,7 @@ API を使用するには、**Appkey** と**認証トークン**が必要です�
 
 - Appkey は、NHN Cloud コンソールの **[Machine Learning > NHN Cloud Foundry]** ページ上部の **[URL & Appkey]** メニューで確認できます。
 - API は **gateway-public** エンドポイントを使用します。
-- 認証トークン（`X-NHN-Authorization` ヘッダーの Bearer トークン）の発行方法については、[User Access Key トークン](https://docs.nhncloud.com/ko/nhncloud/ko/public-api/user-access-key-token/) ガイドを参照してください。
+- 認証トークン（`X-NHN-Authorization` ヘッダーの Bearer トークン）の発行方法については、[User Access Key トークン](/nhncloud/ja/public-api/user-access-key-token/) ガイドを参照してください。
 
 <a id="auth.common.request"></a>
 ### リクエスト共通事項 { #auth.common.request }
@@ -418,7 +418,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 既存のデータを維持したまま変更イベントを送信します。タイプがファイルのデータソースで使用し、**Event API** を先に有効化する必要があります。有効化はコンソールのイベント設定タブまたは以下の有効化 API で行います。
 
 !!! danger "注意"
-    Event API を有効化すると、スナップショットのアップロードが遮断されます。また、アクティブ状態ではデータソーススキーマの変更（カタログフィールドの追加）が制限されるため、フィールドを追加するには Event API を先に無効化する必要があります。有効化・無効化の方法については、[コンソールユーザーガイド](../console-user-guide/#datasource.detail.event)の「イベント設定」を参照してください。
+    Event API を有効化すると、スナップショットのアップロードが遮断されます。また、アクティブ状態ではデータソーススキーマの変更（カタログフィールドの追加）が制限されるため、フィールドを追加するには Event API を先に無効化する必要があります。有効化・無効化の方法については、[コンソールユーザーガイド](./console-user-guide/#datasource.detail.event)の「イベント設定」を参照してください。
 
 <a id="event.ingest.api.enable"></a>
 #### Event API 有効化・無効化 { #event.ingest.api.enable }
@@ -611,59 +611,6 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 !!! tip "ヒント"
     積載は転送周期とは無関係です。ただし、このデータソースを単変量異常検知アプリに接続している場合は、同じ時系列を1分に1つずつ途切れなく送信する必要があります。アプリがメトリクスを1分単位でまとめて判定するため、それより長い間隔で送信すると空白区間が生じ、精度モードで準備が完了しない場合があります。
-
-<a id="univariate.api"></a>
-## 単変量異常検出 API { #univariate.api }
-
-<a id="univariate.group.api"></a>
-### グループの使用開始・停止・削除 { #univariate.group.api }
-
-単変量異常検出アプリのグループを使用開始、停止、削除します。3つのAPIのリクエスト形式は同じで、パスのみ異なります。
-
-| メソッド | URI |
-| --- | --- |
-| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable |
-| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/disable |
-| POST | /api/v1.0/serving-pipelines/{servingPipelineId}/groups/delete |
-
-`servingPipelineId` はコンソールアプリの詳細に表示されるアプリ ID です。
-
-curl の例:
-
-```bash
-curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingPipelineId}/groups/enable" \
-  -H "X-NC-APP-KEY: {appKey}" \
-  -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "groupKey": [
-      { "name": "region", "value": ["kr1", "jp1"] }
-    ]
-  }'
-```
-
-| フィールド | タイプ | 必須 | 説明 |
-| --- | --- | --- | --- |
-| groupKey | Array | 条件付き | 対象グループを指定するラベルリスト。データソースにグループラベルを指定した場合にのみ使用 |
-| groupKey[].name | String | O | グループラベル名。データソースに指定したグループラベルと名前が完全に一致する必要があります |
-| groupKey[].value | Array | O | そのラベルの値リスト。値1つがグループ1つに対応します |
-
-成功すると `header.isSuccessful` が `true` で返され、`body` はありません。
-
-リクエストのルールは次のとおりです。
-
-- データソースにグループラベルを指定していない場合は、`groupKey` を送信しません。データソース全体が1つのグループであるため、そのグループが対象となります。`groupKey` を一緒に送信するとリクエストが拒否されます。
-- データソースにグループラベルを指定した場合、`groupKey` は必須であり、送信したラベル名の集合がデータソースのグループラベルと完全に一致する必要があります。同じラベル名を2回送信すると拒否されます。
-- グループラベルが複数ある場合は、値リストを同じ順序でまとめてグループを作成します。例えば、`rule_id` に `["a", "b"]`、`instance_id` に `["q", "w"]` を送信すると、`(a, q)` と `(b, w)` の2つのグループが対象となります。すべてのラベルの値の数が同じである必要があり、異なる場合は拒否されます。
-- 値リストが空の場合は拒否されます。同じグループが複数回指定された場合は、1回のみ処理されます。
-- 登録されていないグループを停止または削除するとエラーが返されます。
-
-!!! tip "ヒント"
-    メトリクスが届くと、グループは自動的に登録されて動作します。このAPIは特定のグループのみを選択して使用開始、停止、削除する際に使用し、コンソールにはこの操作はありません。登録済みグループと状態はコンソールアプリの詳細の **[グループリスト]** タブで確認できます。
-
-!!! danger "注意"
-    グループを停止しても、検出結果の送信は停止しません。グループリストに表示される状態のみが無効化に変わります。
-    削除したグループは状態の記録とともに消去され、復旧することはできません。
 
 <a id="univariate.api"></a>
 ## 単変量異常検出 API { #univariate.api }

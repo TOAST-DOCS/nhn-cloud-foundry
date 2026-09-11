@@ -54,7 +54,7 @@ Univariate anomaly detection apps require metric (time series) data sent via the
 ## 1. Create a data source { #datasource.create }
 
 Go to the **Machine Learning > NHN Cloud Foundry > Data Source** tab.
-For a detailed description of each setting, see 'Create a data source' in the [Console User Guide](../console-user-guide/#datasource.create).
+For a detailed description of each setting, see 'Create a data source' in the [Console User Guide](./console-user-guide/#datasource.create).
 
 1. Click the **Create data source** button.
 
@@ -79,7 +79,7 @@ Prometheus API type for receiving metric (time series) data is created different
 ## 2. Create an app { #app.create }
 
 Go to the **Machine Learning > NHN Cloud Foundry > Apps** tab and click the **Create app** button.
-For a detailed description of each setting, see 'Create an app' in the [Console User Guide](../console-user-guide/#app.create).
+For a detailed description of each setting, see 'Create an app' in the [Console User Guide](./console-user-guide/#app.create).
 
 <a id="app.create.basic"></a>
 ### Basic settings { #app.create.basic }
@@ -120,7 +120,7 @@ Wait until the status in the app list changes to Active.
 
 ![App list](../static/images/quick-start/앱목록.png){ height="70%" }
 
-For a detailed description of each status value, see 'App status' in the [Console User Guide](../console-user-guide/#app.list.status).
+For a detailed description of each status value, see 'App status' in the [Console User Guide](./console-user-guide/#app.list.status).
 
 !!! tip "Note"
     Training and deployment immediately after app creation is the process of preparing the app. The first training of the recommendation model runs at the time specified in the batch schedule settings. Until then, even if the recommendation API returns a response, it does not reflect the recommendations of a trained model.
@@ -129,7 +129,7 @@ For a detailed description of each status value, see 'App status' in the [Consol
 ## 4. Retrieve recommendation results { #recommendation.query }
 
 When the app becomes active, you can check recommendation results on the recommendation API call screen in the console, or retrieve recommendation results by calling the recommendation query API.
-For a detailed description of each item, see 'Call recommendation API' in the [Console User Guide](../console-user-guide/#app.detail.recommend).
+For a detailed description of each item, see 'Call recommendation API' in the [Console User Guide](./console-user-guide/#app.detail.recommend).
 
 1. In the app list, click the app that you created to go to the **Call recommendation API** tab on the details screen.
 2. Enter the user ID and specify the recommendation mode and maximum number of recommendations.
@@ -138,7 +138,7 @@ For a detailed description of each item, see 'Call recommendation API' in the [C
     ![Call recommendation API](../static/images/quick-start/추천API호출.png){ height="70%" }
 
 **Request preview** displays the actual API request JSON composed of the input values. You can copy it using the **Copy** button and use it for API integration development.
-For instructions on directly calling the recommendation query API, see 'Recommendation query API' in the [API Guide](../api-guide/#recommendation.api).
+For instructions on directly calling the recommendation query API, see 'Recommendation query API' in the [API Guide](./api-guide/#recommendation.api).
 
 The response includes the request identifier (`metadata.requestId`) and the list of recommended items (`recommendations[].itemKey`). These values are used when sending recommendation events in the next step.
 
@@ -150,7 +150,7 @@ On the **App info** tab, you can check the app ID, status, and version used for 
 ## 5. Collect recommendation events { #recommendation.event }
 
 When a user interacts with recommendation results, such as clicking on them, send the event data using the recommendation event API. You can analyze the recommendation success rate using the accumulated event data.
-For a detailed description of each request field, see 'Recommendation event API' in the [API Guide](../api-guide/#recommendation.event.api).
+For a detailed description of each request field, see 'Recommendation event API' in the [API Guide](./api-guide/#recommendation.event.api).
 
 ```bash
 curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
@@ -193,7 +193,7 @@ On the **Machine Learning > NHN Cloud Foundry > Data Source** tab, click the **C
 
     ![Create metric data source](../static/images/quick-start/지표데이터소스생성.png){ height="70%" }
 
-For a detailed description of each field, refer to the 'Prometheus API Detail Settings' section in the [Console User Guide](../console-user-guide/#datasource.create.detail.prometheus).
+For a detailed description of each field, refer to the 'Prometheus API Detail Settings' section in the [Console User Guide](./console-user-guide/#datasource.create.detail.prometheus).
 
 <a id="univariate.ingest"></a>
 ### 2. Send Metrics { #univariate.ingest }
@@ -221,7 +221,7 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
   }'
 ```
 
-For a detailed description of the request format, see "Metric Collection" in the [API Guide](../api-guide/#metrics.ingest.api).
+For a detailed description of the request format, see "Metric Collection" in the [API Guide](./api-guide/#metrics.ingest.api).
 
 !!! tip "Note"
     After creating an app, send metrics of the same time series one per minute without interruption. If you send them at longer intervals, gaps will occur and the system may not finish preparing in exact mode. If you send multiple values within 1 minute, only the first value received is used. If you collect data at a shorter interval, aggregate the values into a 1-minute average before sending.
@@ -244,7 +244,7 @@ On the **Machine Learning > NHN Cloud Foundry > App** tab, click the **Create Ap
 3. In the final review, check the entered information and click the **Save** button.
     - The completion window displays the estimated time for the training and deployment process and results to appear. Continue sending metrics during this time.
 
-For a detailed description of each item, refer to "Univariate Anomaly Detection Detailed Settings" in the [Console User Guide](../console-user-guide/#app.create.detail.univariate).
+For a detailed description of each item, refer to "Univariate Anomaly Detection Detailed Settings" in the [Console User Guide](./console-user-guide/#app.create.detail.univariate).
 
 !!! tip "Tips"
     You can create only one univariate anomaly detection app per metric data source. For the result delivery transmission mode, the default Accurate mode is recommended. If you want to receive values immediately before preparation is complete, select Instant mode.
@@ -268,4 +268,4 @@ Click the app you created in the app list to go to the details screen.
 3. The anomaly score and threshold, which are the detection results, are sent to the specified Prometheus and also stored in the result data source.
 4. View the stored results using queries or charts on the **Analysis** tab.
 
-For detailed descriptions of each item, see "Univariate Anomaly Detection App Details" in the [Console User Guide](../console-user-guide/#app.detail.univariate).
+For detailed descriptions of each item, see "Univariate Anomaly Detection App Details" in the [Console User Guide](./console-user-guide/#app.detail.univariate).
