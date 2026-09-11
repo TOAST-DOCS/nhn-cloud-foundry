@@ -418,7 +418,7 @@ The job status (`status`) can have the following values:
 Sends change events while retaining existing data. This is used with data sources of the file type, and you must first enable the **Event API**. You can enable it from the event settings tab in the console or by using the activation API below.
 
 !!! danger "Caution"
-    Enabling the Event API blocks snapshot uploads. In addition, modifying the data source schema (adding catalog fields) is restricted while the Event API is enabled, so you must disable the Event API before adding fields. For instructions on how to enable and disable the Event API, see "Event Settings" in the [Console User Guide](./console-user-guide/#datasource.detail.event).
+    Enabling the Event API blocks snapshot uploads. In addition, schema changes are restricted, so you must disable the Event API before making any schema changes. For instructions on how to enable and disable it, see "Event Settings" in the [Console User Guide](./console-user-guide/#datasource.detail.event).
 
 <a id="event.ingest.api.enable"></a>
 #### Enable/Disable Event API { #event.ingest.api.enable }
@@ -558,7 +558,7 @@ The `body` of the response is an array of processing results for each event.
 <a id="metrics.ingest.api"></a>
 ### Metric Collection { #metrics.ingest.api }
 
-Sends metric data to a data source of type Prometheus API. The transmitted metrics are used as input for the univariate anomaly detection app.
+Sends metric data to a data source of the Prometheus API type. The sent metrics can be viewed in the Analysis menu and can also be used as input for the univariate time-series anomaly detection app.
 
 | Method | URI |
 | --- | --- |
@@ -610,15 +610,15 @@ The collection rules are as follows:
 - Data that arrives late is saved, but may be excluded from real-time inference.
 
 !!! tip "Tips"
-    Loading is independent of the transmission interval. However, if you have connected this data source to a univariate anomaly detection app, you must send the same time series continuously, one per minute without interruption. Because the app groups metrics in 1-minute increments for evaluation, sending them at longer intervals creates gaps that may prevent the exact mode from completing its preparation.
+    Loading is independent of the transmission interval. However, if this data source is connected to a univariate time-series anomaly detection app, you must send the same time series continuously, one per minute without interruption. Because the app groups metrics in 1-minute intervals for evaluation, sending at longer intervals will create gaps, which may prevent preparation from completing in precise mode.
 
 <a id="univariate.api"></a>
-## Univariate Anomaly Detection API { #univariate.api }
+## Univariate Time Series Anomaly Detection API { #univariate.api }
 
 <a id="univariate.group.api"></a>
 ### Enable, Disable, and Delete Groups { #univariate.group.api }
 
-Enables, disables, and deletes groups for the univariate anomaly detection app. The three APIs share the same request format; only the path differs.
+Enables, disables, and deletes groups of a univariate time-series anomaly detection app. The three APIs share the same request format and differ only in their paths.
 
 | Method | URI |
 | --- | --- |
@@ -714,6 +714,9 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | options.mode | String | X | Specifies the inference mode. One of: sequential (history-based), cold_start (attribute-based), popular (popularity-based). If not specified, the server determines this automatically. |
 | options.longtail | Boolean | X | Improves recommendation diversity by including less popular items. Applies only when sequential is used. |
 | options.excludeItemKeys | Array | X | List of item keys to exclude from recommendations. Excluded items are not counted toward the maximum number of recommendations. |
+
+- If `options.mode` is not specified, the server determines the inference type. If the app does not have a model for the determined type, the server recommends an alternative type that is integrated with the app instead. The type actually used can be checked in `body.metadata.inferenceType` of the response.
+- If the app does not have a model for the requested type and there is no alternative type, HTTP `503` and result code `5030001` are returned. Check which models have been created in the app and whether training has completed, then call again. Requests that specify a type via `options.mode` are not substituted, so you may receive this response.
 
 <a id="recommendation.api.signal"></a>
 #### Behavior Signals { #recommendation.api.signal }
