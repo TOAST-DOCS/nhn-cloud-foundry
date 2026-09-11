@@ -3,29 +3,29 @@
 <a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > 릴리스 노트 { #foundry }
 
-<a id="foundry.release.notes.2026.09.18"></a>
-### 2026. 09. 18. { #foundry.release.notes.2026.09.18 }
+<a id="foundry-release-notes-2026-09-18"></a>
+### 2026. 09. 18. { #foundry-release-notes-2026-09-18 }
 
-<a id="foundry.release.notes.2026.09.18.chart"></a>
-#### 분석 / 차트 { #foundry.release.notes.2026.09.18.chart }
+<a id="foundry-release-notes-2026-09-18-chart"></a>
+#### 분석 / 차트 { #foundry-release-notes-2026-09-18-chart }
 
 - 차트 설정이 잘못된 경우 화면에 사유가 표시되며, 한 차트의 조회 실패가 다른 차트에 영향을 주지 않습니다.
 
-<a id="foundry.release.notes.2026.09.18.recommendation"></a>
-#### 추천 앱 { #foundry.release.notes.2026.09.18.recommendation }
+<a id="foundry-release-notes-2026-09-18-recommendation"></a>
+#### 추천 앱 { #foundry-release-notes-2026-09-18-recommendation }
 
 - 추천 API 요청에 노출(impressions), 상호작용(interactions), 피드백(feedback) 정보를 전달하면 추천 결과에 반영됩니다.
 
-<a id="foundry.release.notes.2026.09.18.univariate"></a>
-#### 단변량 시계열 이상탐지 앱 { #foundry.release.notes.2026.09.18.univariate }
+<a id="foundry-release-notes-2026-09-18-univariate"></a>
+#### 단변량 시계열 이상탐지 앱 { #foundry-release-notes-2026-09-18-univariate }
 
 - 단변량 시계열 이상탐지 앱이 추가되었습니다.
 
-<a id="foundry.release.notes.2026.08.25"></a>
-### 2026. 08. 25. { #foundry.release.notes.2026.08.25 }
+<a id="foundry-release-notes-2026-08-25"></a>
+### 2026. 08. 25. { #foundry-release-notes-2026-08-25 }
 
-<a id="foundry.release.notes.2026.08.25.new.service"></a>
-#### 신규 서비스 출시 { #foundry.release.notes.2026.08.25.new.service }
+<a id="foundry-release-notes-2026-08-25-new-service"></a>
+#### 신규 서비스 출시 { #foundry-release-notes-2026-08-25-new-service }
 
 - NHN Cloud Foundry가 출시되었습니다.
 - 다음 기능을 사용할 수 있습니다.

@@ -2,8 +2,8 @@
 
 <!-- pre-align:aligned sig=3deff3dd96d2 -->
 
-<a id="foundry.console.guide"></a>
-## Machine Learning > NHN Cloud Foundry > コンソールユーザーガイド { #foundry.console.guide }
+<a id="foundry-console-guide"></a>
+## Machine Learning > NHN Cloud Foundry > コンソールユーザーガイド { #foundry-console-guide }
 
 このドキュメントでは、NHN Cloud Foundry コンソールでデータソース、パイプライン、分析（クエリ・チャート・ダッシュボード）、アプリを管理する方法を説明します。
 
@@ -22,8 +22,8 @@
 
 現況タブでサービスの有効化状態とテナント設定を確認します。サービスを使用するには、まずこのタブで有効化状態を確認し、有効化されていない場合は有効化を申請する必要があります。
 
-<a id="status.activate"></a>
-### サービス有効化申請 { #status.activate }
+<a id="status-activate"></a>
+### サービス有効化申請 { #status-activate }
 
 サービスの有効化はコンソールから直接実行することはできません。[1:1 お問い合わせ](https://www.nhncloud.com/kr/support/inquiry)に希望するリソースサイズを含めてお問い合わせください。申請したクラスターが作成されると、データソースの作成から順番に使用できます。
 
@@ -36,8 +36,8 @@
 | LARGE | 基本 + AI アプリを使用可能 |
 | XLARGE | すべての機能を使用可能（データパイプライン + AI アプリ） |
 
-<a id="status.info"></a>
-### サービス状態の確認 { #status.info }
+<a id="status-info"></a>
+### サービス状態の確認 { #status-info }
 
 有効化後は、現況タブで次の情報を確認できます。
 
@@ -64,8 +64,8 @@
     本サービスをご利用の際は、個人情報を含む情報を入力しないようご注意ください。
     本サービスは、お客様が入力する個人情報に対して別途の安全性確保措置を提供していないため、個人情報を含む情報の入力および保存はお控えください。
 
-<a id="datasource.list"></a>
-### データソース一覧 { #datasource.list }
+<a id="datasource-list"></a>
+### データソース一覧 { #datasource-list }
 
 データソース一覧画面では、次の情報を確認できます。
 
@@ -116,13 +116,13 @@
 !!! tip "ヒント"
     タイプが推薦、単変量時系列異常検知結果、データセットである項目は、ユーザーが直接作成することはできません。推薦と単変量時系列異常検知結果はアプリを作成するとき、データセットはパイプラインを実行するときに自動的に作成されます。
 
-<a id="datasource.create"></a>
-### データソースの作成 { #datasource.create }
+<a id="datasource-create"></a>
+### データソースの作成 { #datasource-create }
 
 **[データソース作成]** ボタンをクリックすると、作成モーダルが開きます。作成モーダルは基本設定、接続設定、詳細設定で構成されており、接続設定で選択したデータソースのタイプによって、スキーマの入力方式と詳細設定の項目が異なります。設定が完了したら **[追加]** ボタンをクリックすると、データソースが作成されます。
 
-<a id="datasource.create.basic"></a>
-#### 基本設定 { #datasource.create.basic }
+<a id="datasource-create-basic"></a>
+#### 基本設定 { #datasource-create-basic }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -132,8 +132,8 @@
 
 既に使用中のデータソース名とテーブル名は使用できません。
 
-<a id="datasource.create.connection"></a>
-#### 接続設定 { #datasource.create.connection }
+<a id="datasource-create-connection"></a>
+#### 接続設定 { #datasource-create-connection }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -146,8 +146,8 @@
 | ファイルアップロード | CSV ファイルをアップロードしてデータを積載します。作成後は CSV または Ingest API でデータを更新します。 |
 | Prometheus API | 指標データをAPIでリアルタイムに積載します。単変量時系列異常検出アプリの入力としても使用できます。 |
 
-<a id="datasource.create.detail"></a>
-#### ファイルアップロードの詳細設定 { #datasource.create.detail }
+<a id="datasource-create-detail"></a>
+#### ファイルアップロードの詳細設定 { #datasource-create-detail }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -203,8 +203,8 @@
 !!! danger "注意"
     予約フィールド名 `system_eventTimestamp` は使用できません。
 
-<a id="datasource.create.detail.prometheus"></a>
-#### Prometheus API 상세 설정 { #datasource.create.detail.prometheus }
+<a id="datasource-create-detail-prometheus"></a>
+#### Prometheus API 상세 설정 { #datasource-create-detail-prometheus }
 
 Prometheus API タイプは、収集 API が送信するレコードの形式が決まっているため、スキーマを直接入力しません。基本設定のスキーマの箇所には、次の固定スキーマが読み取り専用の表として表示され、このスキーマのままテーブルが作成されます。
 
@@ -240,10 +240,10 @@ Prometheus API タイプは、収集 API が送信するレコードの形式が
 **[追加]** ボタンをクリックすると、完了ウィンドウにデータソースの準備状態と **[収集方法]**（エンドポイント、リクエストヘッダ、リクエスト本文の例、ルール）が表示されます。「準備が完了しました。」に変わったら、案内された方法でメトリクスを送信できます。
 
 !!! tip "知っておくべきこと"
-    Prometheus API データソースにデータを送信する方法については、作成完了ウィンドウ、詳細表示の **[収集方法]** タブ、または [APIガイド](./api-guide/#metrics.ingest.api) の「指標収集」を参照してください。
+    Prometheus API データソースにデータを送信する方法については、作成完了ウィンドウ、詳細表示の **[収集方法]** タブ、または [APIガイド](./api-guide/#metrics-ingest-api) の「指標収集」を参照してください。
 
-<a id="datasource.delete"></a>
-### データソースの削除 { #datasource.delete }
+<a id="datasource-delete"></a>
+### データソースの削除 { #datasource-delete }
 
 一覧から削除するデータソースをチェックボックスで選択し、**[削除]** ボタンをクリックします。
 
@@ -252,8 +252,8 @@ Prometheus API タイプは、収集 API が送信するレコードの形式が
 - アプリまたはデータパイプラインが使用中のデータソースは削除できません。接続されているアプリまたはデータパイプラインを先に削除します。
 - アプリを削除しても、推論結果のデータソースは削除されずに残ります。必要な場合は、データソース一覧から個別に削除します。
 
-<a id="datasource.detail"></a>
-### 詳細表示 / プレビュー { #datasource.detail }
+<a id="datasource-detail"></a>
+### 詳細表示 / プレビュー { #datasource-detail }
 
 - **[詳細]**（虫眼鏡アイコン）: データソースの情報を確認します。
 - **[プレビュー]**（⌄アイコン）: ロードされたデータをテーブル形式でプレビューします。
@@ -269,8 +269,8 @@ Prometheus API タイプは、収集 API が送信するレコードの形式が
 
 タイプが Prometheus API のデータソースは、接続情報タブに**シリーズ識別ラベル**と**グループラベル**が一緒に表示されます。値を指定しなかった場合は、それぞれ「全ラベルを使用」「単一グループ（データソース全体）」と表示されます。直近 5 分以内に同じ時系列に対して 1 分間に複数の異なる値が入力された場合は、その事実も接続情報タブに表示されます。
 
-<a id="datasource.detail.event"></a>
-#### イベント設定 { #datasource.detail.event }
+<a id="datasource-detail-event"></a>
+#### イベント設定 { #datasource-detail-event }
 
 Event API は、リアルタイムイベントデータを HTTP API で収集する機能です。イベント設定タブのトグルで有効化および無効化します。
 
@@ -289,11 +289,11 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
     有効化状態では、データソースのスキーマ変更も制限されます。カタログにフィールドを追加するには、Event API を先に無効化する必要があります。
     スナップショットアップロード後に Event API を再度有効化すると、イベント収集位置が最新のオフセットに初期化されます。
 
-イベントを送信する方法については、[APIガイド](./api-guide/#event.ingest.api)の「イベント収集」を参照してください。
-有効化と無効化は、[APIガイド](./api-guide/#event.ingest.api.enable)の「Event API 有効化・無効化」でも行えます。
+イベントを送信する方法については、[APIガイド](./api-guide/#event-ingest-api)の「イベント収集」を参照してください。
+有効化と無効化は、[APIガイド](./api-guide/#event-ingest-api-enable)の「Event API 有効化・無効化」でも行えます。
 
-<a id="datasource.detail.ingest"></a>
-#### 収集方法 { #datasource.detail.ingest }
+<a id="datasource-detail-ingest"></a>
+#### 収集方法 { #datasource-detail-ingest }
 
 タイプが Prometheus API のデータソースにメトリクスを送信する方法を案内します。各項目は **[コピー]** ボタンでコピーできます。
 
@@ -309,15 +309,15 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 !!! danger "注意"
     `X-NHN-Authorization` ヘッダのトークンの箇所には、発行した認証トークンを入力する必要があります。アプリキーのみ送信した場合、リクエストが拒否されます。
 
-詳細なリクエスト形式については、[APIガイド](./api-guide/#metrics.ingest.api)の「メトリクス収集」を参照してください。
+詳細なリクエスト形式については、[APIガイド](./api-guide/#metrics-ingest-api)の「メトリクス収集」を参照してください。
 
-<a id="datasource.edit"></a>
-### データの更新 { #datasource.edit }
+<a id="datasource-edit"></a>
+### データの更新 { #datasource-edit }
 
 データソース名とテーブル名は、作成後に変更できません。ロードされたデータは新しいCSVファイルで更新し、フィールドは追加できます。
 
-<a id="datasource.edit.csv"></a>
-#### CSVによるデータ修正 { #datasource.edit.csv }
+<a id="datasource-edit-csv"></a>
+#### CSVによるデータ修正 { #datasource-edit-csv }
 
 一覧でタイプがファイルのデータソース行のその他（⋯）メニューで **[CSVで修正する]** をクリックします。
 
@@ -334,8 +334,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 | カタログにないカラムが含まれている | カタログにフィールドを先に追加してから再度アップロードしてください |
 | ヘッダー設定とファイルの先頭行が一致しない | カラム名行があるファイルでアップロードするか、データソースのヘッダー設定を変更してください |
 
-<a id="datasource.edit.field"></a>
-#### フィールドの追加 { #datasource.edit.field }
+<a id="datasource-edit-field"></a>
+#### フィールドの追加 { #datasource-edit-field }
 
 詳細表示の **[カタログ]** タブで **[フィールドを追加]** ボタンをクリックします。
 
@@ -350,7 +350,7 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 - Event API が有効化されているデータソースにはフィールドを追加できません。先に Event API を無効化します。
 
 !!! tip "ヒント"
-    コンソールだけでなく、APIでもデータを更新できます。使用方法は [APIガイド](./api-guide/#ingest.api) の「Ingest API」を参照してください。
+    コンソールだけでなく、APIでもデータを更新できます。使用方法は [APIガイド](./api-guide/#ingest-api) の「Ingest API」を参照してください。
 
 <a id="pipeline"></a>
 ## パイプライン { #pipeline }
@@ -359,8 +359,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 
 パイプラインは、データソースのデータをノードを接続したワークフローで処理し、分析可能なデータセットに変換する機能です。
 
-<a id="pipeline.list"></a>
-### パイプラインリスト { #pipeline.list }
+<a id="pipeline-list"></a>
+### パイプラインリスト { #pipeline-list }
 
 パイプラインメニューに移動すると、作成済みのパイプラインの一覧がテーブル形式で表示されます。
 
@@ -381,8 +381,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 
 ツールバーから、パイプラインの作成、修正、削除、有効化、無効化を実行できます。有効化と無効化は **[詳細(⋯)]** メニューにあります。
 
-<a id="pipeline.create"></a>
-### パイプライン作成 { #pipeline.create }
+<a id="pipeline-create"></a>
+### パイプライン作成 { #pipeline-create }
 
 1. 一覧画面で **[パイプライン作成]** ボタンをクリックします。
 2. 右側の **[設定パネル]** で基本情報を入力します。
@@ -398,8 +398,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 !!! danger "注意"
     有効化済みのパイプラインの設定を保存すると、パイプラインが無効化されます。実行ボタンを押してビルドすると、自動的に有効化されます。
 
-<a id="pipeline.editor"></a>
-### パイプラインエディター { #pipeline.editor }
+<a id="pipeline-editor"></a>
+### パイプラインエディター { #pipeline-editor }
 
 パイプラインの作成/編集時に表示されるメイン編集画面です。
 
@@ -409,8 +409,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 - **エディター領域**: ノード-エッジエディター（ドラッグ＆ドロップ、自動整列サポート）
 - **サイドパネル**: 設定、スケジュール、コンピューティングリソースパネル
 
-<a id="pipeline.status"></a>
-#### パイプラインステータス { #pipeline.status }
+<a id="pipeline-status"></a>
+#### パイプラインステータス { #pipeline-status }
 
 ステータスバッジにマウスを乗せると、ツールチップで詳細を確認できます。
 
@@ -426,8 +426,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 | 停止済み | ユーザーがパイプラインの実行を停止した状態 |
 | 削除中 | パイプラインの削除中 |
 
-<a id="pipeline.node"></a>
-### ノード構成 { #pipeline.node }
+<a id="pipeline-node"></a>
+### ノード構成 { #pipeline-node }
 
 パイプラインは以下の 5 種類のノードを組み合わせて構成します。
 
@@ -448,8 +448,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 !!! danger "注意"
     保存時にパイプライン構成を検査します。すべてのノードは 1 つのフローで接続されている必要があり（未接続ノード不可）、フローの最終ノードは 1 つの DATASET ノードでなければなりません。
 
-<a id="pipeline.node.source"></a>
-#### ソースノードの追加 { #pipeline.node.source }
+<a id="pipeline-node-source"></a>
+#### ソースノードの追加 { #pipeline-node-source }
 
 1. タブバーの **[ソースノードの追加]** ボタンをクリックします。
 2. 使用可能なデータソースの一覧がモーダルで表示されます。
@@ -461,8 +461,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 | 推薦 | 推薦結果ストレージ |
 | データセット | パイプラインのデータセットノードが生成したデータ。他のパイプラインの入力として再利用可能 |
 
-<a id="pipeline.node.transform"></a>
-#### 変換ノード(TRANSFORM) { #pipeline.node.transform }
+<a id="pipeline-node-transform"></a>
+#### 変換ノード(TRANSFORM) { #pipeline-node-transform }
 
 変換作業ごとにノード名（最大 30 文字、韓国語・日本語・英字・数字・空白・`-`・`_`）を指定します。1 つのノードに複数の変換作業を追加すると、順番に接続されたノードが生成されます。
 
@@ -479,8 +479,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 | Column（カラム演算） | Label Encode Apply | マッピングテーブルによるエンコードの適用 |
 | LLM（LLM ベースの演算） | Classify | LLM でテキストをカテゴリに分類 |
 
-<a id="pipeline.node.transform.filter"></a>
-##### フィルター(Filter) { #pipeline.node.transform.filter }
+<a id="pipeline-node-transform-filter"></a>
+##### フィルター(Filter) { #pipeline-node-transform-filter }
 
 | 値 | 説明 | 例 |
 | --- | --- | --- |
@@ -511,8 +511,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 
 論理演算子は `AND`、`OR` をサポートしており、**[グループの追加]** ボタンで条件を最大 3 段階までグループ化できます。
 
-<a id="pipeline.node.transform.explode"></a>
-##### 分解(Explode) { #pipeline.node.transform.explode }
+<a id="pipeline-node-transform-explode"></a>
+##### 分解(Explode) { #pipeline-node-transform-explode }
 
 区切り文字でつながれた文字列カラムをトークンごとに別の行に分解します。
 
@@ -529,8 +529,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 - 区切り文字は正規表現として解釈されるため、特殊文字はエスケープが必要です（例: `\.`、`\|`）。
 - 出力タイプを指定すると、分解された値が該当タイプに変換されます。例えば、数値 ID がカンマで区切られている場合に BIGINT を指定すると、結合キーのタイプを合わせることができます。
 
-<a id="pipeline.node.transform.derive"></a>
-##### 派生カラム(Derive) { #pipeline.node.transform.derive }
+<a id="pipeline-node-transform-derive"></a>
+##### 派生カラム(Derive) { #pipeline-node-transform-derive }
 
 提供されている関数を使用して、既存のカラムから新しいカラムを作成します。**[派生カラムの追加]** ボタンで定義を複数追加でき、各定義に関数と派生カラム名を指定します。
 
@@ -545,8 +545,8 @@ Event API は、リアルタイムイベントデータを HTTP API で収集す
 - 定義は上から下へ順番に適用され、前に作成した派生カラムを後の定義のソースカラムとして参照できます。
 - 派生カラム名には英字、数字、アンダースコア（_）、韓国語文字を使用できます。
 
-<a id="pipeline.node.transform.aggregate"></a>
-##### 集計(Aggregate) { #pipeline.node.transform.aggregate }
+<a id="pipeline-node-transform-aggregate"></a>
+##### 集計(Aggregate) { #pipeline-node-transform-aggregate }
 
 1. **[グループ化基準の選択]**（任意）: 同じ値を持つ行をグループにまとめます。選択しない場合は、全データを 1 つのグループとして集計します。
 2. **[集計関数の定義]**（必須）: 集計するカラム、集計関数、結果カラム名を指定します。複数追加できます。
@@ -579,8 +579,8 @@ ARRAY_AGG を選択すると、次の設定が追加されます。
 | 出力形式 | O | STRUCT_ARRAY、JSON_STRING_ARRAY、JSON_STRING |
 | 重複除去（DISTINCT） | X | 並べ替えを設定すると無視される |
 
-<a id="pipeline.node.transform.rank"></a>
-##### ランキング(Rank Top N) { #pipeline.node.transform.rank }
+<a id="pipeline-node-transform-rank"></a>
+##### ランキング(Rank Top N) { #pipeline-node-transform-rank }
 
 全データを指定した基準で並べ替え、上位 N 行のみを残します。
 
@@ -593,8 +593,8 @@ ARRAY_AGG を選択すると、次の設定が追加されます。
 - **[並べ替え基準の追加]** ボタンで基準を複数指定すると、第 1 ソート、第 2 ソートの順に適用され、ドラッグして順序を変更できます。
 - 参照時に順位カラムで並べ替えると、元の順序を維持できます。
 
-<a id="pipeline.node.transform.label.encode"></a>
-##### ラベルエンコーディング(Label Encode FIT / Label Encode Apply) { #pipeline.node.transform.label.encode }
+<a id="pipeline-node-transform-label-encode"></a>
+##### ラベルエンコーディング(Label Encode FIT / Label Encode Apply) { #pipeline-node-transform-label-encode }
 
 カテゴリ型データを数値（整数）に変換する機能です。**FIT（学習）** と **APPLY（適用）** の 2 段階で構成され、必ず FIT ノードを先に作成してから APPLY ノードで参照する必要があります。
 
@@ -619,8 +619,8 @@ APPLY ノード設定:
 !!! danger "注意"
     FIT を再実行すると、データの変更によりエンコード番号が変わる場合があります。既存モデルとの互換性に注意してください。
 
-<a id="pipeline.node.transform.classify"></a>
-##### 分類(Classify) { #pipeline.node.transform.classify }
+<a id="pipeline-node-transform-classify"></a>
+##### 分類(Classify) { #pipeline-node-transform-classify }
 
 LLM を使用してテキストカラムの値をカテゴリに分類します。分類の基準となるカテゴリリストは、別のデータソースノードとして準備する必要があります。
 
@@ -673,8 +673,8 @@ LLM を使用してテキストカラムの値をカテゴリに分類します�
 !!! danger "注意"
     処理する行数が多いほど、LLM の呼び出し回数とトークン使用量が比例して増加し、コストが増加します。大規模データは先に小規模で検証してコストと品質を確認してから適用してください。
 
-<a id="pipeline.node.join"></a>
-#### 結合ノード(JOIN) { #pipeline.node.join }
+<a id="pipeline-node-join"></a>
+#### 結合ノード(JOIN) { #pipeline-node-join }
 
 2 つのデータストリームを結合します。
 
@@ -689,8 +689,8 @@ LLM を使用してテキストカラムの値をカテゴリに分類します�
 !!! tip "ヒント"
     両テーブルに同じ名前のカラムがある場合、右テーブルに **[プレフィックス]** を設定してカラム名の競合を防ぐことができます。
 
-<a id="pipeline.node.union"></a>
-#### ユニオンノード(UNION) { #pipeline.node.union }
+<a id="pipeline-node-union"></a>
+#### ユニオンノード(UNION) { #pipeline-node-union }
 
 2 つのデータストリームを垂直に統合します。
 
@@ -700,8 +700,8 @@ LLM を使用してテキストカラムの値をカテゴリに分類します�
 | Intersect Merge | 両側の共通カラムのみを含む |
 | Left-First Merge | 左テーブルのスキーマ基準。右側にないカラムは NULL |
 
-<a id="pipeline.node.dataset"></a>
-#### データセットノード(DATASET) { #pipeline.node.dataset }
+<a id="pipeline-node-dataset"></a>
+#### データセットノード(DATASET) { #pipeline-node-dataset }
 
 パイプラインの最終出力ノードで、処理されたデータをテーブルとして保存します。
 
@@ -716,8 +716,8 @@ LLM を使用してテキストカラムの値をカテゴリに分類します�
 !!! danger "注意"
     実行済みのデータセットは修正できません。削除して再作成してください（データソースは保持されます）。
 
-<a id="pipeline.schedule"></a>
-### スケジュール設定 { #pipeline.schedule }
+<a id="pipeline-schedule"></a>
+### スケジュール設定 { #pipeline-schedule }
 
 右側のサイドパネルのスケジュールアイコンをクリックして、バッチスケジュールを設定します。
 
@@ -738,8 +738,8 @@ LLM を使用してテキストカラムの値をカテゴリに分類します�
 
 スケジュールを保存し、初回実行後から設定した周期に従って実行されます。
 
-<a id="pipeline.resource"></a>
-### コンピューティングリソース設定 { #pipeline.resource }
+<a id="pipeline-resource"></a>
+### コンピューティングリソース設定 { #pipeline-resource }
 
 右側のサイドパネルのコンピューティングリソースアイコンをクリックして、パイプライン実行時に使用するコンピューティングリソースを設定します。
 
@@ -753,8 +753,8 @@ LLM を使用してテキストカラムの値をカテゴリに分類します�
 !!! danger "注意"
     リソース設定を変更すると、再ビルド後に適用されます。パイプラインの作成前は、リソースを変更することはできません。
 
-<a id="pipeline.run"></a>
-### パイプラインの実行 { #pipeline.run }
+<a id="pipeline-run"></a>
+### パイプラインの実行 { #pipeline-run }
 
 初回または設定変更後の初回実行時には、ビルドと実行が同時に行われます。
 
@@ -766,19 +766,19 @@ LLM を使用してテキストカラムの値をカテゴリに分類します�
 実行中に **[停止]** ボタンをクリックすると、終了状態に移行します。
 ビルドが完了すると、スケジュールが設定されているパイプラインは自動的に有効化されます。
 
-<a id="pipeline.run.history"></a>
-#### 実行履歴の確認 { #pipeline.run.history }
+<a id="pipeline-run-history"></a>
+#### 実行履歴の確認 { #pipeline-run-history }
 
 タブバーで **[実行履歴]** ボタンをクリックすると、実行 ID、開始/終了日時、所要時間、実行状態、ノード別の実行詳細を確認できます。
 
-<a id="pipeline.activation"></a>
-### 有効化/無効化 { #pipeline.activation }
+<a id="pipeline-activation"></a>
+### 有効化/無効化 { #pipeline-activation }
 
 - **[有効化]**: 一覧からパイプラインを1つ選択し、その他(⋯)メニューで **[パイプラインの有効化]** をクリックします。設定されたスケジュールに従い、自動的に実行されます。
 - **[無効化]**: 一覧からパイプラインを1つ選択し、その他(⋯)メニューで **[パイプラインの無効化]** をクリックします。スケジュールが設定されていても、自動実行されません。
 
-<a id="pipeline.delete"></a>
-### パイプラインの削除 { #pipeline.delete }
+<a id="pipeline-delete"></a>
+### パイプラインの削除 { #pipeline-delete }
 
 1. 一覧から削除するパイプラインを選択します（複数選択可能）。
 2. **[削除]** ボタンをクリックします。
@@ -791,8 +791,8 @@ LLM を使用してテキストカラムの値をカテゴリに分類します�
 
 SQL を使用して、データソースのデータを照会・分析します。
 
-<a id="query.run"></a>
-### クエリ実行 { #query.run }
+<a id="query-run"></a>
+### クエリ実行 { #query-run }
 
 1. **[データソース]** を選択します。
 2. **[クエリ選択]** で保存済みクエリを読み込みます。選択したデータソースで保存したクエリがある場合は一覧に表示されます。読み込まずに直接記述することもできます。
@@ -810,13 +810,13 @@ SQL を使用して、データソースのデータを照会・分析します�
 - FROM 句には、データソース一覧に表示されているテーブル名をそのまま使用します（`SELECT * FROM {テーブル名}`）。
 - 単一の SELECT 構文のみ実行できます。それ以外の構文は拒否されます。
 
-<a id="query.save"></a>
-### 保存済みクエリの変更 { #query.save }
+<a id="query-save"></a>
+### 保存済みクエリの変更 { #query-save }
 
 **[クエリ選択]** で読み込んだクエリの内容を変更した後、**[クエリ保存]** ボタンをクリックすると変更が保存されます。読み込んだクエリがない場合や内容を変更していない場合は、ボタンが無効になります。
 
-<a id="query.list"></a>
-### クエリ一覧 { #query.list }
+<a id="query-list"></a>
+### クエリ一覧 { #query-list }
 
 クエリは実行のたびに実行履歴として自動的に記録されます。繰り返し使用するクエリはクエリ一覧に直接登録しておくことができます。**[クエリ一覧]** ボタンをクリックすると、保存済みクエリを管理するモーダルが開きます。
 
@@ -838,8 +838,8 @@ SQL を使用して、データソースのデータを照会・分析します�
 | データソース | O | クエリを実行するデータソース |
 | 構文 | O | 実行する SQL |
 
-<a id="query.history"></a>
-### クエリ実行履歴 { #query.history }
+<a id="query-history"></a>
+### クエリ実行履歴 { #query-history }
 
 これまでに実行したクエリを照会する画面です。**[時間]** の範囲と **[クエリ内容]** で検索し、**[初期化]** ボタンで検索条件をクリアします。
 
@@ -857,8 +857,8 @@ SQL を使用して、データソースのデータを照会・分析します�
 
 コンソールパス: **Machine Learning > NHN Cloud Foundry > 分析** タブ > **チャート** タブ
 
-<a id="chart.list"></a>
-### チャート一覧 { #chart.list }
+<a id="chart-list"></a>
+### チャート一覧 { #chart-list }
 
 | カラム | 説明 |
 | --- | --- |
@@ -873,13 +873,13 @@ SQL を使用して、データソースのデータを照会・分析します�
 - 上部の検索機能でチャート名によるフィルタリングができます。
 - データソースが削除されて名前が見つからない場合は、データソース ID が表示されます。
 
-<a id="chart.create"></a>
-### チャートの作成 { #chart.create }
+<a id="chart-create"></a>
+### チャートの作成 { #chart-create }
 
 **[チャートの作成]** ボタンをクリックすると、チャートエディター画面に移動します。エディターで次の項目を順番に設定します。
 
-<a id="chart.create.basic"></a>
-#### 基本設定 { #chart.create.basic }
+<a id="chart-create-basic"></a>
+#### 基本設定 { #chart-create-basic }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -887,16 +887,16 @@ SQL を使用して、データソースのデータを照会・分析します�
 | チャートタイプ | O | チャートの用途区分（現在は基本のみ提供） |
 | チャート可視化タイプ | O | Line Chart、Bar Chart、Pie Chart、Scatter Chart |
 
-<a id="chart.create.datasource"></a>
-#### データソース設定 { #chart.create.datasource }
+<a id="chart-create-datasource"></a>
+#### データソース設定 { #chart-create-datasource }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
 | データソースタイプ | O | FILE、DATASET、RECOMMENDATION SINK |
 | データソース名 | O | 使用するデータソースを選択 |
 
-<a id="chart.create.query"></a>
-#### クエリ設定 { #chart.create.query }
+<a id="chart-create-query"></a>
+#### クエリ設定 { #chart-create-query }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -919,8 +919,8 @@ SQL を使用して、データソースのデータを照会・分析します�
 
 Bar チャートにソートを指定すると、時間軸の代わりに上位 N 件のカテゴリで表示されます。
 
-<a id="chart.create.preview"></a>
-#### チャートプレビュー { #chart.create.preview }
+<a id="chart-create-preview"></a>
+#### チャートプレビュー { #chart-create-preview }
 
 設定完了後、**[UPDATE CHART]** ボタンをクリックしてプレビューを確認します。
 
@@ -929,14 +929,14 @@ Bar チャートにソートを指定すると、時間軸の代わりに上位 
 - 照会に失敗すると、チャートエリアに **[チャート照会失敗]** パネルが表示され、クエリエンジンが返したエラーの内容をそのまま確認できます。エラーの内容をもとにクエリ設定を修正してから、再度照会します。
 - 集計関数を選択していない列がある場合、**[UPDATE CHART]** をクリックすると案内が表示されます。集計関数がない場合、チャートが正常に表示されない場合があります。
 
-<a id="chart.create.save"></a>
-#### チャートの保存 { #chart.create.save }
+<a id="chart-create-save"></a>
+#### チャートの保存 { #chart-create-save }
 
 - プレビューを確認後、ヘッダーの **[作成]** ボタンをクリックします。
 - 入力内容の検証が完了すると、作成ボタンが有効になります。
 
-<a id="chart.edit"></a>
-### チャートの編集 { #chart.edit }
+<a id="chart-edit"></a>
+### チャートの編集 { #chart-edit }
 
 チャート一覧でチャートをクリックして、編集画面に移動します。
 
@@ -944,8 +944,8 @@ Bar チャートにソートを指定すると、時間軸の代わりに上位 
 - データソース設定は現在使用中のデータソースを表示しますが、変更できないようにロックされた状態で表示されます。別のデータソースを使用するには、チャートを新たに作成します。
 - **UPDATE CHART** でプレビューを確認後、**[保存]** で変更内容を保存します。
 
-<a id="chart.delete"></a>
-### チャートの削除 { #chart.delete }
+<a id="chart-delete"></a>
+### チャートの削除 { #chart-delete }
 
 1. チャート一覧で削除するチャートをチェックボックスで選択します。
 2. **[削除]** ボタンをクリックします。
@@ -959,14 +959,14 @@ Bar チャートにソートを指定すると、時間軸の代わりに上位 
 
 コンソールパス: **Machine Learning > NHN Cloud Foundry > 分析** タブ > **ダッシュボード** タブ
 
-<a id="dashboard.list"></a>
-### ダッシュボード一覧 { #dashboard.list }
+<a id="dashboard-list"></a>
+### ダッシュボード一覧 { #dashboard-list }
 
 - 検索機能でダッシュボード名のフィルタリングができます。
 - 1ページあたりの表示件数を調整できます。
 
-<a id="dashboard.create"></a>
-### ダッシュボードの作成 { #dashboard.create }
+<a id="dashboard-create"></a>
+### ダッシュボードの作成 { #dashboard-create }
 
 **[ダッシュボードの作成]** ボタンをクリックすると、ダッシュボードエディター画面に移動します。
 
@@ -982,14 +982,14 @@ Bar チャートにソートを指定すると、時間軸の代わりに上位 
 | CHARTS | ダッシュボードに追加できるチャートの一覧。チャート名で検索可能 |
 | LAYOUT ELEMENTS | キャンバスに追加するレイアウト要素 |
 
-<a id="dashboard.create.chart"></a>
-#### チャートの追加 { #dashboard.create.chart }
+<a id="dashboard-create-chart"></a>
+#### チャートの追加 { #dashboard-create-chart }
 
 1. 追加するチャートカードをクリックまたはドラッグします。
 2. ダッシュボードのキャンバスにチャートを配置します。
 
-<a id="dashboard.create.tabgroup"></a>
-#### タブグループの追加 { #dashboard.create.tabgroup }
+<a id="dashboard-create-tabgroup"></a>
+#### タブグループの追加 { #dashboard-create-tabgroup }
 
 複数のチャートをタブにまとめて、同じ場所で切り替えながら表示できます。編集パネルの **[LAYOUT ELEMENTS]** タブで **[Tab]** をクリックすると、キャンバスにタブグループが追加されます。
 
@@ -998,23 +998,23 @@ Bar チャートにソートを指定すると、時間軸の代わりに上位 
 - 編集パネルのチャートをタブ領域にドラッグ＆ドロップすると、そのタブに配置されます。すでにキャンバスにあるチャートは、チャートタイトル左のハンドルをドラッグしてタブに移動できます。タブ内のチャートも同じ方法でキャンバスに戻せます。
 - タブグループはチャートと同様に、右上のゴミ箱アイコンをクリックしてダッシュボードから削除します。
 
-<a id="dashboard.create.layout"></a>
-#### レイアウトの調整 { #dashboard.create.layout }
+<a id="dashboard-create-layout"></a>
+#### レイアウトの調整 { #dashboard-create-layout }
 
 キャンバスに配置したチャートはドラッグして位置を移動し、角をドラッグしてサイズを調整します。チャート右上のゴミ箱アイコンをクリックすると、ダッシュボードから削除されます。
 
-<a id="dashboard.create.save"></a>
-#### ダッシュボードの保存 { #dashboard.create.save }
+<a id="dashboard-create-save"></a>
+#### ダッシュボードの保存 { #dashboard-create-save }
 
 設定完了後、ヘッダーの **[保存]** ボタンをクリックします。
 
-<a id="dashboard.view"></a>
-### ダッシュボードの閲覧 { #dashboard.view }
+<a id="dashboard-view"></a>
+### ダッシュボードの閲覧 { #dashboard-view }
 
 ダッシュボード一覧でダッシュボードをクリックして、詳細画面に移動します。
 
-<a id="dashboard.edit"></a>
-### ダッシュボードの編集 { #dashboard.edit }
+<a id="dashboard-edit"></a>
+### ダッシュボードの編集 { #dashboard-edit }
 
 ダッシュボード詳細画面で **[編集モードトグル]** をクリックして、編集モードに切り替えます。
 
@@ -1025,8 +1025,8 @@ Bar チャートにソートを指定すると、時間軸の代わりに上位 
 
 ダッシュボードに配置されたチャートを修正するには、編集モードをオフにします。編集モードがオフの場合、各チャートに詳細メニューが表示され、**[チャートの修正]** を選択するとチャート編集ページに移動します。タブグループ内のチャートも同じ方法で移動でき、チャート編集後に保存するとダッシュボードに変更内容が反映されます。
 
-<a id="dashboard.delete"></a>
-### ダッシュボードの削除 { #dashboard.delete }
+<a id="dashboard-delete"></a>
+### ダッシュボードの削除 { #dashboard-delete }
 
 1. ダッシュボード一覧で削除するダッシュボードを選択します。
 2. **[削除]** ボタンをクリックします。
@@ -1044,8 +1044,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 | 推薦システム | ユーザーの行動パターンを分析し、パーソナライズされた推薦を提供します。 |
 | 単変量時系列異常検出 | 指標を1つずつ学習し、正常範囲を外れた値を検出します。 |
 
-<a id="app.list"></a>
-### アプリ一覧 { #app.list }
+<a id="app-list"></a>
+### アプリ一覧 { #app-list }
 
 | カラム | 説明 |
 | --- | --- |
@@ -1056,8 +1056,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 | ステータス | アプリのステータス |
 | 作成日時 | アプリの作成日時 |
 
-<a id="app.list.status"></a>
-#### アプリのステータス { #app.list.status }
+<a id="app-list-status"></a>
+#### アプリのステータス { #app-list-status }
 
 アプリのステータスバッジにマウスを重ねると、ツールチップで詳細説明を確認できます。
 
@@ -1079,8 +1079,8 @@ AIモデルをデータに接続したアプリを作成および管理します
     以下は推薦システムアプリを基準にした説明です。アプリ作成直後に行われる学習・デプロイはアプリを準備する過程であり、この時点では推薦モデルがまだ学習されていない状態です。推薦 API を呼び出すとレスポンスは返されますが、学習済みモデルの推薦結果ではありません。
     最初の学習はバッチスケジュールに指定した時刻に実行され（ステータス: 学習中 → デプロイ中 → 有効化中 → アクティブ）、学習済みモデルがデプロイされた後から有効な推薦結果を照会できます。
 
-<a id="app.create"></a>
-### アプリの作成 { #app.create }
+<a id="app-create"></a>
+### アプリの作成 { #app-create }
 
 **[アプリ作成]** ボタンをクリックすると、アプリ作成画面に切り替わります。アプリの作成は3ステップで進みます。
 
@@ -1107,8 +1107,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 - アプリを削除した直後は、リソースが回収されるまで約5分かかる場合があります。
 - 判定結果は保存されないため、アプリ作成画面に移動するたびに再度照会します。
 
-<a id="app.create.basic"></a>
-#### 基本設定 { #app.create.basic }
+<a id="app-create-basic"></a>
+#### 基本設定 { #app-create-basic }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -1116,13 +1116,13 @@ AIモデルをデータに接続したアプリを作成および管理します
 | アプリの説明 | O | アプリの説明 |
 | アプリタイプ | O | **推薦システム**または**単変量時系列異常検知**を選択します。タイプを選択すると、以下にタイプの説明が表示されます |
 
-<a id="app.create.detail"></a>
-#### レコメンデーションシステムの詳細設定 { #app.create.detail }
+<a id="app-create-detail"></a>
+#### レコメンデーションシステムの詳細設定 { #app-create-detail }
 
 **[モデル追加]** ボタンでモデルカードを追加します。1つのアプリに複数のモデルを組み合わせて構成でき、モデルカードごとに以下のセクションを設定します。
 
-<a id="app.create.detail.model"></a>
-##### 基本モデル設定 { #app.create.detail.model }
+<a id="app-create-detail-model"></a>
+##### 基本モデル設定 { #app-create-detail-model }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -1138,8 +1138,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 
 同じモデルでも Longtail モードが異なれば、別のモデルとして追加できます。
 
-<a id="app.create.detail.resources"></a>
-##### サービングリソース設定 { #app.create.detail.resources }
+<a id="app-create-detail-resources"></a>
+##### サービングリソース設定 { #app-create-detail-resources }
 
 モデルごとのサービングコンテナに割り当てるリソースを指定します。入力しない場合はデフォルト値が適用されます。
 
@@ -1150,8 +1150,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 
 `request` は `limit` を超えることはできません。
 
-<a id="app.create.detail.schedule"></a>
-##### バッチスケジュール設定 { #app.create.detail.schedule }
+<a id="app-create-detail-schedule"></a>
+##### バッチスケジュール設定 { #app-create-detail-schedule }
 
 モデルを再学習するバッチの実行周期を設定します。デフォルトで有効になっており、トグルでオフにできます。
 モデルの最初の学習もこのスケジュールに設定した時刻に実行され、最初の学習が完了する前の推薦レスポンスは学習済みモデルの結果ではありません。
@@ -1162,8 +1162,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 | 毎週 | 曜日、時、分 |
 | 毎時 | 時間間隔、分 |
 
-<a id="app.create.detail.connection"></a>
-##### データ接続設定 { #app.create.detail.connection }
+<a id="app-create-detail-connection"></a>
+##### データ接続設定 { #app-create-detail-connection }
 
 選択したモデルに応じて、必要なデータソースを接続します。
 
@@ -1192,8 +1192,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 | アイテムIDカラム | O | アイテム識別カラム |
 | 時間カラム | X | 時間カラム |
 
-<a id="app.create.detail.extra"></a>
-##### 追加設定（Skills） { #app.create.detail.extra }
+<a id="app-create-detail-extra"></a>
+##### 追加設定（Skills） { #app-create-detail-extra }
 
 推薦理由（reason）の構成に使用するスキル・カテゴリデータを接続するオプション設定です。**[フィールド追加]** ボタンで追加します。
 
@@ -1207,13 +1207,13 @@ AIモデルをデータに接続したアプリを作成および管理します
 | 推薦理由テンプレートデータソース | 推薦理由の文言テンプレートテーブル。未選択の場合、推薦結果に理由は含まれません |
 | コールドスタートデータソース | このテーブルに含まれるユーザーIDのみコールドスターターと判定。データソースとユーザーIDカラムを合わせて選択する必要があります |
 
-<a id="app.create.detail.univariate"></a>
-#### 単変量時系列異常検出の詳細設定 { #app.create.detail.univariate }
+<a id="app-create-detail-univariate"></a>
+#### 単変量時系列異常検出の詳細設定 { #app-create-detail-univariate }
 
 単変量時系列異常検出アプリは、指標を1つずつ個別に学習し、正常範囲を外れた値を検出します。詳細設定は、データソース、モデルリソース、再学習、検出オプション、結果転送の順に構成されています。
 
-<a id="app.create.detail.univariate.source"></a>
-##### データソース { #app.create.detail.univariate.source }
+<a id="app-create-detail-univariate-source"></a>
+##### データソース { #app-create-detail-univariate-source }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -1225,8 +1225,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 - 選択したデータソースにデータがない場合、項目の下に「まだデータがありません。」と表示され、画面下部のリソース確認の下に **[データ確認]** ボックスが表示されます。再学習周期を指定していない場合、作成時の学習が唯一の学習となるため、データが入力される前は次のステップに進むことができません。再学習周期を指定した場合、最初の学習は失敗し、次の再学習時に再試行するという案内のみ表示され、進行できます。
 - 直近 5 分以内に同じ時系列に対して 1 分間に異なる値が複数入力された場合、案内ボックスが表示されます。作成は妨げませんが、この状態では毎分最初に到着した 1 つの値のみ分析に使用され、残りは破棄されます。同じ時系列は 1 分に 1 回のみ送信し、より短い周期で収集する場合は 1 分平均に集約して送信します。
 
-<a id="app.create.detail.univariate.resource"></a>
-##### モデルリソース { #app.create.detail.univariate.resource }
+<a id="app-create-detail-univariate-resource"></a>
+##### モデルリソース { #app-create-detail-univariate-resource }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -1235,8 +1235,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 
 モデルリソースは、アプリを作成した後は変更できません。
 
-<a id="app.create.detail.univariate.retrain"></a>
-##### 再学習 { #app.create.detail.univariate.retrain }
+<a id="app-create-detail-univariate-retrain"></a>
+##### 再学習 { #app-create-detail-univariate-retrain }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -1251,8 +1251,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 - 周期を指定しない場合、アプリの作成時に1回のみ学習を行い、以降の自動再学習は行いません。この場合、データのないデータソースではアプリを作成することはできません。
 - 学習はリソースを多く消費するため、トラフィックの少ない時間帯を指定することをお勧めします。
 
-<a id="app.create.detail.univariate.option"></a>
-##### 検知オプション { #app.create.detail.univariate.option }
+<a id="app-create-detail-univariate-option"></a>
+##### 検知オプション { #app-create-detail-univariate-option }
 
 | 項目 | 必須 | 説明 |
 | --- | --- | --- |
@@ -1276,8 +1276,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 !!! danger "注意"
     スコアスケールは、アプリを作成した後は変更できません。
 
-<a id="app.create.detail.univariate.sink"></a>
-##### 結果転送 { #app.create.detail.univariate.sink }
+<a id="app-create-detail-univariate-sink"></a>
+##### 結果転送 { #app-create-detail-univariate-sink }
 
 検知結果を Prometheus に転送するための設定です。
 
@@ -1317,8 +1317,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 
 システムカラム `ingestTimestamp` は自動的に追加されます。
 
-<a id="app.create.review"></a>
-#### 最終確認 { #app.create.review }
+<a id="app-create-review"></a>
+#### 最終確認 { #app-create-review }
 
 前の手順で入力した内容をアプリタイプに合わせて要約して表示します。
 
@@ -1347,8 +1347,8 @@ AIモデルをデータに接続したアプリを作成および管理します
 - モデルを学習し、デプロイします。進行状況はアプリ一覧のステータスで確認できます。
 - 精度モードでは、有効化された後も判定に使用するメトリクスが蓄積されてから結果が送信され始めるため、通常6時間前後かかります。その間もメトリクスを送り続ける必要があります。
 
-<a id="app.delete"></a>
-### アプリの削除 { #app.delete }
+<a id="app-delete"></a>
+### アプリの削除 { #app-delete }
 
 1. 削除するアプリのチェックボックスを選択します。アプリは一度に1つだけ選択でき、別のアプリを選択すると以前の選択は解除されます。
 2. **[削除]** ボタンをクリックします。
@@ -1358,13 +1358,13 @@ AIモデルをデータに接続したアプリを作成および管理します
     削除されたアプリは復旧することはできません。接続されているサービングパイプラインも一緒に削除されます。
     推論結果のデータソースは削除されずに残るため、必要な場合はデータソースの一覧から別途削除します。アプリが使用中の指標データソースは、アプリを削除した後に削除できます。
 
-<a id="app.detail"></a>
-### 推薦システムアプリ詳細 { #app.detail }
+<a id="app-detail"></a>
+### 推薦システムアプリ詳細 { #app-detail }
 
 アプリ一覧でアプリをクリックすると、詳細画面に移動します。推薦システムアプリは、**推薦API呼び出し**、**アプリ情報**、**学習管理**の3つのタブで構成されます。
 
-<a id="app.detail.recommend"></a>
-#### 推薦API呼び出し { #app.detail.recommend }
+<a id="app-detail-recommend"></a>
+#### 推薦API呼び出し { #app-detail-recommend }
 
 推薦リクエストのパラメータを入力して推薦APIを直接呼び出し、結果を確認できます。画面は入力フォーム、リクエストプレビュー、推薦結果の3つの領域で構成されています。
 
@@ -1407,16 +1407,16 @@ impressionsは最大10件、interactionsとfeedbackはタイプ別に最大10件
     推薦 API 呼び出しはアプリがアクティブ状態のときのみ可能です。
     impressions は推薦レスポンスを受け取るたびに自動で1件ずつ、最新10件まで蓄積されます。ユーザーを変更するか画面を更新すると初期化され、行の ✕ で1件ずつ、フィールドの ✕ で全件を削除できます。
 
-<a id="app.detail.info"></a>
-#### アプリ情報 { #app.detail.info }
+<a id="app-detail-info"></a>
+#### アプリ情報 { #app-detail-info }
 
 アプリID、アプリ名、ステータス、アプリタイプ、説明、作成日、更新日、バージョン、および入出力データソースを確認できます。
 
 - 入力データソース: モデルの学習に使用するデータソースです。推薦アプリはモデルごとに分けて表示されます。
 - 出力データソース: 推薦結果が保存されるデータソースです。
 
-<a id="app.detail.training"></a>
-#### 学習管理 { #app.detail.training }
+<a id="app-detail-training"></a>
+#### 学習管理 { #app-detail-training }
 
 アプリに含まれる学習モデルの学習周期を変更し、自動再学習を停止・再開したり、学習を手動実行したりします。学習成果物の履歴もこのタブで確認できます。
 
@@ -1473,8 +1473,8 @@ impressionsは最大10件、interactionsとfeedbackはタイプ別に最大10件
     学習実行は、自動再学習を停止した状態でのみ実行できます。
     学習周期変更モーダルで周期を変更せずに保存すると、「適用する変更はありません。」という案内が表示されます。
 
-<a id="app.detail.training.history"></a>
-##### 学習成果物履歴 { #app.detail.training.history }
+<a id="app-detail-training-history"></a>
+##### 学習成果物履歴 { #app-detail-training-history }
 
 一覧で学習モデルを選択すると、そのモデルの学習成果物履歴が表示されます。
 
@@ -1488,13 +1488,13 @@ impressionsは最大10件、interactionsとfeedbackはタイプ別に最大10件
 
 まだ学習されたモデルがない場合は「まだ学習されたモデルがありません。」と表示されます。
 
-<a id="app.detail.univariate"></a>
-### 単変量時系列異常検知アプリ詳細 { #app.detail.univariate }
+<a id="app-detail-univariate"></a>
+### 単変量時系列異常検知アプリ詳細 { #app-detail-univariate }
 
 単変量時系列異常検知アプリは、上部に **アプリ > アプリ名** のパスが表示され、**[アプリ情報]** と **[グループ一覧]** の 2 つのタブで構成されます。アプリ一覧に戻るには、パスの **[アプリ]** をクリックします。
 
-<a id="app.detail.univariate.info"></a>
-#### アプリ情報 { #app.detail.univariate.info }
+<a id="app-detail-univariate-info"></a>
+#### アプリ情報 { #app-detail-univariate-info }
 
 ヘッダーにアプリ名、ステータス、アプリタイプ、アプリID、作成日、変更日、説明が表示され、その下に**入力 → 処理 → 出力**の順にカードが表示されます。
 
@@ -1539,8 +1539,8 @@ impressionsは最大10件、interactionsとfeedbackはタイプ別に最大10件
 - グループ状況のタイトル横にある疑問符アイコンにマウスを合わせると、3 つのステータスの意味を確認できます。有効化待機中は正確モードでは通常 6 時間前後かかり、即時モードはグループをオンにした直後に有効化されます。
 - 再学習が失敗すると、学習状態が学習失敗と表示されます。結果は直前に学習したモデルで引き続き出力され、次の再学習サイクルで再度学習します。初回学習が失敗すると、アプリが失敗状態になり、削除できます。
 
-<a id="app.detail.univariate.groups"></a>
-#### グループリスト { #app.detail.univariate.groups }
+<a id="app-detail-univariate-groups"></a>
+#### グループリスト { #app-detail-univariate-groups }
 
 異常検知は時系列ごとに行われ、グループはその時系列をまとめて結果と状態を確認する単位です。
 
@@ -1583,10 +1583,10 @@ impressionsは最大10件、interactionsとfeedbackはタイプ別に最大10件
 - グループキー、検出開始時刻、無効化時刻、作成日、変更日のカラムは、ヘッダーをクリックして並べ替えることができます。並べ替えは全グループを対象とし、並べ替えを変更すると1ページ目に移動します。値、グループハッシュ、ステータス、推論ステータスのカラムは並べ替えができません。値はグループキーカラムで並べ替え、推論ステータスはフィルタで絞り込みます。
 - 1ページあたりの表示件数を調整できます（20件、50件、100件 / デフォルト 20件）。
 - 登録されたグループがない場合は「登録されたグループがありません。データが入力されグループが登録されると、ここに表示されます。」が、検索・フィルタ条件に一致するグループがない場合は「条件に一致するグループがありません。」が表示されます。
-- 特定のグループのみを選択して使用開始、停止、削除するには、[APIガイド](./api-guide/#univariate.group.api)の「グループの使用開始・停止・削除」を参照してください。コンソールにはこの操作はありません。
+- 特定のグループのみを選択して使用開始、停止、削除するには、[APIガイド](./api-guide/#univariate-group-api)の「グループの使用開始・停止・削除」を参照してください。コンソールにはこの操作はありません。
 
-<a id="app.detail.univariate.groups.hash"></a>
-##### ハッシュ計算機 { #app.detail.univariate.groups.hash }
+<a id="app-detail-univariate-groups-hash"></a>
+##### ハッシュ計算機 { #app-detail-univariate-groups-hash }
 
 ツールバーの**ハッシュ計算機**ボタンをクリックすると、ラベルからハッシュを直接計算できます。
 

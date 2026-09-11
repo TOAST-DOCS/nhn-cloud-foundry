@@ -2,14 +2,14 @@
 
 <!-- pre-align:aligned sig=0eb4ce54bb90 -->
 
-<a id="foundry.overview"></a>
-## Machine Learning > NHN Cloud Foundry > 概要 { #foundry.overview }
+<a id="foundry-overview"></a>
+## Machine Learning > NHN Cloud Foundry > 概要 { #foundry-overview }
 
 NHN Cloud Foundry は、お客様のデータを統合し、機械学習モデル（レコメンデーション、時系列予測/異常検知、構造化データ分類/数値予測など）を活用して効果的な意思決定を支援するサービスです。
 データを取り込み、ビジュアルワークフローで加工した後、クエリ/チャート/ダッシュボードで分析したり、レコメンデーションモデルを連携したアプリを作成してレコメンデーション結果をサービスに活用できます。
 
-<a id="main.feature"></a>
-## 主要機能 { #main.feature }
+<a id="main-feature"></a>
+## 主要機能 { #main-feature }
 
 | 機能 | 説明 |
 | --- | --- |
@@ -69,8 +69,8 @@ AIモデルをデータに接続してアプリを作成および管理する機
 **単変量時系列異常検知**は、収集したメトリクスを時系列ごとに学習し、正常範囲を外れた値を検出します。
 検出結果である異常スコアと基準値は、指定したPrometheusに転送され、同時に結果データソースにも保存されるため、分析に使用できます。
 
-<a id="public.api"></a>
-## API { #public.api }
+<a id="public-api"></a>
+## API { #public-api }
 
 NHN Cloud Foundry は、コンソールに加えて API も提供します。
 作成済みのデータソースにスナップショット・イベント・メトリクスを積載する Ingest API と、作成したアプリの推薦結果を要請し、ユーザーの反応イベントを転送する API を使用できます。

@@ -1,7 +1,7 @@
 <!-- pre-align:aligned sig=47be59ae2082 -->
 
-<a id="foundry.api.guide"></a>
-## Machine Learning > NHN Cloud Foundry > API 가이드 { #foundry.api.guide }
+<a id="foundry-api-guide"></a>
+## Machine Learning > NHN Cloud Foundry > API 가이드 { #foundry-api-guide }
 
 NHN Cloud Foundry가 제공하는 API를 설명합니다.
 
@@ -11,11 +11,11 @@ NHN Cloud Foundry가 제공하는 API를 설명합니다.
 | 추천 조회 API | 생성한 추천 시스템 앱에 추천 결과 요청 |
 | 추천 이벤트 API | 추천 결과에 사용자가 보인 반응 이벤트 수집 |
 
-<a id="auth.common"></a>
-## 인증 및 공통 사항 { #auth.common }
+<a id="auth-common"></a>
+## 인증 및 공통 사항 { #auth-common }
 
-<a id="auth.common.preparation"></a>
-### 사전 준비 { #auth.common.preparation }
+<a id="auth-common-preparation"></a>
+### 사전 준비 { #auth-common-preparation }
 
 API를 사용하려면 **Appkey**와 **인증 토큰**이 필요합니다.
 
@@ -23,8 +23,8 @@ API를 사용하려면 **Appkey**와 **인증 토큰**이 필요합니다.
 - API는 **gateway-public** 엔드포인트를 사용합니다.
 - 인증 토큰(`X-NHN-Authorization` 헤더의 Bearer 토큰) 발급 방법은 [User Access Key 토큰](/nhncloud/ko/public-api/user-access-key-token/) 가이드를 참고합니다.
 
-<a id="auth.common.request"></a>
-### 요청 공통 사항 { #auth.common.request }
+<a id="auth-common-request"></a>
+### 요청 공통 사항 { #auth-common-request }
 
 필수 헤더:
 
@@ -40,8 +40,8 @@ Base URL:
 https://{gateway-public-host}/api/v1.0
 ```
 
-<a id="auth.common.response"></a>
-### 응답 공통 사항 { #auth.common.response }
+<a id="auth-common-response"></a>
+### 응답 공통 사항 { #auth-common-response }
 
 모든 API 응답은 `header`와 `body`로 구성됩니다.
 
@@ -65,8 +65,8 @@ https://{gateway-public-host}/api/v1.0
 
 요청이 거절되어도 HTTP 상태 코드는 `200`으로 반환될 수 있습니다. 성공 여부는 HTTP 상태 코드가 아니라 `header.isSuccessful`과 `header.resultCode`로 판정합니다. 인증 토큰이 없거나 만료된 경우에는 HTTP `401`을 반환합니다.
 
-<a id="ingest.api"></a>
-## Ingest API { #ingest.api }
+<a id="ingest-api"></a>
+## Ingest API { #ingest-api }
 
 Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재하는 API입니다. 데이터 소스 타입에 따라 다음 방식을 제공합니다.
 
@@ -79,8 +79,8 @@ Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재
 !!! danger "주의"
     데이터 소스를 새로 만드는 API는 제공하지 않습니다. Ingest API를 사용하려면 콘솔에서 데이터 소스를 먼저 생성해야 합니다.
 
-<a id="ingest.snapshot"></a>
-### 스냅샷 업로드(파일 업로드) { #ingest.snapshot }
+<a id="ingest-snapshot"></a>
+### 스냅샷 업로드(파일 업로드) { #ingest-snapshot }
 
 업로드한 파일의 내용으로 데이터 소스의 데이터를 **전부 교체**합니다. 업로드는 3단계로 진행됩니다.
 
@@ -94,8 +94,8 @@ Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재
 - `100MB` 초과 → **멀티파트 업로드(MULTIPART)**
 - `formPost` 필드 값들은 응답에 포함된 값을 **그대로** 요청에 넣어 사용합니다.
 
-<a id="ingest.snapshot.init"></a>
-#### 1. 업로드 초기화(init) { #ingest.snapshot.init }
+<a id="ingest-snapshot-init"></a>
+#### 1. 업로드 초기화(init) { #ingest-snapshot-init }
 
 | 메서드 | URI |
 | --- | --- |
@@ -205,8 +205,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | body.formPost.maxFileSize | 최대 파일 크기(bytes) |
 | body.formPost.maxFileCount | 최대 파일 개수 |
 
-<a id="ingest.snapshot.upload.single"></a>
-#### 2-A. 단일 파일 업로드(100MB 이하) { #ingest.snapshot.upload.single }
+<a id="ingest-snapshot-upload-single"></a>
+#### 2-A. 단일 파일 업로드(100MB 이하) { #ingest-snapshot-upload-single }
 
 init 응답의 `uploadUrl`로 multipart/form-data POST를 보냅니다.
 이 요청은 Object Storage에 직접 보내므로 별도 인증이 필요 없습니다(`signature`가 인증 역할).
@@ -226,8 +226,8 @@ curl -X POST "{uploadUrl}" \
 !!! danger "주의"
     `file` 필드는 반드시 폼 데이터의 **마지막**에 추가해야 합니다. 성공 시 HTTP `201 Created` 응답을 받습니다.
 
-<a id="ingest.snapshot.upload.multipart"></a>
-#### 2-B. 대용량 파일 업로드(100MB 초과, MULTIPART) { #ingest.snapshot.upload.multipart }
+<a id="ingest-snapshot-upload-multipart"></a>
+#### 2-B. 대용량 파일 업로드(100MB 초과, MULTIPART) { #ingest-snapshot-upload-multipart }
 
 응답의 `parts[]` 배열을 받아서 파트별로 업로드합니다.
 각 파트는 **(1) 업로드 → (2) HEAD로 ETag 조회 → (3) `partETags[]`에 `partNumber` 오름차순으로 수집** 순서로 처리합니다.
@@ -253,8 +253,8 @@ curl -X POST "{parts[i].uploadUrl}" \
 curl -I "{parts[i].headUrl}" | grep -i '^etag:'
 ```
 
-<a id="ingest.snapshot.complete"></a>
-#### 3. 업로드 완료(complete) { #ingest.snapshot.complete }
+<a id="ingest-snapshot-complete"></a>
+#### 3. 업로드 완료(complete) { #ingest-snapshot-complete }
 
 | 메서드 | URI |
 | --- | --- |
@@ -312,10 +312,10 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 | 필드 | 설명 |
 | --- | --- |
-| body.jobId | 작업 ID. [작업 상태 조회](#ingest.snapshot.job.status)에 사용 |
+| body.jobId | 작업 ID. [작업 상태 조회](#ingest-snapshot-job-status)에 사용 |
 
-<a id="ingest.snapshot.cancel"></a>
-#### 업로드 취소 { #ingest.snapshot.cancel }
+<a id="ingest-snapshot-cancel"></a>
+#### 업로드 취소 { #ingest-snapshot-cancel }
 
 | 메서드 | URI |
 | --- | --- |
@@ -337,8 +337,8 @@ curl -X DELETE "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceI
   -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
 ```
 
-<a id="ingest.snapshot.job.status"></a>
-#### 작업 상태 조회 { #ingest.snapshot.job.status }
+<a id="ingest-snapshot-job-status"></a>
+#### 작업 상태 조회 { #ingest-snapshot-job-status }
 
 | 메서드 | URI |
 | --- | --- |
@@ -410,16 +410,16 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 | COMPLETED | 작업 정상 완료 |
 | FAILED | 작업 실패 |
 
-<a id="event.ingest.api"></a>
-### 이벤트 수집 { #event.ingest.api }
+<a id="event-ingest-api"></a>
+### 이벤트 수집 { #event-ingest-api }
 
 기존 데이터를 유지한 채 변경 이벤트를 전송합니다. 타입이 파일인 데이터 소스에서 사용하며, **Event API**를 먼저 활성화해야 합니다. 활성화는 콘솔의 이벤트 설정 탭 또는 아래 활성화 API로 합니다.
 
 !!! danger "주의"
-    Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 또한 스키마 변경이 제한되므로, 스키마를 변경하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](./console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
+    Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 또한 스키마 변경이 제한되므로, 스키마를 변경하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](./console-user-guide/#datasource-detail-event)의 '이벤트 설정'을 참고합니다.
 
-<a id="event.ingest.api.enable"></a>
-#### Event API 활성화·비활성화 { #event.ingest.api.enable }
+<a id="event-ingest-api-enable"></a>
+#### Event API 활성화·비활성화 { #event-ingest-api-enable }
 
 | 메서드 | URI |
 | --- | --- |
@@ -458,8 +458,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 - 활성화는 비동기로 진행됩니다. 요청 직후 응답은 `enabled`가 false, `status`가 ENABLING이며, ENABLED가 된 뒤부터 이벤트를 수집합니다.
 - 활성화가 진행 중일 때 다시 활성화를 요청하면 거절됩니다. 진행 상황은 콘솔의 이벤트 설정 탭에서 확인할 수 있습니다.
 
-<a id="event.ingest.api.send"></a>
-#### 이벤트 단건 전송 { #event.ingest.api.send }
+<a id="event-ingest-api-send"></a>
+#### 이벤트 단건 전송 { #event-ingest-api-send }
 
 | 메서드 | URI |
 | --- | --- |
@@ -516,8 +516,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | body.success | 처리 성공 여부 |
 | body.errorMessage | 실패 시 오류 메시지 |
 
-<a id="event.ingest.api.batch"></a>
-#### 이벤트 다건 전송 { #event.ingest.api.batch }
+<a id="event-ingest-api-batch"></a>
+#### 이벤트 다건 전송 { #event-ingest-api-batch }
 
 | 메서드 | URI |
 | --- | --- |
@@ -553,8 +553,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 응답의 `body`는 이벤트별 처리 결과 배열입니다.
 
-<a id="metrics.ingest.api"></a>
-### 지표 수집 { #metrics.ingest.api }
+<a id="metrics-ingest-api"></a>
+### 지표 수집 { #metrics-ingest-api }
 
 타입이 Prometheus API인 데이터 소스로 지표 데이터를 전송합니다. 전송한 지표는 분석 메뉴에서 조회할 수 있고, 단변량 시계열 이상탐지 앱의 입력으로도 사용할 수 있습니다.
 
@@ -610,11 +610,11 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 !!! tip "알아두기"
     적재는 전송 주기와 무관합니다. 다만 이 데이터 소스를 단변량 시계열 이상탐지 앱에 연결했다면 같은 시계열을 1분에 하나씩 끊김 없이 보내야 합니다. 앱이 지표를 1분 단위로 묶어 판정하므로, 그보다 긴 간격으로 보내면 빈 구간이 생겨 정확 모드에서 준비가 끝나지 않을 수 있습니다.
 
-<a id="univariate.api"></a>
-## 단변량 시계열 이상탐지 API { #univariate.api }
+<a id="univariate-api"></a>
+## 단변량 시계열 이상탐지 API { #univariate-api }
 
-<a id="univariate.group.api"></a>
-### 그룹 사용 시작·중지·삭제 { #univariate.group.api }
+<a id="univariate-group-api"></a>
+### 그룹 사용 시작·중지·삭제 { #univariate-group-api }
 
 단변량 시계열 이상탐지 앱의 그룹을 사용 시작, 중지, 삭제합니다. 세 API의 요청 형식은 같고 경로만 다릅니다.
 
@@ -663,13 +663,13 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingP
     그룹을 중지해도 탐지 결과 전송이 멈추지는 않습니다. 그룹 목록에 표시되는 상태만 비활성화로 바뀝니다.
     삭제한 그룹은 상태 기록과 함께 사라지며 복구할 수 없습니다.
 
-<a id="recommendation.api"></a>
-## 추천 조회 API { #recommendation.api }
+<a id="recommendation-api"></a>
+## 추천 조회 API { #recommendation-api }
 
 생성한 추천 시스템 앱에 추천 결과를 요청합니다. 사용자 이력이 충분하면 모델 기반(Sequential), 부족하면 속성 기반(Cold Start)으로 추론합니다.
 
-<a id="recommendation.api.recommend"></a>
-### 추천 요청 { #recommendation.api.recommend }
+<a id="recommendation-api-recommend"></a>
+### 추천 요청 { #recommendation-api-recommend }
 
 | 메서드 | URI |
 | --- | --- |
@@ -716,8 +716,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 - `options.mode`를 지정하지 않으면 서버가 추론 방식을 정합니다. 이때 정해진 방식의 모델이 앱에 없으면 앱에 연동된 다른 방식으로 대신 추천합니다. 실제로 사용한 방식은 응답의 `body.metadata.inferenceType`에서 확인합니다.
 - 요청한 방식의 모델이 앱에 없고 대신할 방식도 없으면 HTTP `503`과 결과 코드 `5030001`을 반환합니다. 앱에 어떤 모델이 만들어져 있는지와 학습이 끝났는지 확인한 뒤 다시 호출합니다. `options.mode`로 방식을 지정한 요청은 대체하지 않으므로 이 응답을 받을 수 있습니다.
 
-<a id="recommendation.api.signal"></a>
-#### 행동 신호 { #recommendation.api.signal }
+<a id="recommendation-api-signal"></a>
+#### 행동 신호 { #recommendation-api-signal }
 
 `context.impressions`은 사용자에게 노출된 추천 정보를 바탕으로 추천 결과를 재정렬하는 데 사용됩니다.
 `context.interactions`, `context.feedback`은 사용자가 추천 결과에 보인 행위를 전달하는 필드로, 사용자 행위 기반 데이터를 모델 추론에 반영합니다.
@@ -766,7 +766,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 - 각 필드는 오래된 것부터 최신 순서로 전달합니다.
 - `impressions`는 최대 10건이고 1건당 `itemKeys`는 최대 100개입니다. `interactions`와 `feedback`은 `type`별로 최대 10건입니다. 상한을 초과하면 요청이 거절됩니다.
 - 행동 신호는 이번 추천 요청의 추론 입력으로만 사용하고 저장하지 않습니다. 같은 아이템의 `feedback`이 바뀌면 가장 최근 값만 반영되므로, 효과를 유지하려면 매 요청 다시 전송합니다.
-- 반응 이벤트를 저장해 분석에 활용하려면 [추천 이벤트 API](#recommendation.event.api)를 함께 사용합니다.
+- 반응 이벤트를 저장해 분석에 활용하려면 [추천 이벤트 API](#recommendation-event-api)를 함께 사용합니다.
 
 !!! tip "알아두기"
     `userAttributes` 스키마는 향후 선호도 유도(Preference Elicitation) 구현 방향에 따라 수집 방식이나 필드 종류가 변경될 수 있습니다.
@@ -807,13 +807,13 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | body.metadata.inferenceType | 추론 유형. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) |
 | body.metadata.abTestGroup | A/B 테스트 그룹(현재는 빈 값 반환) |
 
-<a id="recommendation.event.api"></a>
-## 추천 이벤트 API { #recommendation.event.api }
+<a id="recommendation-event-api"></a>
+## 추천 이벤트 API { #recommendation-event-api }
 
 추천 결과에 사용자가 보인 반응(클릭 등) 이벤트를 수집합니다. 적재된 이벤트 데이터로 추천 성공률을 분석할 수 있습니다.
 
-<a id="recommendation.event.api.send"></a>
-### 추천 이벤트 전송 { #recommendation.event.api.send }
+<a id="recommendation-event-api-send"></a>
+### 추천 이벤트 전송 { #recommendation-event-api-send }
 
 | 메서드 | URI |
 | --- | --- |

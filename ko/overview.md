@@ -1,13 +1,13 @@
 <!-- pre-align:aligned sig=0eb4ce54bb90 -->
 
-<a id="foundry.overview"></a>
-## Machine Learning > NHN Cloud Foundry > 개요 { #foundry.overview }
+<a id="foundry-overview"></a>
+## Machine Learning > NHN Cloud Foundry > 개요 { #foundry-overview }
 
 NHN Cloud Foundry는 고객의 데이터를 통합한 후, 머신러닝 모델(추천, 시계열 예측/이상탐지, 정형 데이터 분류/수치예측 등)을 이용하여 효과적인 의사결정을 돕는 서비스입니다.
 데이터를 적재하고 시각적 워크플로우로 가공한 뒤, 쿼리/차트/대시보드로 분석하거나 추천 모델을 연결한 앱을 만들어 추천 결과를 서비스에 활용할 수 있습니다.
 
-<a id="main.feature"></a>
-## 주요 기능 { #main.feature }
+<a id="main-feature"></a>
+## 주요 기능 { #main-feature }
 
 | 기능 | 설명 |
 | --- | --- |
@@ -67,8 +67,8 @@ AI 모델을 데이터에 연결하여 앱을 생성하고 관리하는 기능�
 **단변량 시계열 이상탐지**는 수집한 지표를 시계열마다 학습하여 정상 범위를 벗어난 값을 탐지합니다.
 탐지 결과인 이상 점수와 기준값은 지정한 Prometheus로 전송되며, 동시에 결과 데이터 소스에도 저장되어 분석에 사용할 수 있습니다.
 
-<a id="public.api"></a>
-## API { #public.api }
+<a id="public-api"></a>
+## API { #public-api }
 
 NHN Cloud Foundry는 콘솔 외에도 API를 제공합니다.
 이미 만든 데이터 소스에 스냅샷·이벤트·지표를 적재하는 Ingest API와, 생성한 앱의 추천 결과를 요청하고 사용자 반응 이벤트를 전송하는 API를 사용할 수 있습니다.

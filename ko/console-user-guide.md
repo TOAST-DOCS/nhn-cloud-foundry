@@ -1,7 +1,7 @@
 <!-- pre-align:aligned sig=3deff3dd96d2 -->
 
-<a id="foundry.console.guide"></a>
-## Machine Learning > NHN Cloud Foundry > 콘솔 유저 가이드 { #foundry.console.guide }
+<a id="foundry-console-guide"></a>
+## Machine Learning > NHN Cloud Foundry > 콘솔 유저 가이드 { #foundry-console-guide }
 
 이 문서에서는 NHN Cloud Foundry 콘솔에서 데이터 소스, 파이프라인, 분석(쿼리·차트·대시보드), 앱을 관리하는 방법을 설명합니다.
 
@@ -20,8 +20,8 @@
 
 현황 탭에서 서비스 활성화 상태와 테넌트 설정을 확인합니다. 서비스를 사용하려면 먼저 이 탭에서 활성화 상태를 확인하고, 활성화되어 있지 않다면 활성화를 신청해야 합니다.
 
-<a id="status.activate"></a>
-### 서비스 활성화 신청 { #status.activate }
+<a id="status-activate"></a>
+### 서비스 활성화 신청 { #status-activate }
 
 서비스 활성화는 콘솔에서 직접 수행할 수 없습니다. [1:1 문의](https://www.nhncloud.com/kr/support/inquiry)로 원하는 리소스 크기를 포함해서 문의하세요. 신청한 클러스터가 생성되면 데이터 소스 생성부터 순서대로 사용할 수 있습니다.
 
@@ -34,8 +34,8 @@
 | LARGE | 기본 + AI 앱 사용 가능 |
 | XLARGE | 모든 기능 사용 가능(데이터 파이프라인 + AI 앱) |
 
-<a id="status.info"></a>
-### 서비스 상태 확인 { #status.info }
+<a id="status-info"></a>
+### 서비스 상태 확인 { #status-info }
 
 활성화된 후에는 현황 탭에서 다음 정보를 확인할 수 있습니다.
 
@@ -62,8 +62,8 @@
     본 서비스 이용 시 개인정보가 포함된 정보를 입력하지 않도록 유의하세요.
     본 서비스는 고객이 입력하는 개인정보에 대한 별도의 안전성 확보조치를 제공하지 않으므로, 개인정보가 포함된 정보의 입력과 저장을 삼가 주세요.
 
-<a id="datasource.list"></a>
-### 데이터 소스 목록 { #datasource.list }
+<a id="datasource-list"></a>
+### 데이터 소스 목록 { #datasource-list }
 
 데이터 소스 목록 화면에서 다음 정보를 확인할 수 있습니다.
 
@@ -114,13 +114,13 @@
 !!! tip "알아두기"
     타입이 추천, 단변량 시계열 이상탐지 결과, 데이터셋인 항목은 사용자가 직접 생성할 수 없습니다. 추천과 단변량 시계열 이상탐지 결과는 앱을 생성할 때, 데이터셋은 파이프라인을 실행할 때 자동으로 생성됩니다.
 
-<a id="datasource.create"></a>
-### 데이터 소스 생성 { #datasource.create }
+<a id="datasource-create"></a>
+### 데이터 소스 생성 { #datasource-create }
 
 **데이터 소스 생성** 버튼을 클릭하면 생성 모달이 열립니다. 생성 모달은 기본 설정, 연결 설정, 상세 설정으로 구성되며, 연결 설정에서 선택한 데이터 소스 유형에 따라 스키마 입력 방식과 상세 설정 항목이 달라집니다. 설정을 마친 뒤 **추가** 버튼을 클릭하면 데이터 소스가 생성됩니다.
 
-<a id="datasource.create.basic"></a>
-#### 기본 설정 { #datasource.create.basic }
+<a id="datasource-create-basic"></a>
+#### 기본 설정 { #datasource-create-basic }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -130,8 +130,8 @@
 
 이미 사용 중인 데이터 소스 이름과 테이블 이름은 사용할 수 없습니다.
 
-<a id="datasource.create.connection"></a>
-#### 연결 설정 { #datasource.create.connection }
+<a id="datasource-create-connection"></a>
+#### 연결 설정 { #datasource-create-connection }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -144,8 +144,8 @@
 | 파일 업로드 | CSV 파일을 올려 데이터를 적재합니다. 생성 후에는 CSV 또는 Ingest API로 데이터를 갱신합니다. |
 | Prometheus API | 지표 데이터를 수집 API로 실시간 적재합니다. 단변량 시계열 이상탐지 앱의 입력으로도 사용할 수 있습니다. |
 
-<a id="datasource.create.detail"></a>
-#### 파일 업로드 상세 설정 { #datasource.create.detail }
+<a id="datasource-create-detail"></a>
+#### 파일 업로드 상세 설정 { #datasource-create-detail }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -201,8 +201,8 @@
 !!! danger "주의"
     예약 필드 이름 `system_eventTimestamp`는 사용할 수 없습니다.
 
-<a id="datasource.create.detail.prometheus"></a>
-#### Prometheus API 상세 설정 { #datasource.create.detail.prometheus }
+<a id="datasource-create-detail-prometheus"></a>
+#### Prometheus API 상세 설정 { #datasource-create-detail-prometheus }
 
 Prometheus API 유형은 수집 API가 보내는 레코드 형태가 정해져 있어 스키마를 직접 입력하지 않습니다. 기본 설정의 스키마 자리에 다음 고정 스키마가 읽기 전용 표로 표시되고, 이 스키마 그대로 테이블이 만들어집니다.
 
@@ -238,10 +238,10 @@ Prometheus API 유형은 수집 API가 보내는 레코드 형태가 정해져 �
 **추가** 버튼을 클릭하면 완료 창에 데이터 소스 준비 상태와 **수집 방법**(엔드포인트, 요청 헤더, 요청 본문 예시, 규칙)이 표시됩니다. '준비가 끝났습니다.'로 바뀌면 안내된 방법으로 지표를 보낼 수 있습니다.
 
 !!! tip "알아두기"
-    Prometheus API 데이터 소스에 데이터를 보내는 방법은 생성 완료 창, 자세히 보기의 **수집 방법** 탭 또는 [API 가이드](./api-guide/#metrics.ingest.api)의 '지표 수집'을 참고합니다.
+    Prometheus API 데이터 소스에 데이터를 보내는 방법은 생성 완료 창, 자세히 보기의 **수집 방법** 탭 또는 [API 가이드](./api-guide/#metrics-ingest-api)의 '지표 수집'을 참고합니다.
 
-<a id="datasource.delete"></a>
-### 데이터 소스 삭제 { #datasource.delete }
+<a id="datasource-delete"></a>
+### 데이터 소스 삭제 { #datasource-delete }
 
 목록에서 삭제할 데이터 소스를 체크박스로 선택한 후 **삭제** 버튼을 클릭합니다.
 
@@ -250,8 +250,8 @@ Prometheus API 유형은 수집 API가 보내는 레코드 형태가 정해져 �
 - 앱이나 데이터 파이프라인이 사용 중인 데이터 소스는 삭제할 수 없습니다. 연결된 앱 또는 데이터 파이프라인을 먼저 삭제합니다.
 - 앱을 삭제해도 추론 결과 데이터 소스는 삭제되지 않고 남습니다. 필요하면 데이터 소스 목록에서 따로 삭제합니다.
 
-<a id="datasource.detail"></a>
-### 자세히 보기 / 프리뷰 { #datasource.detail }
+<a id="datasource-detail"></a>
+### 자세히 보기 / 프리뷰 { #datasource-detail }
 
 - **자세히**(돋보기 아이콘): 데이터 소스 정보를 확인합니다.
 - **프리뷰**(⌄ 아이콘): 적재된 데이터를 테이블 형태로 미리 봅니다.
@@ -267,8 +267,8 @@ Prometheus API 유형은 수집 API가 보내는 레코드 형태가 정해져 �
 
 타입이 Prometheus API인 데이터 소스는 연결 정보 탭에 **시리즈 식별 라벨**과 **그룹 라벨**이 함께 표시됩니다. 값을 지정하지 않았으면 각각 '전체 라벨 사용', '단일 그룹(데이터 소스 전체)'로 표시됩니다. 최근 5분 안에 같은 시계열로 1분에 서로 다른 값이 여러 개 들어왔으면 그 사실도 연결 정보 탭에 표시됩니다.
 
-<a id="datasource.detail.event"></a>
-#### 이벤트 설정 { #datasource.detail.event }
+<a id="datasource-detail-event"></a>
+#### 이벤트 설정 { #datasource-detail-event }
 
 Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입니다. 이벤트 설정 탭의 토글로 활성화하고 비활성화합니다.
 
@@ -287,11 +287,11 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
     활성화 상태에서는 데이터 소스 스키마 변경도 제한됩니다. 카탈로그에 필드를 추가하려면 Event API를 먼저 비활성화해야 합니다.
     스냅샷 업로드 후 Event API를 다시 활성화하면 이벤트 수집 위치가 최신 오프셋으로 초기화됩니다.
 
-이벤트를 전송하는 방법은 [API 가이드](./api-guide/#event.ingest.api)의 '이벤트 수집'을 참고합니다.
-활성화와 비활성화는 [API 가이드](./api-guide/#event.ingest.api.enable)의 'Event API 활성화·비활성화'로도 할 수 있습니다.
+이벤트를 전송하는 방법은 [API 가이드](./api-guide/#event-ingest-api)의 '이벤트 수집'을 참고합니다.
+활성화와 비활성화는 [API 가이드](./api-guide/#event-ingest-api-enable)의 'Event API 활성화·비활성화'로도 할 수 있습니다.
 
-<a id="datasource.detail.ingest"></a>
-#### 수집 방법 { #datasource.detail.ingest }
+<a id="datasource-detail-ingest"></a>
+#### 수집 방법 { #datasource-detail-ingest }
 
 타입이 Prometheus API인 데이터 소스에 지표를 보내는 방법을 안내합니다. 각 항목은 **복사** 버튼으로 복사할 수 있습니다.
 
@@ -307,15 +307,15 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 !!! danger "주의"
     `X-NHN-Authorization` 헤더의 토큰 자리에는 발급한 인증 토큰을 넣어야 합니다. 앱 키만 보내면 요청이 거절됩니다.
 
-자세한 요청 형식은 [API 가이드](./api-guide/#metrics.ingest.api)의 '지표 수집'을 참고합니다.
+자세한 요청 형식은 [API 가이드](./api-guide/#metrics-ingest-api)의 '지표 수집'을 참고합니다.
 
-<a id="datasource.edit"></a>
-### 데이터 갱신 { #datasource.edit }
+<a id="datasource-edit"></a>
+### 데이터 갱신 { #datasource-edit }
 
 데이터 소스 이름과 테이블 이름은 생성 후 변경할 수 없습니다. 적재된 데이터는 새 CSV 파일로 갱신하며, 필드는 추가할 수 있습니다.
 
-<a id="datasource.edit.csv"></a>
-#### CSV로 데이터 수정 { #datasource.edit.csv }
+<a id="datasource-edit-csv"></a>
+#### CSV로 데이터 수정 { #datasource-edit-csv }
 
 목록에서 타입이 파일인 데이터 소스 행의 더보기(⋯) 메뉴에서 **CSV로 수정하기**를 클릭합니다.
 
@@ -332,8 +332,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 | 카탈로그에 없는 칼럼이 포함됨 | 카탈로그에 필드를 먼저 추가한 뒤 다시 업로드 |
 | 헤더 설정과 파일의 첫 행이 어긋남 | 칼럼 이름 행이 있는 파일로 올리거나 데이터 소스의 헤더 설정 변경 |
 
-<a id="datasource.edit.field"></a>
-#### 필드 추가 { #datasource.edit.field }
+<a id="datasource-edit-field"></a>
+#### 필드 추가 { #datasource-edit-field }
 
 자세히 보기의 **카탈로그** 탭에서 **필드 추가** 버튼을 클릭합니다.
 
@@ -348,7 +348,7 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 - Event API가 활성화된 데이터 소스는 필드를 추가할 수 없습니다. Event API를 먼저 비활성화합니다.
 
 !!! tip "알아두기"
-    콘솔뿐 아니라 API로도 데이터를 갱신할 수 있습니다. 사용 방법은 [API 가이드](./api-guide/#ingest.api)의 'Ingest API'를 참고합니다.
+    콘솔뿐 아니라 API로도 데이터를 갱신할 수 있습니다. 사용 방법은 [API 가이드](./api-guide/#ingest-api)의 'Ingest API'를 참고합니다.
 
 <a id="pipeline"></a>
 ## 파이프라인 { #pipeline }
@@ -357,8 +357,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 
 파이프라인은 데이터 소스의 데이터를 노드를 연결한 워크플로우로 처리하여 분석 가능한 데이터셋으로 변환하는 기능입니다.
 
-<a id="pipeline.list"></a>
-### 파이프라인 목록 { #pipeline.list }
+<a id="pipeline-list"></a>
+### 파이프라인 목록 { #pipeline-list }
 
 파이프라인 메뉴에 진입하면 생성된 파이프라인 목록이 테이블 형태로 표시됩니다.
 
@@ -379,8 +379,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 
 툴바에서 파이프라인 생성, 수정, 삭제, 활성화, 비활성화를 수행할 수 있습니다. 활성화와 비활성화는 **더보기(⋯)** 메뉴에 있습니다.
 
-<a id="pipeline.create"></a>
-### 파이프라인 생성 { #pipeline.create }
+<a id="pipeline-create"></a>
+### 파이프라인 생성 { #pipeline-create }
 
 1. 목록 화면에서 **파이프라인 생성** 버튼을 클릭합니다.
 2. 우측 **설정 패널**에서 기본 정보를 입력합니다.
@@ -396,8 +396,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 !!! danger "주의"
     활성화된 파이프라인의 설정을 저장하면 파이프라인이 비활성화됩니다. 실행 버튼을 눌러 빌드하면 자동으로 활성화됩니다.
 
-<a id="pipeline.editor"></a>
-### 파이프라인 에디터 { #pipeline.editor }
+<a id="pipeline-editor"></a>
+### 파이프라인 에디터 { #pipeline-editor }
 
 파이프라인 생성/편집 시 진입하는 메인 편집 화면입니다.
 
@@ -407,8 +407,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 - **에디터 영역**: 노드-에지 편집기(드래그 앤 드롭, 자동 정렬 지원)
 - **사이드 패널**: 설정, 스케줄, 컴퓨팅 리소스 패널
 
-<a id="pipeline.status"></a>
-#### 파이프라인 상태 { #pipeline.status }
+<a id="pipeline-status"></a>
+#### 파이프라인 상태 { #pipeline-status }
 
 상태 배지에 마우스를 올리면 툴팁으로 상세 설명을 확인할 수 있습니다.
 
@@ -424,8 +424,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 | 종료됨 | 사용자가 파이프라인 실행을 중지한 상태 |
 | 삭제 중 | 파이프라인 삭제 중 |
 
-<a id="pipeline.node"></a>
-### 노드 구성 { #pipeline.node }
+<a id="pipeline-node"></a>
+### 노드 구성 { #pipeline-node }
 
 파이프라인은 아래 5종류의 노드를 조합하여 구성합니다.
 
@@ -446,8 +446,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 !!! danger "주의"
     저장할 때 파이프라인 구성을 검사합니다. 모든 노드는 하나의 흐름으로 연결되어야 하며(연결되지 않은 노드 불가), 흐름의 마지막 노드는 1개의 DATASET 노드여야 합니다.
 
-<a id="pipeline.node.source"></a>
-#### 소스 노드 추가 { #pipeline.node.source }
+<a id="pipeline-node-source"></a>
+#### 소스 노드 추가 { #pipeline-node-source }
 
 1. 탭 바에서 **소스 노드 추가** 버튼을 클릭합니다.
 2. 사용 가능한 데이터 소스 목록이 모달로 표시됩니다.
@@ -459,8 +459,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 | 추천 | 추천 결과 저장소 |
 | 데이터셋 | 파이프라인의 데이터셋 노드가 생성한 데이터. 다른 파이프라인의 입력으로 재사용 가능 |
 
-<a id="pipeline.node.transform"></a>
-#### 변환 노드(TRANSFORM) { #pipeline.node.transform }
+<a id="pipeline-node-transform"></a>
+#### 변환 노드(TRANSFORM) { #pipeline-node-transform }
 
 변환 작업마다 노드 이름(최대 30자, 한글·일본어·영문·숫자·공백·`-`·`_`)을 지정하며, 한 노드에 여러 변환 작업을 추가하면 순서대로 연결된 노드가 생성됩니다.
 
@@ -477,8 +477,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 | Column(칼럼 연산) | Label Encode Apply | 매핑 테이블로 인코딩 적용 |
 | LLM(LLM 기반 연산) | Classify | LLM으로 텍스트를 카테고리로 분류 |
 
-<a id="pipeline.node.transform.filter"></a>
-##### 필터(Filter) { #pipeline.node.transform.filter }
+<a id="pipeline-node-transform-filter"></a>
+##### 필터(Filter) { #pipeline-node-transform-filter }
 
 | 값 | 설명 | 예시 |
 | --- | --- | --- |
@@ -509,8 +509,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 
 논리 연산자는 `AND`, `OR`를 지원하며, **그룹 추가** 버튼으로 조건을 최대 3단계까지 묶을 수 있습니다.
 
-<a id="pipeline.node.transform.explode"></a>
-##### 분해(Explode) { #pipeline.node.transform.explode }
+<a id="pipeline-node-transform-explode"></a>
+##### 분해(Explode) { #pipeline-node-transform-explode }
 
 구분자로 이어진 문자열 칼럼을 토큰마다 별도의 행으로 분해합니다.
 
@@ -527,8 +527,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 - 구분자는 정규식으로 해석되므로 특수문자는 이스케이프가 필요합니다(예: `\.`, `\|`).
 - 출력 타입을 지정하면 분해된 값이 해당 타입으로 변환됩니다. 예를 들어 숫자 ID가 쉼표로 구분된 경우 BIGINT로 지정하면 조인 키 타입을 맞출 수 있습니다.
 
-<a id="pipeline.node.transform.derive"></a>
-##### 파생 칼럼(Derive) { #pipeline.node.transform.derive }
+<a id="pipeline-node-transform-derive"></a>
+##### 파생 칼럼(Derive) { #pipeline-node-transform-derive }
 
 제공되는 함수를 사용하여 기존 칼럼에서 새로운 칼럼을 만듭니다. **파생 칼럼 추가** 버튼으로 정의를 여러 개 추가할 수 있으며, 각 정의마다 함수와 파생 칼럼 이름을 지정합니다.
 
@@ -543,8 +543,8 @@ Event API는 실시간 이벤트 데이터를 HTTP API로 수집하는 기능입
 - 정의는 위에서 아래로 순서대로 적용되며, 앞에서 만든 파생 칼럼을 뒤 정의의 소스 칼럼으로 참조할 수 있습니다.
 - 파생 칼럼 이름에는 영문, 숫자, 밑줄(_), 한글을 사용할 수 있습니다.
 
-<a id="pipeline.node.transform.aggregate"></a>
-##### 집계(Aggregate) { #pipeline.node.transform.aggregate }
+<a id="pipeline-node-transform-aggregate"></a>
+##### 집계(Aggregate) { #pipeline-node-transform-aggregate }
 
 1. **그룹화 기준 선택**(선택): 같은 값을 가진 행들을 그룹으로 묶습니다. 선택하지 않으면 전체 데이터를 하나의 그룹으로 집계합니다.
 2. **집계 함수 정의**(필수): 집계할 칼럼, 집계 함수, 결과 칼럼 이름을 지정합니다. 여러 개를 추가할 수 있습니다.
@@ -577,8 +577,8 @@ ARRAY_AGG를 선택하면 다음 설정이 추가됩니다.
 | 출력 형태 | O | STRUCT_ARRAY, JSON_STRING_ARRAY, JSON_STRING |
 | 중복 제거(DISTINCT) | X | 정렬을 설정하면 무시됨 |
 
-<a id="pipeline.node.transform.rank"></a>
-##### 랭킹(Rank Top N) { #pipeline.node.transform.rank }
+<a id="pipeline-node-transform-rank"></a>
+##### 랭킹(Rank Top N) { #pipeline-node-transform-rank }
 
 전체 데이터를 지정한 기준으로 정렬하여 상위 N개 행만 남깁니다.
 
@@ -591,8 +591,8 @@ ARRAY_AGG를 선택하면 다음 설정이 추가됩니다.
 - **정렬 기준 추가** 버튼으로 기준을 여러 개 지정하면 1차 정렬, 2차 정렬 순으로 적용되며, 드래그하여 순서를 바꿀 수 있습니다.
 - 조회할 때 순위 칼럼으로 정렬하면 원래 순서를 유지할 수 있습니다.
 
-<a id="pipeline.node.transform.label.encode"></a>
-##### 라벨 인코딩(Label Encode FIT / Label Encode Apply) { #pipeline.node.transform.label.encode }
+<a id="pipeline-node-transform-label-encode"></a>
+##### 라벨 인코딩(Label Encode FIT / Label Encode Apply) { #pipeline-node-transform-label-encode }
 
 범주형(카테고리) 데이터를 수치(정수)로 변환하는 기능입니다. **FIT(학습)**과 **APPLY(적용)** 2단계로 구성되며, 반드시 FIT 노드를 먼저 생성한 후 APPLY 노드에서 참조해야 합니다.
 
@@ -617,8 +617,8 @@ APPLY 노드 설정:
 !!! danger "주의"
     FIT을 재실행하면 데이터 변경에 따라 인코딩 번호가 달라질 수 있습니다. 기존 모델과의 호환성에 주의하세요.
 
-<a id="pipeline.node.transform.classify"></a>
-##### 분류(Classify) { #pipeline.node.transform.classify }
+<a id="pipeline-node-transform-classify"></a>
+##### 분류(Classify) { #pipeline-node-transform-classify }
 
 LLM을 사용하여 텍스트 칼럼의 값을 카테고리로 분류합니다. 분류 기준이 되는 카테고리 목록은 별도의 데이터 소스 노드로 준비해야 합니다.
 
@@ -671,8 +671,8 @@ LLM을 사용하여 텍스트 칼럼의 값을 카테고리로 분류합니다. 
 !!! danger "주의"
     처리할 행 수가 많을수록 LLM 호출 횟수와 토큰 사용량이 비례하여 늘어나 비용이 증가합니다. 대규모 데이터는 먼저 소규모로 검증해 비용과 품질을 확인한 후 적용하세요.
 
-<a id="pipeline.node.join"></a>
-#### 조인 노드(JOIN) { #pipeline.node.join }
+<a id="pipeline-node-join"></a>
+#### 조인 노드(JOIN) { #pipeline-node-join }
 
 두 개의 데이터 스트림을 결합합니다.
 
@@ -687,8 +687,8 @@ LLM을 사용하여 텍스트 칼럼의 값을 카테고리로 분류합니다. 
 !!! tip "알아두기"
     양쪽 테이블에 동일한 이름의 칼럼이 있을 경우 오른쪽 테이블에 **접두사**를 설정하여 칼럼 이름 충돌을 방지할 수 있습니다.
 
-<a id="pipeline.node.union"></a>
-#### 유니온 노드(UNION) { #pipeline.node.union }
+<a id="pipeline-node-union"></a>
+#### 유니온 노드(UNION) { #pipeline-node-union }
 
 두 개의 데이터 스트림을 수직으로 합칩니다.
 
@@ -698,8 +698,8 @@ LLM을 사용하여 텍스트 칼럼의 값을 카테고리로 분류합니다. 
 | Intersect Merge | 양쪽 공통 칼럼만 포함 |
 | Left-First Merge | 왼쪽 테이블 스키마 기준. 오른쪽에 없는 칼럼은 NULL |
 
-<a id="pipeline.node.dataset"></a>
-#### 데이터셋 노드(DATASET) { #pipeline.node.dataset }
+<a id="pipeline-node-dataset"></a>
+#### 데이터셋 노드(DATASET) { #pipeline-node-dataset }
 
 파이프라인의 최종 출력 노드로, 처리된 데이터를 테이블로 저장합니다.
 
@@ -714,8 +714,8 @@ LLM을 사용하여 텍스트 칼럼의 값을 카테고리로 분류합니다. 
 !!! danger "주의"
     실행된 데이터셋은 수정할 수 없습니다. 삭제 후 재생성하세요(데이터 소스는 유지됩니다).
 
-<a id="pipeline.schedule"></a>
-### 스케줄 설정 { #pipeline.schedule }
+<a id="pipeline-schedule"></a>
+### 스케줄 설정 { #pipeline-schedule }
 
 우측 사이드 패널의 스케줄 아이콘을 클릭하여 배치 스케줄을 설정합니다.
 
@@ -736,8 +736,8 @@ LLM을 사용하여 텍스트 칼럼의 값을 카테고리로 분류합니다. 
 
 스케줄을 저장하고 최초 1회 실행된 이후부터 설정한 주기에 따라 실행됩니다.
 
-<a id="pipeline.resource"></a>
-### 컴퓨팅 리소스 설정 { #pipeline.resource }
+<a id="pipeline-resource"></a>
+### 컴퓨팅 리소스 설정 { #pipeline-resource }
 
 우측 사이드 패널의 컴퓨팅 리소스 아이콘을 클릭하여 파이프라인 실행 시 사용할 컴퓨팅 자원을 설정합니다.
 
@@ -751,8 +751,8 @@ LLM을 사용하여 텍스트 칼럼의 값을 카테고리로 분류합니다. 
 !!! danger "주의"
     리소스 설정을 변경하면 재빌드 후 적용됩니다. 파이프라인 생성 전에는 리소스를 변경할 수 없습니다.
 
-<a id="pipeline.run"></a>
-### 파이프라인 실행 { #pipeline.run }
+<a id="pipeline-run"></a>
+### 파이프라인 실행 { #pipeline-run }
 
 최초 또는 설정 변경 후 첫 실행 시에는 빌드와 실행이 함께 진행됩니다.
 
@@ -764,19 +764,19 @@ LLM을 사용하여 텍스트 칼럼의 값을 카테고리로 분류합니다. 
 실행 중 **중지** 버튼을 클릭하면 종료됨 상태로 전환됩니다.
 빌드가 완료되면 스케줄이 설정되어 있는 파이프라인은 자동으로 활성화됩니다.
 
-<a id="pipeline.run.history"></a>
-#### 실행 이력 조회 { #pipeline.run.history }
+<a id="pipeline-run-history"></a>
+#### 실행 이력 조회 { #pipeline-run-history }
 
 탭 바에서 **실행 이력** 버튼을 클릭하면 실행 ID, 시작/종료 일시, 소요 시간, 실행 상태, 노드별 실행 상세를 확인할 수 있습니다.
 
-<a id="pipeline.activation"></a>
-### 활성화/비활성화 { #pipeline.activation }
+<a id="pipeline-activation"></a>
+### 활성화/비활성화 { #pipeline-activation }
 
 - **활성화**: 목록에서 파이프라인 1개를 선택하고 더보기(⋯) 메뉴에서 **파이프라인 활성화**를 클릭합니다. 설정된 스케줄에 따라 자동으로 실행됩니다.
 - **비활성화**: 목록에서 파이프라인 1개를 선택하고 더보기(⋯) 메뉴에서 **파이프라인 비활성화**를 클릭합니다. 스케줄이 설정되어 있어도 자동 실행되지 않습니다.
 
-<a id="pipeline.delete"></a>
-### 파이프라인 삭제 { #pipeline.delete }
+<a id="pipeline-delete"></a>
+### 파이프라인 삭제 { #pipeline-delete }
 
 1. 목록에서 삭제할 파이프라인을 선택합니다(다중 선택 가능).
 2. **삭제** 버튼을 클릭합니다.
@@ -789,8 +789,8 @@ LLM을 사용하여 텍스트 칼럼의 값을 카테고리로 분류합니다. 
 
 SQL을 사용하여 데이터 소스의 데이터를 조회·분석합니다.
 
-<a id="query.run"></a>
-### 쿼리 실행 { #query.run }
+<a id="query-run"></a>
+### 쿼리 실행 { #query-run }
 
 1. **데이터 소스**를 선택합니다.
 2. **쿼리 선택**에서 저장된 쿼리를 불러옵니다. 선택한 데이터 소스로 저장한 쿼리가 있을 때 목록에 표시되며, 불러오지 않고 바로 작성해도 됩니다.
@@ -808,13 +808,13 @@ SQL을 사용하여 데이터 소스의 데이터를 조회·분석합니다.
 - FROM 절에는 데이터 소스 목록에 표시된 테이블 이름을 그대로 사용합니다(`SELECT * FROM {테이블 이름}`).
 - 단일 SELECT 구문만 실행할 수 있습니다. 그 외 구문은 거부됩니다.
 
-<a id="query.save"></a>
-### 저장된 쿼리 변경 { #query.save }
+<a id="query-save"></a>
+### 저장된 쿼리 변경 { #query-save }
 
 **쿼리 선택**으로 불러온 쿼리의 내용을 수정한 뒤 **쿼리 저장** 버튼을 클릭하면 변경 사항이 저장됩니다. 불러온 쿼리가 없거나 내용을 바꾸지 않으면 버튼이 비활성화됩니다.
 
-<a id="query.list"></a>
-### 쿼리 목록 { #query.list }
+<a id="query-list"></a>
+### 쿼리 목록 { #query-list }
 
 쿼리는 실행할 때마다 실행 이력으로 자동 기록되며, 반복해서 사용할 쿼리는 쿼리 목록에 직접 만들어 둘 수 있습니다. **쿼리 목록** 버튼을 클릭하면 저장된 쿼리를 관리하는 모달이 열립니다.
 
@@ -836,8 +836,8 @@ SQL을 사용하여 데이터 소스의 데이터를 조회·분석합니다.
 | 데이터 소스 | O | 쿼리를 실행할 데이터 소스 |
 | 구문 | O | 실행할 SQL |
 
-<a id="query.history"></a>
-### 쿼리 실행 이력 { #query.history }
+<a id="query-history"></a>
+### 쿼리 실행 이력 { #query-history }
 
 지금까지 실행한 쿼리를 조회하는 화면입니다. **시간** 범위와 **쿼리 내용**으로 검색하며, **초기화** 버튼으로 검색 조건을 지웁니다.
 
@@ -855,8 +855,8 @@ SQL을 사용하여 데이터 소스의 데이터를 조회·분석합니다.
 
 콘솔 경로: **Machine Learning > NHN Cloud Foundry > 분석** 탭 > **차트** 탭
 
-<a id="chart.list"></a>
-### 차트 목록 { #chart.list }
+<a id="chart-list"></a>
+### 차트 목록 { #chart-list }
 
 | 칼럼 | 설명 |
 | --- | --- |
@@ -871,13 +871,13 @@ SQL을 사용하여 데이터 소스의 데이터를 조회·분석합니다.
 - 상단 검색 기능으로 차트 이름 필터링이 가능합니다.
 - 데이터 소스가 삭제되어 이름을 찾을 수 없으면 데이터 소스 ID가 표시됩니다.
 
-<a id="chart.create"></a>
-### 차트 생성 { #chart.create }
+<a id="chart-create"></a>
+### 차트 생성 { #chart-create }
 
 **차트 생성** 버튼을 클릭하면 차트 에디터 화면으로 이동합니다. 에디터에서 다음 항목을 차례로 설정합니다.
 
-<a id="chart.create.basic"></a>
-#### 기본 설정 { #chart.create.basic }
+<a id="chart-create-basic"></a>
+#### 기본 설정 { #chart-create-basic }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -885,16 +885,16 @@ SQL을 사용하여 데이터 소스의 데이터를 조회·분석합니다.
 | 차트 타입 | O | 차트 용도 구분(현재는 기본만 제공) |
 | 차트 시각화 타입 | O | Line Chart, Bar Chart, Pie Chart, Scatter Chart |
 
-<a id="chart.create.datasource"></a>
-#### 데이터 소스 설정 { #chart.create.datasource }
+<a id="chart-create-datasource"></a>
+#### 데이터 소스 설정 { #chart-create-datasource }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
 | 데이터소스 타입 | O | FILE, DATASET, RECOMMENDATION SINK |
 | 데이터 소스 이름 | O | 사용할 데이터 소스 선택 |
 
-<a id="chart.create.query"></a>
-#### 쿼리 설정 { #chart.create.query }
+<a id="chart-create-query"></a>
+#### 쿼리 설정 { #chart-create-query }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -917,8 +917,8 @@ SQL을 사용하여 데이터 소스의 데이터를 조회·분석합니다.
 
 Bar 차트에 정렬을 지정하면 시간축 대신 상위 N개 카테고리로 표시됩니다.
 
-<a id="chart.create.preview"></a>
-#### 차트 프리뷰 { #chart.create.preview }
+<a id="chart-create-preview"></a>
+#### 차트 프리뷰 { #chart-create-preview }
 
 설정 완료 후 **UPDATE CHART** 버튼을 클릭하여 프리뷰를 확인합니다.
 
@@ -927,14 +927,14 @@ Bar 차트에 정렬을 지정하면 시간축 대신 상위 N개 카테고리�
 - 조회에 실패하면 차트 영역에 **차트 조회 실패** 패널이 표시되고, 쿼리 엔진이 반환한 오류 내용을 그대로 확인할 수 있습니다. 오류 내용으로 쿼리 설정을 수정한 뒤 다시 조회합니다.
 - 집계함수를 선택하지 않은 칼럼이 있으면 **UPDATE CHART**를 클릭할 때 안내가 표시됩니다. 집계함수가 없으면 차트가 정상적으로 표시되지 않을 수 있습니다.
 
-<a id="chart.create.save"></a>
-#### 차트 저장 { #chart.create.save }
+<a id="chart-create-save"></a>
+#### 차트 저장 { #chart-create-save }
 
 - 프리뷰 확인 후 헤더의 **생성** 버튼을 클릭합니다.
 - 입력 내용 검증이 완료되면 생성 버튼이 활성화됩니다.
 
-<a id="chart.edit"></a>
-### 차트 편집 { #chart.edit }
+<a id="chart-edit"></a>
+### 차트 편집 { #chart-edit }
 
 차트 목록에서 차트를 클릭하여 편집 화면으로 진입합니다.
 
@@ -942,8 +942,8 @@ Bar 차트에 정렬을 지정하면 시간축 대신 상위 N개 카테고리�
 - 데이터 소스 설정은 현재 사용 중인 데이터 소스를 보여 주되 변경할 수 없도록 잠긴 상태로 표시됩니다. 다른 데이터 소스를 사용하려면 차트를 새로 만듭니다.
 - **UPDATE CHART**로 프리뷰 확인 후 **저장**으로 변경 사항을 저장합니다.
 
-<a id="chart.delete"></a>
-### 차트 삭제 { #chart.delete }
+<a id="chart-delete"></a>
+### 차트 삭제 { #chart-delete }
 
 1. 차트 목록에서 삭제할 차트를 체크박스로 선택합니다.
 2. **삭제** 버튼을 클릭합니다.
@@ -957,14 +957,14 @@ Bar 차트에 정렬을 지정하면 시간축 대신 상위 N개 카테고리�
 
 콘솔 경로: **Machine Learning > NHN Cloud Foundry > 분석** 탭 > **대시보드** 탭
 
-<a id="dashboard.list"></a>
-### 대시보드 목록 { #dashboard.list }
+<a id="dashboard-list"></a>
+### 대시보드 목록 { #dashboard-list }
 
 - 검색 기능으로 대시보드 이름 필터링이 가능합니다.
 - 페이지당 표시 건수를 조정할 수 있습니다.
 
-<a id="dashboard.create"></a>
-### 대시보드 생성 { #dashboard.create }
+<a id="dashboard-create"></a>
+### 대시보드 생성 { #dashboard-create }
 
 **대시보드 생성** 버튼을 클릭하면 대시보드 에디터 화면으로 이동합니다.
 
@@ -980,14 +980,14 @@ Bar 차트에 정렬을 지정하면 시간축 대신 상위 N개 카테고리�
 | CHARTS | 대시보드에 추가할 수 있는 차트 목록. 차트 이름으로 검색 가능 |
 | LAYOUT ELEMENTS | 캔버스에 추가할 레이아웃 요소 |
 
-<a id="dashboard.create.chart"></a>
-#### 차트 추가 { #dashboard.create.chart }
+<a id="dashboard-create-chart"></a>
+#### 차트 추가 { #dashboard-create-chart }
 
 1. 추가할 차트 카드를 클릭하거나 드래그합니다.
 2. 대시보드 캔버스에 차트를 배치합니다.
 
-<a id="dashboard.create.tabgroup"></a>
-#### 탭 그룹 추가 { #dashboard.create.tabgroup }
+<a id="dashboard-create-tabgroup"></a>
+#### 탭 그룹 추가 { #dashboard-create-tabgroup }
 
 여러 차트를 탭으로 묶어 한 자리에서 전환하며 볼 수 있습니다. 편집 패널의 **LAYOUT ELEMENTS** 탭에서 **Tab**을 클릭하면 캔버스에 탭 그룹이 추가됩니다.
 
@@ -996,23 +996,23 @@ Bar 차트에 정렬을 지정하면 시간축 대신 상위 N개 카테고리�
 - 편집 패널의 차트를 탭 영역으로 끌어다 놓으면 해당 탭에 배치됩니다. 이미 캔버스에 있는 차트는 차트 제목 왼쪽의 핸들을 끌어 탭으로 옮기고, 탭에 담긴 차트도 같은 방법으로 캔버스에 되돌립니다.
 - 탭 그룹은 차트와 마찬가지로 우측 상단의 휴지통 아이콘을 클릭하여 대시보드에서 삭제합니다.
 
-<a id="dashboard.create.layout"></a>
-#### 레이아웃 조정 { #dashboard.create.layout }
+<a id="dashboard-create-layout"></a>
+#### 레이아웃 조정 { #dashboard-create-layout }
 
 캔버스에 배치한 차트는 드래그하여 위치를 옮기고 모서리를 끌어 크기를 조정합니다. 차트 우측 상단의 휴지통 아이콘을 클릭하면 대시보드에서 삭제됩니다.
 
-<a id="dashboard.create.save"></a>
-#### 대시보드 저장 { #dashboard.create.save }
+<a id="dashboard-create-save"></a>
+#### 대시보드 저장 { #dashboard-create-save }
 
 구성 완료 후 헤더의 **저장** 버튼을 클릭합니다.
 
-<a id="dashboard.view"></a>
-### 대시보드 열람 { #dashboard.view }
+<a id="dashboard-view"></a>
+### 대시보드 열람 { #dashboard-view }
 
 대시보드 목록에서 대시보드를 클릭하여 상세 화면으로 진입합니다.
 
-<a id="dashboard.edit"></a>
-### 대시보드 편집 { #dashboard.edit }
+<a id="dashboard-edit"></a>
+### 대시보드 편집 { #dashboard-edit }
 
 대시보드 상세 화면에서 **편집 모드 토글**을 클릭하여 편집 모드로 전환합니다.
 
@@ -1023,8 +1023,8 @@ Bar 차트에 정렬을 지정하면 시간축 대신 상위 N개 카테고리�
 
 대시보드에 배치된 차트를 수정하려면 편집 모드를 끕니다. 편집 모드가 꺼져 있으면 각 차트에 더보기 메뉴가 표시되며, **차트 수정**을 선택하면 차트 편집 페이지로 이동합니다. 탭 그룹 안의 차트도 같은 방법으로 이동하며, 차트 편집 후 저장하면 대시보드에 변경 사항이 반영됩니다.
 
-<a id="dashboard.delete"></a>
-### 대시보드 삭제 { #dashboard.delete }
+<a id="dashboard-delete"></a>
+### 대시보드 삭제 { #dashboard-delete }
 
 1. 대시보드 목록에서 삭제할 대시보드를 선택합니다.
 2. **삭제** 버튼을 클릭합니다.
@@ -1042,8 +1042,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 | 추천 시스템 | 사용자 행동 패턴을 분석하여 맞춤형 추천을 제공합니다. |
 | 단변량 시계열 이상탐지 | 지표를 하나씩 학습하여 정상 범위를 벗어난 값을 탐지합니다. |
 
-<a id="app.list"></a>
-### 앱 목록 { #app.list }
+<a id="app-list"></a>
+### 앱 목록 { #app-list }
 
 | 칼럼 | 설명 |
 | --- | --- |
@@ -1054,8 +1054,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 | 상태 | 앱 상태 |
 | 생성일 | 앱 생성 일시 |
 
-<a id="app.list.status"></a>
-#### 앱 상태 { #app.list.status }
+<a id="app-list-status"></a>
+#### 앱 상태 { #app-list-status }
 
 앱 상태 배지에 마우스를 올리면 툴팁으로 상세 설명을 확인할 수 있습니다.
 
@@ -1077,8 +1077,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
     다음은 추천 시스템 앱 기준 설명입니다. 앱 생성 직후 진행되는 학습·배포는 앱을 준비하는 과정으로, 이 시점에는 추천 모델이 아직 학습되지 않은 상태입니다. 추천 API를 호출하면 응답은 반환되지만 학습된 모델의 추천 결과가 아닙니다.
     첫 학습은 배치 스케줄에 지정한 시각에 실행되며(상태: 학습 중 → 배포 중 → 활성화 중 → 활성), 학습된 모델이 배포된 이후부터 유효한 추천 결과를 조회할 수 있습니다.
 
-<a id="app.create"></a>
-### 앱 생성 { #app.create }
+<a id="app-create"></a>
+### 앱 생성 { #app-create }
 
 **앱 생성** 버튼을 클릭하면 앱 생성 화면으로 전환됩니다. 앱 생성은 3단계로 진행됩니다.
 
@@ -1105,8 +1105,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 - 앱을 삭제한 직후에는 리소스가 회수되기까지 5분 정도 걸릴 수 있습니다.
 - 판정 결과는 저장하지 않으므로 앱 생성 화면에 진입할 때마다 다시 조회합니다.
 
-<a id="app.create.basic"></a>
-#### 기본 설정 { #app.create.basic }
+<a id="app-create-basic"></a>
+#### 기본 설정 { #app-create-basic }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -1114,13 +1114,13 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 | 앱 설명 | O | 앱 설명 |
 | 앱 유형 | O | **추천 시스템** 또는 **단변량 시계열 이상탐지** 선택. 유형을 선택하면 아래에 유형 설명이 표시됨 |
 
-<a id="app.create.detail"></a>
-#### 추천 시스템 상세 설정 { #app.create.detail }
+<a id="app-create-detail"></a>
+#### 추천 시스템 상세 설정 { #app-create-detail }
 
 **모델 추가** 버튼으로 모델 카드를 추가합니다. 한 앱에 여러 모델을 함께 구성할 수 있으며, 모델 카드마다 아래 섹션들을 설정합니다.
 
-<a id="app.create.detail.model"></a>
-##### 기본 모델 설정 { #app.create.detail.model }
+<a id="app-create-detail-model"></a>
+##### 기본 모델 설정 { #app-create-detail-model }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -1136,8 +1136,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 
 같은 모델이라도 Longtail 모드가 다르면 별도 모델로 추가할 수 있습니다.
 
-<a id="app.create.detail.resources"></a>
-##### 서빙 리소스 설정 { #app.create.detail.resources }
+<a id="app-create-detail-resources"></a>
+##### 서빙 리소스 설정 { #app-create-detail-resources }
 
 모델별 서빙 컨테이너에 할당할 리소스를 지정합니다. 입력하지 않으면 기본값이 적용됩니다.
 
@@ -1148,8 +1148,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 
 `request`는 `limit`을 초과할 수 없습니다.
 
-<a id="app.create.detail.schedule"></a>
-##### 배치 스케줄 설정 { #app.create.detail.schedule }
+<a id="app-create-detail-schedule"></a>
+##### 배치 스케줄 설정 { #app-create-detail-schedule }
 
 모델을 다시 학습하는 배치의 실행 주기를 설정합니다. 기본으로 활성화되어 있으며, 토글로 끌 수 있습니다.
 모델의 첫 학습도 이 스케줄에 지정한 시각에 실행되며, 첫 학습이 완료되기 전의 추천 응답은 학습된 모델의 결과가 아닙니다.
@@ -1161,8 +1161,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 | 매시간 | 시간 간격, 분 |
 
 
-<a id="app.create.detail.connection"></a>
-##### 데이터 연결 설정 { #app.create.detail.connection }
+<a id="app-create-detail-connection"></a>
+##### 데이터 연결 설정 { #app-create-detail-connection }
 
 선택한 모델에 따라 필요한 데이터 소스를 연결합니다.
 
@@ -1191,8 +1191,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 | 아이템 ID 칼럼 | O | 아이템 식별 칼럼 |
 | 시간 칼럼 | X | 시간 칼럼 |
 
-<a id="app.create.detail.extra"></a>
-##### 추가 설정(Skills) { #app.create.detail.extra }
+<a id="app-create-detail-extra"></a>
+##### 추가 설정(Skills) { #app-create-detail-extra }
 
 추천 사유(reason) 구성에 사용할 스킬·카테고리 데이터를 연결하는 선택 설정입니다. **필드 추가** 버튼으로 추가합니다.
 
@@ -1206,13 +1206,13 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 | 추천 사유 템플릿 데이터소스 | 추천 사유 문구 템플릿 테이블. 미선택 시 추천 결과에 사유 미포함 |
 | 콜드스타트 데이터소스 | 이 테이블에 있는 사용자 ID만 콜드스타터로 판정. 데이터소스와 사용자 ID 칼럼 함께 선택 필요 |
 
-<a id="app.create.detail.univariate"></a>
-#### 단변량 시계열 이상탐지 상세 설정 { #app.create.detail.univariate }
+<a id="app-create-detail-univariate"></a>
+#### 단변량 시계열 이상탐지 상세 설정 { #app-create-detail-univariate }
 
 단변량 시계열 이상탐지 앱은 지표 하나씩을 따로 학습하여 정상 범위를 벗어난 값을 탐지합니다. 상세 설정은 데이터 소스, 모델 자원, 재학습, 탐지 옵션, 결과 전송 순으로 구성됩니다.
 
-<a id="app.create.detail.univariate.source"></a>
-##### 데이터 소스 { #app.create.detail.univariate.source }
+<a id="app-create-detail-univariate-source"></a>
+##### 데이터 소스 { #app-create-detail-univariate-source }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -1224,8 +1224,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 - 선택한 데이터 소스에 데이터가 없으면 항목 아래에 '아직 데이터가 없습니다.'가 표시되고, 화면 하단 리소스 확인 아래에 **데이터 확인** 상자가 표시됩니다. 재학습 주기를 지정하지 않았으면 생성 시 학습이 유일한 학습이므로 데이터가 들어오기 전에는 다음 단계로 진행할 수 없습니다. 재학습 주기를 지정했으면 첫 학습은 실패하고 다음 재학습 때 다시 시도한다는 안내만 표시되고 진행할 수 있습니다.
 - 최근 5분 안에 같은 시계열로 1분에 서로 다른 값이 여러 개 들어왔으면 안내 상자가 표시됩니다. 생성을 막지는 않지만, 이 상태로는 매분 먼저 도착한 값 하나만 분석에 쓰이고 나머지는 버려집니다. 같은 시계열은 1분에 한 번만 보내고, 더 짧은 주기로 수집한다면 1분 평균으로 합쳐 보냅니다.
 
-<a id="app.create.detail.univariate.resource"></a>
-##### 모델 자원 { #app.create.detail.univariate.resource }
+<a id="app-create-detail-univariate-resource"></a>
+##### 모델 자원 { #app-create-detail-univariate-resource }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -1234,8 +1234,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 
 모델 자원은 앱을 생성한 뒤에는 변경할 수 없습니다.
 
-<a id="app.create.detail.univariate.retrain"></a>
-##### 재학습 { #app.create.detail.univariate.retrain }
+<a id="app-create-detail-univariate-retrain"></a>
+##### 재학습 { #app-create-detail-univariate-retrain }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -1250,8 +1250,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 - 주기를 지정하지 않으면 앱을 만들 때 한 번만 학습하고 이후 자동 재학습은 하지 않습니다. 이 경우 데이터가 없는 데이터 소스로는 앱을 만들 수 없습니다.
 - 학습은 리소스를 많이 사용하므로 트래픽이 적은 시간대를 지정하는 것을 권장합니다.
 
-<a id="app.create.detail.univariate.option"></a>
-##### 탐지 옵션 { #app.create.detail.univariate.option }
+<a id="app-create-detail-univariate-option"></a>
+##### 탐지 옵션 { #app-create-detail-univariate-option }
 
 | 항목 | 필수 | 설명 |
 | --- | --- | --- |
@@ -1275,8 +1275,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 !!! danger "주의"
     점수 스케일은 앱을 생성한 뒤에는 변경할 수 없습니다.
 
-<a id="app.create.detail.univariate.sink"></a>
-##### 결과 전송 { #app.create.detail.univariate.sink }
+<a id="app-create-detail-univariate-sink"></a>
+##### 결과 전송 { #app-create-detail-univariate-sink }
 
 탐지 결과를 Prometheus로 전송하는 설정입니다.
 
@@ -1316,8 +1316,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 
 시스템 칼럼 `ingestTimestamp`는 자동으로 추가됩니다.
 
-<a id="app.create.review"></a>
-#### 최종 검토 { #app.create.review }
+<a id="app-create-review"></a>
+#### 최종 검토 { #app-create-review }
 
 앞 단계에서 입력한 내용을 앱 유형에 맞춰 요약해 표시합니다.
 
@@ -1346,8 +1346,8 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
 - 모델을 학습하고 배포합니다. 진행 상황은 앱 목록의 상태로 확인합니다.
 - 정확 모드에서는 활성화된 뒤에도 판정에 쓸 지표가 쌓여야 결과가 나가기 시작하며, 보통 6시간 안팎이 걸립니다. 그동안 지표를 계속 보내야 합니다.
 
-<a id="app.delete"></a>
-### 앱 삭제 { #app.delete }
+<a id="app-delete"></a>
+### 앱 삭제 { #app-delete }
 
 1. 삭제할 앱의 체크박스를 선택합니다. 앱은 한 번에 하나만 선택할 수 있으며, 다른 앱을 선택하면 이전 선택은 해제됩니다.
 2. **삭제** 버튼을 클릭합니다.
@@ -1357,13 +1357,13 @@ AI 모델을 데이터에 연결한 앱을 생성하고 관리합니다. 앱 유
     삭제된 앱은 복구할 수 없습니다. 연결된 서빙 파이프라인도 함께 삭제됩니다.
     추론 결과 데이터 소스는 삭제되지 않고 남으므로 필요하면 데이터 소스 목록에서 따로 삭제합니다. 앱이 사용 중인 지표 데이터 소스는 앱을 삭제한 뒤에 삭제할 수 있습니다.
 
-<a id="app.detail"></a>
-### 추천 시스템 앱 상세 { #app.detail }
+<a id="app-detail"></a>
+### 추천 시스템 앱 상세 { #app-detail }
 
 앱 목록에서 앱을 클릭하면 상세 화면으로 이동합니다. 추천 시스템 앱은 **추천 API 호출**, **앱 정보**, **학습 관리** 세 개의 탭으로 구성됩니다.
 
-<a id="app.detail.recommend"></a>
-#### 추천 API 호출 { #app.detail.recommend }
+<a id="app-detail-recommend"></a>
+#### 추천 API 호출 { #app-detail-recommend }
 
 추천 요청 파라미터를 입력해 추천 API를 직접 호출하고 결과를 확인할 수 있습니다. 화면은 입력 폼, 요청 미리보기, 추천 결과 세 영역으로 구성됩니다.
 
@@ -1406,16 +1406,16 @@ impressions는 최대 10건, interactions와 feedback은 유형별로 최대 10�
     추천 API 호출은 앱이 활성 상태일 때만 가능합니다.
     impressions는 추천 응답을 받을 때마다 자동으로 한 건씩 최근 10건까지 쌓입니다. 사용자를 변경하거나 화면을 새로 고치면 초기화되며, 행의 ✕로 하나씩, 필드의 ✕로 전체를 지울 수 있습니다.
 
-<a id="app.detail.info"></a>
-#### 앱 정보 { #app.detail.info }
+<a id="app-detail-info"></a>
+#### 앱 정보 { #app-detail-info }
 
 앱 ID, 앱 이름, 상태, 앱 유형, 설명, 생성일, 수정일, 버전과 입력·출력 데이터 소스를 확인할 수 있습니다.
 
 - 입력 데이터 소스: 모델 학습에 사용하는 데이터 소스입니다. 추천 앱은 모델별로 구분해 표시됩니다.
 - 출력 데이터 소스: 추천 결과가 저장되는 데이터 소스입니다.
 
-<a id="app.detail.training"></a>
-#### 학습 관리 { #app.detail.training }
+<a id="app-detail-training"></a>
+#### 학습 관리 { #app-detail-training }
 
 앱에 포함된 학습 모델의 학습 주기를 변경하고, 자동 재학습을 중지·재개하거나 학습을 직접 실행합니다. 학습 산출물 이력도 이 탭에서 확인합니다.
 
@@ -1472,8 +1472,8 @@ impressions는 최대 10건, interactions와 feedback은 유형별로 최대 10�
     학습 실행은 자동 재학습을 중지한 상태에서만 가능합니다.
     학습 주기 변경 모달에서 주기를 바꾸지 않고 저장하면 '적용할 변경 사항이 없습니다.' 안내가 표시됩니다.
 
-<a id="app.detail.training.history"></a>
-##### 학습 산출물 이력 { #app.detail.training.history }
+<a id="app-detail-training-history"></a>
+##### 학습 산출물 이력 { #app-detail-training-history }
 
 목록에서 학습 모델을 선택하면 그 모델의 학습 산출물 이력이 표시됩니다.
 
@@ -1487,13 +1487,13 @@ impressions는 최대 10건, interactions와 feedback은 유형별로 최대 10�
 
 아직 학습된 모델이 없으면 '아직 학습된 모델이 없습니다.'가 표시됩니다.
 
-<a id="app.detail.univariate"></a>
-### 단변량 시계열 이상탐지 앱 상세 { #app.detail.univariate }
+<a id="app-detail-univariate"></a>
+### 단변량 시계열 이상탐지 앱 상세 { #app-detail-univariate }
 
 단변량 시계열 이상탐지 앱은 상단에 **앱 > 앱 이름** 경로가 표시되고, **앱 정보**와 **그룹 목록** 두 개의 탭으로 구성됩니다. 앱 목록으로 돌아가려면 경로의 **앱**을 클릭합니다.
 
-<a id="app.detail.univariate.info"></a>
-#### 앱 정보 { #app.detail.univariate.info }
+<a id="app-detail-univariate-info"></a>
+#### 앱 정보 { #app-detail-univariate-info }
 
 머리글에 앱 이름, 상태, 앱 유형, 앱 ID, 생성일, 변경일, 설명이 표시되고 그 아래에 **입력 → 처리 → 출력** 순서로 카드가 표시됩니다.
 
@@ -1538,8 +1538,8 @@ impressions는 최대 10건, interactions와 feedback은 유형별로 최대 10�
 - 그룹 현황 제목 옆 물음표 아이콘에 마우스를 올리면 세 상태의 뜻을 확인할 수 있습니다. 활성화 대기 중은 정확 모드에서 보통 6시간 안팎이 걸리며, 즉시 모드는 그룹을 켠 직후 활성화됩니다.
 - 재학습이 실패하면 학습 상태가 학습 실패로 표시됩니다. 결과는 직전에 학습한 모델로 계속 나가고, 다음 재학습 주기에 다시 학습합니다. 첫 학습이 실패하면 앱이 실패 상태가 되며 삭제할 수 있습니다.
 
-<a id="app.detail.univariate.groups"></a>
-#### 그룹 목록 { #app.detail.univariate.groups }
+<a id="app-detail-univariate-groups"></a>
+#### 그룹 목록 { #app-detail-univariate-groups }
 
 이상 탐지는 시계열마다 이루어지며, 그룹은 그 시계열들을 묶어 결과와 상태를 확인하는 단위입니다.
 
@@ -1582,10 +1582,10 @@ impressions는 최대 10건, interactions와 feedback은 유형별로 최대 10�
 - 그룹 키, 탐지 시작 시각, 비활성화 시각, 생성일, 변경일 칼럼은 머리글을 클릭해 정렬할 수 있습니다. 정렬은 전체 그룹 기준이며, 정렬을 바꾸면 1페이지로 이동합니다. 값, 그룹 해시, 상태, 추론 상태 칼럼은 정렬할 수 없습니다. 값은 그룹 키 칼럼에서 정렬하고, 추론 상태는 필터로 좁힙니다.
 - 페이지당 표시 개수를 조절할 수 있습니다(20개, 50개, 100개 / 기본 20개).
 - 등록된 그룹이 없으면 '등록된 그룹이 없습니다. 데이터가 들어오고 그룹이 등록되면 여기에 표시됩니다.'가, 검색·필터 조건에 맞는 그룹이 없으면 '조건에 맞는 그룹이 없습니다.'가 표시됩니다.
-- 특정 그룹만 골라 사용 시작, 중지, 삭제하려면 [API 가이드](./api-guide/#univariate.group.api)의 '그룹 사용 시작·중지·삭제'를 참고합니다. 콘솔에는 이 조작이 없습니다.
+- 특정 그룹만 골라 사용 시작, 중지, 삭제하려면 [API 가이드](./api-guide/#univariate-group-api)의 '그룹 사용 시작·중지·삭제'를 참고합니다. 콘솔에는 이 조작이 없습니다.
 
-<a id="app.detail.univariate.groups.hash"></a>
-##### 해시 계산기 { #app.detail.univariate.groups.hash }
+<a id="app-detail-univariate-groups-hash"></a>
+##### 해시 계산기 { #app-detail-univariate-groups-hash }
 
 툴바의 **해시 계산기** 버튼을 클릭하면 라벨로부터 해시를 직접 계산할 수 있습니다.
 
