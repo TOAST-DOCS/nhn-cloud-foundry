@@ -2,8 +2,8 @@
 
 <!-- pre-align:aligned sig=3deff3dd96d2 -->
 
-<a id="foundry.console.guide"></a>
-## Machine Learning > NHN Cloud Foundry > Console User Guide { #foundry.console.guide }
+<a id="foundry-console-guide"></a>
+## Machine Learning > NHN Cloud Foundry > Console User Guide { #foundry-console-guide }
 
 This document describes how to manage data sources, pipelines, analytics (queries, charts, and dashboards), and apps in the NHN Cloud Foundry console.
 
@@ -22,8 +22,8 @@ Console path: **Machine Learning > NHN Cloud Foundry > Status** tab
 
 On the Status tab, you can check the service activation status and tenant settings. Before using the service, check the activation status on this tab, and submit an activation request if the service is not yet activated.
 
-<a id="status.activate"></a>
-### Request Service Activation { #status.activate }
+<a id="status-activate"></a>
+### Request Service Activation { #status-activate }
 
 Service activation cannot be performed directly from the console. Contact us through [1:1 Inquiry](https://www.nhncloud.com/kr/support/inquiry) with your preferred resource size. Once the requested cluster is created, you can use the service starting from creating a data source.
 
@@ -36,8 +36,8 @@ The features available for each resource size are as follows:
 | LARGE | Basic resources + AI apps available |
 | XLARGE | All features available (data pipeline + AI apps) |
 
-<a id="status.info"></a>
-### Check Service Status { #status.info }
+<a id="status-info"></a>
+### Check Service Status { #status-info }
 
 After activation, the Status tab displays the following information:
 
@@ -64,8 +64,8 @@ A data source is the unit that stores data for analysis in NHN Cloud Foundry. Yo
     When using this service, do not enter any information that contains personal data.
     This service does not provide separate security measures for personal data entered by customers, so we recommend that you refrain from entering and storing information that contains personal data.
 
-<a id="datasource.list"></a>
-### Data Source List { #datasource.list }
+<a id="datasource-list"></a>
+### Data Source List { #datasource-list }
 
 The data source list screen displays the following information.
 
@@ -116,13 +116,13 @@ For data sources of type File, the result of the most recent file upload is disp
 !!! tip "Note"
     Items of type Recommendation, Univariate Time-Series Anomaly Detection Result, and Dataset cannot be created directly by users. Recommendations and Univariate Time-Series Anomaly Detection Results are created automatically when you create an app, and Datasets are created automatically when you run a pipeline.
 
-<a id="datasource.create"></a>
-### Create a Data Source { #datasource.create }
+<a id="datasource-create"></a>
+### Create a Data Source { #datasource-create }
 
 Click the **Create Data Source** button to open the creation modal. The creation modal consists of Default Setting, Connection Settings, and Advanced Settings. The schema input method and Advanced Settings items vary depending on the data source type selected in Connection Settings. After completing the settings, click the **Add** button to create the data source.
 
-<a id="datasource.create.basic"></a>
-#### Basic Settings { #datasource.create.basic }
+<a id="datasource-create-basic"></a>
+#### Basic Settings { #datasource-create-basic }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -132,8 +132,8 @@ Click the **Create Data Source** button to open the creation modal. The creation
 
 Data source names and table names that are already in use cannot be used.
 
-<a id="datasource.create.connection"></a>
-#### Connection Settings { #datasource.create.connection }
+<a id="datasource-create-connection"></a>
+#### Connection Settings { #datasource-create-connection }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -146,8 +146,8 @@ See the table below for available types and their descriptions:
 | File Upload | Upload a CSV file to load data. After creation, update data using CSV or the Ingest API. |
 | Prometheus API | Loads metric data in real time via a collection API. You can also use it as input for a univariate time-series anomaly detection app. |
 
-<a id="datasource.create.detail"></a>
-#### Upload File Detailed Settings { #datasource.create.detail }
+<a id="datasource-create-detail"></a>
+#### Upload File Detailed Settings { #datasource-create-detail }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -203,8 +203,8 @@ Supported field types:
 !!! danger "Caution"
     The reserved field name `system_eventTimestamp` cannot be used.
 
-<a id="datasource.create.detail.prometheus"></a>
-#### Prometheus API Detail Settings { #datasource.create.detail.prometheus }
+<a id="datasource-create-detail-prometheus"></a>
+#### Prometheus API Detail Settings { #datasource-create-detail-prometheus }
 
 For the Prometheus API type, the record format sent by the collection API is fixed, so you do not enter a schema manually. In place of the schema in the basic settings, the following fixed schema is displayed as a read-only table, and a table is created using this schema as-is.
 
@@ -240,10 +240,10 @@ Under the group label, the **View Example** row displays how many series and gro
 Click **Add** to open the completion window, which displays the data source readiness status and the **Collection Method** (endpoint, request headers, request body example, and rules). Once the status changes to "Ready," you can send metrics using the provided method.
 
 !!! tip "Tips"
-    For information on how to send data to the Prometheus API data source, see the **Collection Method** tab in the creation completion window or Details view, or see "Metric Collection" in the [API Guide](./api-guide/#metrics.ingest.api).
+    For information on how to send data to the Prometheus API data source, see the **Collection Method** tab in the creation completion window or Details view, or see "Metric Collection" in the [API Guide](./api-guide/#metrics-ingest-api).
 
-<a id="datasource.delete"></a>
-### Delete a Data Source { #datasource.delete }
+<a id="datasource-delete"></a>
+### Delete a Data Source { #datasource-delete }
 
 Select the data sources to delete using the checkboxes in the list, then click the **Delete** button.
 
@@ -252,8 +252,8 @@ Select the data sources to delete using the checkboxes in the list, then click t
 - A data source in use by an app or data pipeline cannot be deleted. Delete the connected app or data pipeline first.
 - Deleting an app does not delete the inference result data source — it remains. If necessary, delete it separately from the data source list.
 
-<a id="datasource.detail"></a>
-### View Details / Preview { #datasource.detail }
+<a id="datasource-detail"></a>
+### View Details / Preview { #datasource-detail }
 
 - **Details** (magnifying glass icon): View information about the data source.
 - **Preview** (⌄ icon): Preview the ingested data in table format.
@@ -269,8 +269,8 @@ The Details view consists of the following tabs.
 
 For data sources with the Prometheus API type, the **Series Identification Label** and **Group Label** are displayed together on the Connection Settings tab. If no values are specified, they are shown as "Use All Labels" and "Single Group (Entire Data Source)" respectively. If multiple different values have been received within the same time series in a single minute within the past 5 minutes, that fact is also displayed on the Connection Settings tab.
 
-<a id="datasource.detail.event"></a>
-#### Event Settings { #datasource.detail.event }
+<a id="datasource-detail-event"></a>
+#### Event Settings { #datasource-detail-event }
 
 The Event API is a feature that collects real-time event data via HTTP API. Use the toggle on the Event Settings tab to enable or disable it.
 
@@ -289,11 +289,11 @@ The Event API is a feature that collects real-time event data via HTTP API. Use 
     Changing the data source schema is also restricted while the Event API is enabled. To add fields to the catalog, you must first disable the Event API.
     If you re-enable the Event API after uploading a snapshot, the event collection offset is reset to the latest offset.
 
-For information about how to send events, see "Event Ingestion" in the [API Guide](./api-guide/#event.ingest.api).
-You can also enable and disable the Event API via "Enable/Disable Event API" in the [API Guide](./api-guide/#event.ingest.api.enable).
+For information about how to send events, see "Event Ingestion" in the [API Guide](./api-guide/#event-ingest-api).
+You can also enable and disable the Event API via "Enable/Disable Event API" in the [API Guide](./api-guide/#event-ingest-api-enable).
 
-<a id="datasource.detail.ingest"></a>
-#### Collect metrics { #datasource.detail.ingest }
+<a id="datasource-detail-ingest"></a>
+#### Collect metrics { #datasource-detail-ingest }
 
 This section explains how to send metrics to a data source of the Prometheus API type. You can copy each item by using the **Copy** button.
 
@@ -309,15 +309,15 @@ The same information is also displayed in the completion window immediately afte
 !!! danger "Caution"
     The issued authentication token must be placed in the token position of the `X-NHN-Authorization` header. If you send only the app key, the request will be rejected.
 
-For details on the request format, see "Metric Collection" in the [API Guide](./api-guide/#metrics.ingest.api).
+For details on the request format, see "Metric Collection" in the [API Guide](./api-guide/#metrics-ingest-api).
 
-<a id="datasource.edit"></a>
-### Update Data { #datasource.edit }
+<a id="datasource-edit"></a>
+### Update Data { #datasource-edit }
 
 The data source name and table name cannot be changed after creation. You can update ingested data by uploading a new CSV file, and you can add new fields.
 
-<a id="datasource.edit.csv"></a>
-#### Edit Data with CSV { #datasource.edit.csv }
+<a id="datasource-edit-csv"></a>
+#### Edit Data with CSV { #datasource-edit-csv }
 
 In the list, click **Edit with CSV** from the more options (⋯) menu in the row of a data source of type File.
 
@@ -334,8 +334,8 @@ Upload is restricted in the following cases.
 | The file contains columns not in the catalog | Add fields to the catalog first, then re-upload |
 | The header setting does not match the first row of the file | Upload a file that includes a column header row, or change the header setting in the data source |
 
-<a id="datasource.edit.field"></a>
-#### Add a Field { #datasource.edit.field }
+<a id="datasource-edit-field"></a>
+#### Add a Field { #datasource-edit-field }
 
 Click the **Add field** button in the **Catalog** tab of the Details view.
 
@@ -350,7 +350,7 @@ Click the **Add field** button in the **Catalog** tab of the Details view.
 - You cannot add fields to a data source with the Event API enabled. Disable the Event API first.
 
 !!! tip "Note"
-    You can update data not only through the console but also via the API. For details, see the 'Ingest API' section in the [API guide](./api-guide/#ingest.api).
+    You can update data not only through the console but also via the API. For details, see the 'Ingest API' section in the [API guide](./api-guide/#ingest-api).
 
 <a id="pipeline"></a>
 ## Pipeline { #pipeline }
@@ -359,8 +359,8 @@ Console path: **Machine Learning > NHN Cloud Foundry > Pipeline** tab
 
 A pipeline processes data from a data source through a workflow of connected nodes, transforming it into an analyzable dataset.
 
-<a id="pipeline.list"></a>
-### Pipeline List { #pipeline.list }
+<a id="pipeline-list"></a>
+### Pipeline List { #pipeline-list }
 
 When you enter the pipeline menu, the list of created pipelines is displayed in table format.
 
@@ -381,8 +381,8 @@ When you enter the pipeline menu, the list of created pipelines is displayed in 
 
 You can create, modify, delete, enable, and disable pipelines from the toolbar. Enable and disable options are in the **More (⋯)** menu.
 
-<a id="pipeline.create"></a>
-### Create a Pipeline { #pipeline.create }
+<a id="pipeline-create"></a>
+### Create a Pipeline { #pipeline-create }
 
 1. On the list screen, click the **Create Pipeline** button.
 2. In the **Settings** panel on the right, enter the basic information.
@@ -398,8 +398,8 @@ You can create, modify, delete, enable, and disable pipelines from the toolbar. 
 !!! danger "Caution"
     Saving the settings of an enabled pipeline disables the pipeline. Building by clicking the Run button automatically enables it again.
 
-<a id="pipeline.editor"></a>
-### Pipeline editor { #pipeline.editor }
+<a id="pipeline-editor"></a>
+### Pipeline editor { #pipeline-editor }
 
 This is the main editing screen that you enter when creating or editing a pipeline.
 
@@ -409,8 +409,8 @@ This is the main editing screen that you enter when creating or editing a pipeli
 - **Editor area**: Node-edge editor (supports drag and drop and auto-layout)
 - **Side panel**: Settings, Schedule, and Computing Resources panels
 
-<a id="pipeline.status"></a>
-#### Pipeline status { #pipeline.status }
+<a id="pipeline-status"></a>
+#### Pipeline status { #pipeline-status }
 
 You can hover over the status badge to view a detailed description in a tooltip.
 
@@ -426,8 +426,8 @@ You can hover over the status badge to view a detailed description in a tooltip.
 | Terminated | User has stopped the pipeline run |
 | Deleting | Pipeline deletion in progress |
 
-<a id="pipeline.node"></a>
-### Node configuration { #pipeline.node }
+<a id="pipeline-node"></a>
+### Node configuration { #pipeline-node }
 
 A pipeline is configured by combining the following five node types.
 
@@ -448,8 +448,8 @@ Connection constraints:
 !!! danger "Caution"
     The pipeline configuration is validated when saved. All nodes must be connected in a single flow (disconnected nodes are not allowed), and the last node in the flow must be exactly one DATASET node.
 
-<a id="pipeline.node.source"></a>
-#### Add source node { #pipeline.node.source }
+<a id="pipeline-node-source"></a>
+#### Add source node { #pipeline-node-source }
 
 1. Click the **Add Source Node** button in the tab bar.
 2. A list of available data sources is displayed in a modal.
@@ -461,8 +461,8 @@ Connection constraints:
 | Recommendation | Recommendation result store |
 | Dataset | Data generated by a Dataset node in a pipeline. Can be reused as input for other pipelines. |
 
-<a id="pipeline.node.transform"></a>
-#### Transform node (TRANSFORM) { #pipeline.node.transform }
+<a id="pipeline-node-transform"></a>
+#### Transform node (TRANSFORM) { #pipeline-node-transform }
 
 Each transform operation requires a node name (up to 30 characters; Korean, Japanese, English, numbers, spaces, `-`, and `_` are allowed). Adding multiple transform operations to a single node creates nodes connected in sequence.
 
@@ -479,8 +479,8 @@ The following transform methods are supported:
 | Column (column operations) | Label Encode Apply | Applies encoding using a mapping table |
 | LLM (LLM-based operations) | Classify | Classifies text into categories using an LLM |
 
-<a id="pipeline.node.transform.filter"></a>
-##### Filter { #pipeline.node.transform.filter }
+<a id="pipeline-node-transform-filter"></a>
+##### Filter { #pipeline-node-transform-filter }
 
 | Value | Description | Example |
 | --- | --- | --- |
@@ -511,8 +511,8 @@ Select the value to compare from **Enter Manually**, **Time (based on current ti
 
 Logical operators `AND` and `OR` are supported. Use the **Add Group** button to nest conditions up to three levels deep.
 
-<a id="pipeline.node.transform.explode"></a>
-##### Explode { #pipeline.node.transform.explode }
+<a id="pipeline-node-transform-explode"></a>
+##### Explode { #pipeline-node-transform-explode }
 
 Splits a delimited string column into separate rows for each token.
 
@@ -529,8 +529,8 @@ Splits a delimited string column into separate rows for each token.
 - The delimiter is interpreted as a regular expression, so special characters must be escaped (e.g., `\.`, `\|`).
 - If an output type is specified, each split value is cast to that type. For example, if numeric IDs are comma-separated, specifying BIGINT ensures the type matches your join key.
 
-<a id="pipeline.node.transform.derive"></a>
-##### Derive { #pipeline.node.transform.derive }
+<a id="pipeline-node-transform-derive"></a>
+##### Derive { #pipeline-node-transform-derive }
 
 Creates new columns from existing ones using provided functions. Use the **Add Derived Column** button to add multiple definitions, specifying a function and a derived column name for each.
 
@@ -545,8 +545,8 @@ Creates new columns from existing ones using provided functions. Use the **Add D
 - Definitions are applied in order from top to bottom. A derived column created earlier can be referenced as a source column in a later definition.
 - Derived column names can contain English letters, numbers, underscores (_), and Korean characters.
 
-<a id="pipeline.node.transform.aggregate"></a>
-##### Aggregate { #pipeline.node.transform.aggregate }
+<a id="pipeline-node-transform-aggregate"></a>
+##### Aggregate { #pipeline-node-transform-aggregate }
 
 1. **Select grouping criteria** (optional): Groups rows that share the same value. If not selected, all data is aggregated as a single group.
 2. **Define aggregation functions** (required): Specify the column to aggregate, the aggregation function, and the result column name. Multiple definitions can be added.
@@ -579,8 +579,8 @@ Selecting ARRAY_AGG adds the following settings:
 | Output format | O | STRUCT_ARRAY, JSON_STRING_ARRAY, JSON_STRING |
 | Deduplicate (DISTINCT) | X | Ignored if sort is configured. |
 
-<a id="pipeline.node.transform.rank"></a>
-##### Rank Top N { #pipeline.node.transform.rank }
+<a id="pipeline-node-transform-rank"></a>
+##### Rank Top N { #pipeline-node-transform-rank }
 
 Sorts all data by the specified criteria and retains only the top N rows.
 
@@ -593,8 +593,8 @@ Sorts all data by the specified criteria and retains only the top N rows.
 - Use the **Add Sort Criteria** button to specify multiple criteria, which are applied as primary sort, secondary sort, and so on. You can drag to reorder them.
 - Sorting by the rank column when querying preserves the original order.
 
-<a id="pipeline.node.transform.label.encode"></a>
-##### Label encoding (Label Encode FIT / Label Encode Apply) { #pipeline.node.transform.label.encode }
+<a id="pipeline-node-transform-label-encode"></a>
+##### Label encoding (Label Encode FIT / Label Encode Apply) { #pipeline-node-transform-label-encode }
 
 This feature converts categorical data to numeric (integer) values. It consists of two stages: **FIT (training)** and **APPLY (application)**. You must create the FIT node first and then reference it in the APPLY node.
 
@@ -619,8 +619,8 @@ APPLY node settings:
 !!! danger "Caution"
     Re-running FIT may change encoding numbers depending on data changes. Be aware of compatibility issues with existing models.
 
-<a id="pipeline.node.transform.classify"></a>
-##### Classify { #pipeline.node.transform.classify }
+<a id="pipeline-node-transform-classify"></a>
+##### Classify { #pipeline-node-transform-classify }
 
 Classifies text column values into categories using an LLM. The category list used as the classification criteria must be prepared as a separate data source node.
 
@@ -673,8 +673,8 @@ Register the category list used as the classification criteria as axes. Up to 5 
 !!! danger "Caution"
     The more rows you process, the more LLM calls and token usage increase proportionally, raising costs. For large datasets, validate on a small scale first to verify cost and quality before applying at full scale.
 
-<a id="pipeline.node.join"></a>
-#### Join node (JOIN) { #pipeline.node.join }
+<a id="pipeline-node-join"></a>
+#### Join node (JOIN) { #pipeline-node-join }
 
 Combines two data streams.
 
@@ -689,8 +689,8 @@ Combines two data streams.
 !!! tip "Note"
     If both tables have columns with the same name, you can set a **prefix** for the right table to prevent column name conflicts.
 
-<a id="pipeline.node.union"></a>
-#### Union node (UNION) { #pipeline.node.union }
+<a id="pipeline-node-union"></a>
+#### Union node (UNION) { #pipeline-node-union }
 
 Vertically combines two data streams.
 
@@ -700,8 +700,8 @@ Vertically combines two data streams.
 | Intersect Merge | Includes only columns common to both sides. |
 | Left-First Merge | Based on the left table schema. Columns not present in the right table are NULL. |
 
-<a id="pipeline.node.dataset"></a>
-#### Dataset node (DATASET) { #pipeline.node.dataset }
+<a id="pipeline-node-dataset"></a>
+#### Dataset node (DATASET) { #pipeline-node-dataset }
 
 The final output node in the pipeline. Saves processed data as a table.
 
@@ -716,8 +716,8 @@ The dataset name is used as both the data source name and the table name, so it 
 !!! danger "Caution"
     An executed dataset cannot be modified. Delete it and recreate it (the data source is retained).
 
-<a id="pipeline.schedule"></a>
-### Configure a Schedule { #pipeline.schedule }
+<a id="pipeline-schedule"></a>
+### Configure a Schedule { #pipeline-schedule }
 
 Click the schedule icon in the right side panel to configure the batch schedule.
 
@@ -738,8 +738,8 @@ Date range settings:
 
 After the schedule is saved and executed for the first time, it runs at the configured interval.
 
-<a id="pipeline.resource"></a>
-### Configure Computing Resources { #pipeline.resource }
+<a id="pipeline-resource"></a>
+### Configure Computing Resources { #pipeline-resource }
 
 Click the computing resource icon in the right side panel to configure the computing resources to use when running the pipeline.
 
@@ -753,8 +753,8 @@ Click the computing resource icon in the right side panel to configure the compu
 !!! danger "Caution"
     If you change the resource settings, the changes are applied after a rebuild. You cannot change the resources before creating a pipeline.
 
-<a id="pipeline.run"></a>
-### Run Pipeline { #pipeline.run }
+<a id="pipeline-run"></a>
+### Run Pipeline { #pipeline-run }
 
 On the first run or after a settings change, the build and execution proceed together.
 
@@ -766,19 +766,19 @@ A pipeline that has already been built runs immediately without going through th
 Clicking **Stop** during execution transitions the pipeline to the Terminated status.
 When the build is complete, pipelines with a schedule configured are automatically activated.
 
-<a id="pipeline.run.history"></a>
-#### View Run History { #pipeline.run.history }
+<a id="pipeline-run-history"></a>
+#### View Run History { #pipeline-run-history }
 
 Click **Run History** on the tab bar to view the run ID, start/end time, duration, run status, and per-node execution details.
 
-<a id="pipeline.activation"></a>
-### Activate/Deactivate { #pipeline.activation }
+<a id="pipeline-activation"></a>
+### Activate/Deactivate { #pipeline-activation }
 
 - **Activate**: Select one pipeline from the list and click **Activate Pipeline** in the More (⋯) menu. The pipeline runs automatically according to the configured schedule.
 - **Deactivate**: Select one pipeline from the list and click **Deactivate Pipeline** in the More (⋯) menu. The pipeline does not run automatically even if a schedule is configured.
 
-<a id="pipeline.delete"></a>
-### Delete Pipeline { #pipeline.delete }
+<a id="pipeline-delete"></a>
+### Delete Pipeline { #pipeline-delete }
 
 1. Select the pipeline to delete from the list (multiple selections allowed).
 2. Click **Delete**.
@@ -791,8 +791,8 @@ Console path: **Machine Learning > NHN Cloud Foundry > Analysis** tab > **Query*
 
 Use SQL to query and analyze data from a data source.
 
-<a id="query.run"></a>
-### Run a Query { #query.run }
+<a id="query-run"></a>
+### Run a Query { #query-run }
 
 1. Select a **Data Source**.
 2. Load a saved query from **Query Selection**. Queries saved for the selected data source appear in the list; you can also write a query directly without loading one.
@@ -810,13 +810,13 @@ Use SQL to query and analyze data from a data source.
 - In the FROM clause, use the table name exactly as it appears in the data source list (`SELECT * FROM {table name}`).
 - Only a single SELECT statement can be executed. All other statements are rejected.
 
-<a id="query.save"></a>
-### Modify a Saved Query { #query.save }
+<a id="query-save"></a>
+### Modify a Saved Query { #query-save }
 
 After loading a query with **Query Selection** and modifying its content, click **Save Query** to save your changes. The button is disabled if no query is loaded or if no changes have been made.
 
-<a id="query.list"></a>
-### Query List { #query.list }
+<a id="query-list"></a>
+### Query List { #query-list }
 
 Every query that you run is automatically recorded in the execution history. You can also create queries in the query list for repeated use. Click **Query List** to open the modal for managing saved queries.
 
@@ -838,8 +838,8 @@ The fields that you enter when adding or modifying a query are as follows:
 | Data Source | O | Data source on which to run the query |
 | Statement | O | SQL to execute |
 
-<a id="query.history"></a>
-### Query Execution History { #query.history }
+<a id="query-history"></a>
+### Query Execution History { #query-history }
 
 This screen shows all queries that have been run. You can search by **Time** range and **Query Content**, and click **Reset** to clear the search conditions.
 
@@ -857,8 +857,8 @@ Click an item in the list to view query details. Click **Use Query** to load the
 
 Console path: **Machine Learning > NHN Cloud Foundry > Analysis** tab > **Chart** tab
 
-<a id="chart.list"></a>
-### Chart List { #chart.list }
+<a id="chart-list"></a>
+### Chart List { #chart-list }
 
 | Column | Description |
 | --- | --- |
@@ -873,13 +873,13 @@ Console path: **Machine Learning > NHN Cloud Foundry > Analysis** tab > **Chart*
 - You can filter by chart name using the search feature at the top.
 - If a data source has been deleted and the name cannot be found, the data source ID is displayed.
 
-<a id="chart.create"></a>
-### Create a Chart { #chart.create }
+<a id="chart-create"></a>
+### Create a Chart { #chart-create }
 
 Click the **Create Chart** button to go to the chart editor screen. In the editor, configure the following settings in order.
 
-<a id="chart.create.basic"></a>
-#### Basic Settings { #chart.create.basic }
+<a id="chart-create-basic"></a>
+#### Basic Settings { #chart-create-basic }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -887,16 +887,16 @@ Click the **Create Chart** button to go to the chart editor screen. In the edito
 | Chart Type | O | Categorizes the chart purpose (currently only the default type is available) |
 | Chart Visualization Type | O | Line Chart, Bar Chart, Pie Chart, Scatter Chart |
 
-<a id="chart.create.datasource"></a>
-#### Data Source Settings { #chart.create.datasource }
+<a id="chart-create-datasource"></a>
+#### Data Source Settings { #chart-create-datasource }
 
 | Item | Required | Description |
 | --- | --- | --- |
 | Data Source Type | O | FILE, DATASET, RECOMMENDATION SINK |
 | Data Source Name | O | Select the data source to use |
 
-<a id="chart.create.query"></a>
-#### Query Settings { #chart.create.query }
+<a id="chart-create-query"></a>
+#### Query Settings { #chart-create-query }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -919,8 +919,8 @@ The required settings for each chart visualization type are as follows:
 
 When a sort is specified for a Bar chart, the top N categories are displayed instead of the time axis.
 
-<a id="chart.create.preview"></a>
-#### Chart Preview { #chart.create.preview }
+<a id="chart-create-preview"></a>
+#### Chart Preview { #chart-create-preview }
 
 After completing the configuration, click the **UPDATE CHART** button to preview the chart.
 
@@ -929,14 +929,14 @@ After completing the configuration, click the **UPDATE CHART** button to preview
 - If the lookup fails, a **Chart Lookup Failed** panel appears in the chart area, and you can see the error message returned by the query engine as-is. Fix the query settings based on the error message and try again.
 - If there is a column for which no aggregation function is selected, a notice appears when you click **UPDATE CHART**. Without an aggregation function, the chart may not display correctly.
 
-<a id="chart.create.save"></a>
-#### Save a Chart { #chart.create.save }
+<a id="chart-create-save"></a>
+#### Save a Chart { #chart-create-save }
 
 - After reviewing the preview, click the **Create** button in the header.
 - The Create button is enabled once input validation is complete.
 
-<a id="chart.edit"></a>
-### Edit a Chart { #chart.edit }
+<a id="chart-edit"></a>
+### Edit a Chart { #chart-edit }
 
 Click a chart in the chart list to open the edit screen.
 
@@ -944,8 +944,8 @@ Click a chart in the chart list to open the edit screen.
 - The data source settings show the currently used data source but are displayed as locked and cannot be changed. To use a different data source, create a new chart.
 - After checking the preview with **UPDATE CHART**, click **Save** to save your changes.
 
-<a id="chart.delete"></a>
-### Delete a Chart { #chart.delete }
+<a id="chart-delete"></a>
+### Delete a Chart { #chart-delete }
 
 1. Select the chart to delete by checking the checkbox in the chart list.
 2. Click the **Delete** button.
@@ -959,14 +959,14 @@ Click a chart in the chart list to open the edit screen.
 
 Console path: **Machine Learning > NHN Cloud Foundry > Analytics** tab > **Dashboard** tab
 
-<a id="dashboard.list"></a>
-### Dashboard List { #dashboard.list }
+<a id="dashboard-list"></a>
+### Dashboard List { #dashboard-list }
 
 - You can filter dashboards by name using the search feature.
 - You can adjust the number of items displayed per page.
 
-<a id="dashboard.create"></a>
-### Create a Dashboard { #dashboard.create }
+<a id="dashboard-create"></a>
+### Create a Dashboard { #dashboard-create }
 
 Click the **Create Dashboard** button to go to the dashboard editor screen.
 
@@ -982,14 +982,14 @@ The edit panel consists of two tabs.
 | CHARTS | List of charts that can be added to the dashboard. Searchable by chart name |
 | LAYOUT ELEMENTS | Layout elements to add to the canvas |
 
-<a id="dashboard.create.chart"></a>
-#### Add a Chart { #dashboard.create.chart }
+<a id="dashboard-create-chart"></a>
+#### Add a Chart { #dashboard-create-chart }
 
 1. Click or drag the chart card to add.
 2. Place the chart on the dashboard canvas.
 
-<a id="dashboard.create.tabgroup"></a>
-#### Add a Tab Group { #dashboard.create.tabgroup }
+<a id="dashboard-create-tabgroup"></a>
+#### Add a Tab Group { #dashboard-create-tabgroup }
 
 You can group multiple charts into tabs and switch between them in one place. Click **Tab** in the **LAYOUT ELEMENTS** tab of the edit panel to add a tab group to the canvas.
 
@@ -998,23 +998,23 @@ You can group multiple charts into tabs and switch between them in one place. Cl
 - Drag a chart from the edit panel and drop it onto the tab area to place it in the tab. To move a chart that is already on the canvas into a tab, drag the handle on the left of the chart title. You can also move a chart from a tab back to the canvas in the same way.
 - To delete a tab group from the dashboard, click the trash icon in the top right corner, just as you would for a chart.
 
-<a id="dashboard.create.layout"></a>
-#### Adjust the Layout { #dashboard.create.layout }
+<a id="dashboard-create-layout"></a>
+#### Adjust the Layout { #dashboard-create-layout }
 
 Drag a chart placed on the canvas to reposition it, and drag its corners to resize it. Click the trash icon in the top right corner of a chart to delete it from the dashboard.
 
-<a id="dashboard.create.save"></a>
-#### Save the Dashboard { #dashboard.create.save }
+<a id="dashboard-create-save"></a>
+#### Save the Dashboard { #dashboard-create-save }
 
 After completing the configuration, click the **Save** button in the header.
 
-<a id="dashboard.view"></a>
-### View a Dashboard { #dashboard.view }
+<a id="dashboard-view"></a>
+### View a Dashboard { #dashboard-view }
 
 Click a dashboard in the dashboard list to open the details screen.
 
-<a id="dashboard.edit"></a>
-### Edit a Dashboard { #dashboard.edit }
+<a id="dashboard-edit"></a>
+### Edit a Dashboard { #dashboard-edit }
 
 On the dashboard details screen, click the **Edit Mode** toggle to switch to edit mode.
 
@@ -1025,8 +1025,8 @@ In edit mode, you can perform the following operations:
 
 To modify a chart placed on the dashboard, turn off edit mode. When edit mode is off, a more options menu appears on each chart. Choose **Edit Chart** to go to the chart editing page. Charts inside a tab group can be accessed in the same way. After editing and saving a chart, the changes are reflected on the dashboard.
 
-<a id="dashboard.delete"></a>
-### Delete a Dashboard { #dashboard.delete }
+<a id="dashboard-delete"></a>
+### Delete a Dashboard { #dashboard-delete }
 
 1. In the dashboard list, select the dashboard to delete.
 2. Click the **Delete** button.
@@ -1044,8 +1044,8 @@ Create and manage apps that connect AI models to data. Two app types are availab
 | Recommendation system | Analyzes user behavior patterns to provide personalized recommendations. |
 | Univariate Time Series Anomaly Detection | Trains on each metric individually to detect values that fall outside the normal range. |
 
-<a id="app.list"></a>
-### App List { #app.list }
+<a id="app-list"></a>
+### App List { #app-list }
 
 | Column | Description |
 | --- | --- |
@@ -1056,8 +1056,8 @@ Create and manage apps that connect AI models to data. Two app types are availab
 | Status | Current app status |
 | Created on | Date and time the app was created |
 
-<a id="app.list.status"></a>
-#### App Status { #app.list.status }
+<a id="app-list-status"></a>
+#### App Status { #app-list-status }
 
 Hover over the app status badge to view a detailed description in a tooltip.
 
@@ -1079,8 +1079,8 @@ Hover over the app status badge to view a detailed description in a tooltip.
     The following is a description based on the recommendation system app. The training and deployment that occur immediately after app creation are part of the app preparation process, during which the recommendation model has not yet been trained. If you call the recommendation API, a response is returned, but it does not reflect the results of a trained model.
     The first training runs at the time specified in the batch schedule (status: Training → Deploying → Activating → Active). You can retrieve valid recommendation results after the trained model has been deployed.
 
-<a id="app.create"></a>
-### Create App { #app.create }
+<a id="app-create"></a>
+### Create App { #app-create }
 
 Click the **Create App** button to go to the app creation screen. App creation proceeds in three steps.
 
@@ -1107,8 +1107,8 @@ The **Resource Check** results are displayed at the bottom of the app creation s
 - Immediately after deleting an app, it may take about 5 minutes for the resources to be reclaimed.
 - Judgment results are not saved, so they are retrieved again each time you enter the app creation screen.
 
-<a id="app.create.basic"></a>
-#### Basic Settings { #app.create.basic }
+<a id="app-create-basic"></a>
+#### Basic Settings { #app-create-basic }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -1116,13 +1116,13 @@ The **Resource Check** results are displayed at the bottom of the app creation s
 | App description | O | Description of the app |
 | App Type | O | Select **Recommendation System** or **Univariate Time Series Anomaly Detection**. When you select a type, a description of the type is displayed below. |
 
-<a id="app.create.detail"></a>
-#### Recommendation System Detailed Settings { #app.create.detail }
+<a id="app-create-detail"></a>
+#### Recommendation System Detailed Settings { #app-create-detail }
 
 Click the **Add Model** button to add a model card. You can configure multiple models in a single app, and each model card has the sections described below.
 
-<a id="app.create.detail.model"></a>
-##### Basic Model Settings { #app.create.detail.model }
+<a id="app-create-detail-model"></a>
+##### Basic Model Settings { #app-create-detail-model }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -1138,8 +1138,8 @@ The following models are available:
 
 The same model with a different Longtail mode setting can be added as a separate model.
 
-<a id="app.create.detail.resources"></a>
-##### Serving Resource Settings { #app.create.detail.resources }
+<a id="app-create-detail-resources"></a>
+##### Serving Resource Settings { #app-create-detail-resources }
 
 Specify the resources to allocate to the serving container for each model. If left blank, the default values are applied.
 
@@ -1150,8 +1150,8 @@ Specify the resources to allocate to the serving container for each model. If le
 
 The `request` value cannot exceed the `limit` value.
 
-<a id="app.create.detail.schedule"></a>
-##### Batch Schedule Settings { #app.create.detail.schedule }
+<a id="app-create-detail-schedule"></a>
+##### Batch Schedule Settings { #app-create-detail-schedule }
 
 Set the execution frequency for the batch that retrains the model. This is enabled by default and can be turned off with the toggle.
 The first training run for the model also executes at the time specified in this schedule. Recommendation responses returned before the first training is complete are not results from a trained model.
@@ -1162,8 +1162,8 @@ The first training run for the model also executes at the time specified in this
 | Weekly | Day of week, Hour, Minute |
 | Hourly | Hour interval, Minute |
 
-<a id="app.create.detail.connection"></a>
-##### Data Connection Settings { #app.create.detail.connection }
+<a id="app-create-detail-connection"></a>
+##### Data Connection Settings { #app-create-detail-connection }
 
 Connect the data sources required by the selected model.
 
@@ -1192,8 +1192,8 @@ Tag embedding model:
 | Item ID column | O | Column that identifies items |
 | Time column | X | Time column |
 
-<a id="app.create.detail.extra"></a>
-##### Additional Settings (Skills) { #app.create.detail.extra }
+<a id="app-create-detail-extra"></a>
+##### Additional Settings (Skills) { #app-create-detail-extra }
 
 This is an optional setting for connecting skill and category data used to construct recommendation reasons (reason). Click the **Add Field** button to add entries.
 
@@ -1207,13 +1207,13 @@ This is an optional setting for connecting skill and category data used to const
 | Recommendation reason template data source | Table of recommendation reason phrase templates. If not selected, reasons are not included in recommendation results. |
 | Cold start data source | Only user IDs in this table are identified as cold starters. Both the data source and user ID column must be selected. |
 
-<a id="app.create.detail.univariate"></a>
-#### Detailed Settings for Univariate Time-Series Anomaly Detection { #app.create.detail.univariate }
+<a id="app-create-detail-univariate"></a>
+#### Detailed Settings for Univariate Time-Series Anomaly Detection { #app-create-detail-univariate }
 
 The univariate time-series anomaly detection app trains on each metric individually to detect values that fall outside the normal range. The detailed settings are configured in the following order: Data Source, model resources, retraining, detection options, and result transfer.
 
-<a id="app.create.detail.univariate.source"></a>
-##### Data Source { #app.create.detail.univariate.source }
+<a id="app-create-detail-univariate-source"></a>
+##### Data Source { #app-create-detail-univariate-source }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -1225,8 +1225,8 @@ The univariate time-series anomaly detection app trains on each metric individua
 - If the selected data source has no data, "No data yet." appears below the item, and a **Check Data** box appears under the resource check at the bottom of the screen. If you did not specify a retraining interval, the training performed at creation is the only training, so you cannot proceed to the next step until data arrives. If you specified a retraining interval, a notice is displayed indicating that the first training will fail and will be retried at the next retraining cycle, and you can proceed.
 - If multiple different values have arrived for the same time series within one minute in the last 5 minutes, an information box is displayed. This does not prevent creation, but in this state, only the first value to arrive each minute is used for analysis, and the rest are discarded. Send each time series only once per minute; if you collect data at a shorter interval, aggregate the values into a 1-minute average before sending.
 
-<a id="app.create.detail.univariate.resource"></a>
-##### Model Resources { #app.create.detail.univariate.resource }
+<a id="app-create-detail-univariate-resource"></a>
+##### Model Resources { #app-create-detail-univariate-resource }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -1235,8 +1235,8 @@ The univariate time-series anomaly detection app trains on each metric individua
 
 Model resources cannot be changed after the app is created.
 
-<a id="app.create.detail.univariate.retrain"></a>
-##### Retraining { #app.create.detail.univariate.retrain }
+<a id="app-create-detail-univariate-retrain"></a>
+##### Retraining { #app-create-detail-univariate-retrain }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -1251,8 +1251,8 @@ Model resources cannot be changed after the app is created.
 - If no recurrence interval is specified, training runs only once when the app is created, and automatic retraining does not occur afterward. In this case, you cannot create an app with a data source that has no data.
 - Because training consumes a large amount of resources, we recommend that you specify a time period with low traffic.
 
-<a id="app.create.detail.univariate.option"></a>
-##### Detection Options { #app.create.detail.univariate.option }
+<a id="app-create-detail-univariate-option"></a>
+##### Detection Options { #app-create-detail-univariate-option }
 
 | Item | Required | Description |
 | --- | --- | --- |
@@ -1276,8 +1276,8 @@ Select one of the following transmission modes:
 !!! danger "Caution"
     The score scale cannot be changed after the app is created.
 
-<a id="app.create.detail.univariate.sink"></a>
-##### Result Transmission { #app.create.detail.univariate.sink }
+<a id="app-create-detail-univariate-sink"></a>
+##### Result Transmission { #app-create-detail-univariate-sink }
 
 This section configures transmission of detection results to Prometheus.
 
@@ -1317,8 +1317,8 @@ The schema for the result data source is as follows. Use these columns to query 
 
 The system column `ingestTimestamp` is automatically added.
 
-<a id="app.create.review"></a>
-#### Final Review { #app.create.review }
+<a id="app-create-review"></a>
+#### Final Review { #app-create-review }
 
 Displays a summary of the information entered in the previous step, tailored to the app type.
 
@@ -1347,8 +1347,8 @@ The completion modal for the univariate time series anomaly detection app displa
 - Train and deploy the model. You can check the progress by viewing the status in the app list.
 - In exact mode, even after the model is activated, results are not generated until enough metrics have accumulated for evaluation. This typically takes around 6 hours. You must continue sending metrics during this time.
 
-<a id="app.delete"></a>
-### Delete App { #app.delete }
+<a id="app-delete"></a>
+### Delete App { #app-delete }
 
 1. Select the checkbox of the app to delete. Only one app can be selected at a time; selecting another app deselects the previous selection.
 2. Click **Delete**.
@@ -1358,13 +1358,13 @@ The completion modal for the univariate time series anomaly detection app displa
     Deleted apps cannot be recovered. The serving pipelines connected to the app are also deleted.
     The inference result data sources are not deleted and remain, so delete them separately from the data source list if needed. Metric data sources in use by the app can be deleted after the app is deleted.
 
-<a id="app.detail"></a>
-### Recommendation System App Details { #app.detail }
+<a id="app-detail"></a>
+### Recommendation System App Details { #app-detail }
 
 Click an app in the app list to go to the details screen. The recommendation system app consists of three tabs: **Recommendation API Call**, **App Information**, and **Training Management**.
 
-<a id="app.detail.recommend"></a>
-#### Recommendation API Call { #app.detail.recommend }
+<a id="app-detail-recommend"></a>
+#### Recommendation API Call { #app-detail-recommend }
 
 You can call the recommendation API directly by entering request parameters and view the results. The screen consists of three areas: input form, request preview, and recommendation results.
 
@@ -1407,16 +1407,16 @@ impressions can contain up to 10 entries, and interactions and feedback can cont
     Recommendation API calls are only available when the app is active.
     Impressions are automatically accumulated one at a time, up to the 10 most recent entries, each time a recommendation response is received. They are reset when you change the user or refresh the screen. You can remove them one by one using the ✕ on each row, or clear all of them using the ✕ on the field.
 
-<a id="app.detail.info"></a>
-#### App Info { #app.detail.info }
+<a id="app-detail-info"></a>
+#### App Info { #app-detail-info }
 
 You can view the app ID, app name, status, app type, description, creation date, modification date, version, and input and output data sources.
 
 - Input data source: The data sources used for model training. For recommendation apps, data sources are displayed separately by model.
 - Output data source: The data source where recommendation results are stored.
 
-<a id="app.detail.training"></a>
-#### Training Management { #app.detail.training }
+<a id="app-detail-training"></a>
+#### Training Management { #app-detail-training }
 
 Change the training cycle of training models included in the app, stop or resume automatic retraining, or run training manually. You can also view the training artifact history on this tab.
 
@@ -1473,8 +1473,8 @@ Click the **Change Training Cycle** button to change the cycle in the modal.
     You can run training only when automatic retraining is stopped.
     If you save the Training Cycle Change modal without changing the cycle, the message "There are no changes to apply." is displayed.
 
-<a id="app.detail.training.history"></a>
-##### Training Artifact History { #app.detail.training.history }
+<a id="app-detail-training-history"></a>
+##### Training Artifact History { #app-detail-training-history }
 
 Select a training model from the list to view the training artifact history for that model.
 
@@ -1488,13 +1488,13 @@ Select a training model from the list to view the training artifact history for 
 
 If no model has been trained yet, the message "No trained models yet." is displayed.
 
-<a id="app.detail.univariate"></a>
-### Univariate Time Series Anomaly Detection App Details { #app.detail.univariate }
+<a id="app-detail-univariate"></a>
+### Univariate Time Series Anomaly Detection App Details { #app-detail-univariate }
 
 The univariate time-series anomaly detection app displays the **App > App Name** path at the top and consists of two tabs: **App Information** and **Group List**. To return to the app list, click **App** in the path.
 
-<a id="app.detail.univariate.info"></a>
-#### App Information { #app.detail.univariate.info }
+<a id="app-detail-univariate-info"></a>
+#### App Information { #app-detail-univariate-info }
 
 The header displays the app name, status, app type, app ID, creation date, modification date, and description. Below the header, cards are displayed in the order of **Input → Processing → Output**.
 
@@ -1539,8 +1539,8 @@ The header displays the app name, status, app type, app ID, creation date, modif
 - You can view the meaning of the three statuses by hovering over the question mark icon next to the Group Status heading. Pending Activation typically takes about 6 hours in Precise mode, while in Instant mode, groups are activated immediately after being turned on.
 - If retraining fails, the training status is displayed as Training Failed. Results continue to be output using the previously trained model, and retraining is attempted again in the next retraining cycle. If the initial training fails, the app enters a failed state and can be deleted.
 
-<a id="app.detail.univariate.groups"></a>
-#### Group List { #app.detail.univariate.groups }
+<a id="app-detail-univariate-groups"></a>
+#### Group List { #app-detail-univariate-groups }
 
 Anomaly detection is performed per time series, and a group is a unit that bundles those time series to view results and status.
 
@@ -1583,10 +1583,10 @@ Inference Status:
 - You can sort the Group Key, Detection Start Time, Deactivation Time, Created On, and Modified On columns by clicking their headers. Sorting applies across all groups, and changing the sort order moves you to page 1. The Value, Group Hash, Status, and Inference Status columns cannot be sorted. Sort by value using the Group Key column, and narrow by inference status using the filter.
 - You can adjust the number of items displayed per page (20, 50, or 100; default is 20).
 - If no groups are registered, the message "No groups are registered. Groups will appear here once data arrives and they are registered." is displayed. If no groups match the search or filter conditions, "No groups match the specified conditions." is displayed.
-- To start, stop, or delete specific groups individually, refer to "Start, Stop, and Delete Groups" in the [API Guide](./api-guide/#univariate.group.api). This operation is not available in the console.
+- To start, stop, or delete specific groups individually, refer to "Start, Stop, and Delete Groups" in the [API Guide](./api-guide/#univariate-group-api). This operation is not available in the console.
 
-<a id="app.detail.univariate.groups.hash"></a>
-##### Hash Calculator { #app.detail.univariate.groups.hash }
+<a id="app-detail-univariate-groups-hash"></a>
+##### Hash Calculator { #app-detail-univariate-groups-hash }
 
 Click the **Hash Calculator** button in the toolbar to calculate a hash directly from labels.
 

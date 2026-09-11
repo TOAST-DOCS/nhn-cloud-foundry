@@ -2,8 +2,8 @@
 
 <!-- pre-align:aligned sig=47be59ae2082 -->
 
-<a id="foundry.api.guide"></a>
-## Machine Learning > NHN Cloud Foundry > API Guide { #foundry.api.guide }
+<a id="foundry-api-guide"></a>
+## Machine Learning > NHN Cloud Foundry > API Guide { #foundry-api-guide }
 
 Describes the APIs provided by NHN Cloud Foundry.
 
@@ -13,11 +13,11 @@ Describes the APIs provided by NHN Cloud Foundry.
 | Recommendation Query API | Requests recommendation results from a recommendation system app. |
 | Recommendation Event API | Collects user reaction events to recommendation results. |
 
-<a id="auth.common"></a>
-## Authentication and Common Information { #auth.common }
+<a id="auth-common"></a>
+## Authentication and Common Information { #auth-common }
 
-<a id="auth.common.preparation"></a>
-### Prerequisites { #auth.common.preparation }
+<a id="auth-common-preparation"></a>
+### Prerequisites { #auth-common-preparation }
 
 To use the APIs, you need an **Appkey** and an **authentication token**.
 
@@ -25,8 +25,8 @@ To use the APIs, you need an **Appkey** and an **authentication token**.
 - The APIs use the **gateway-public** endpoint.
 - For information on issuing an authentication token (Bearer token in the `X-NHN-Authorization` header), see the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token/) guide.
 
-<a id="auth.common.request"></a>
-### Common Request Information { #auth.common.request }
+<a id="auth-common-request"></a>
+### Common Request Information { #auth-common-request }
 
 Required headers:
 
@@ -42,8 +42,8 @@ Base URL:
 https://{gateway-public-host}/api/v1.0
 ```
 
-<a id="auth.common.response"></a>
-### Common Response Information { #auth.common.response }
+<a id="auth-common-response"></a>
+### Common Response Information { #auth-common-response }
 
 All API responses consist of a `header` and a `body`.
 
@@ -67,8 +67,8 @@ All API responses consist of a `header` and a `body`.
 
 Even if a request is rejected, the HTTP status code may be returned as `200`. Whether the request was successful is determined not by the HTTP status code, but by `header.isSuccessful` and `header.resultCode`. If the authentication token is missing or expired, HTTP `401` is returned.
 
-<a id="ingest.api"></a>
-## Ingest API { #ingest.api }
+<a id="ingest-api"></a>
+## Ingest API { #ingest-api }
 
 Ingest API is an API for loading data into a data source that you have already created in the console. The following methods are provided depending on the data source type.
 
@@ -81,8 +81,8 @@ Ingest API is an API for loading data into a data source that you have already c
 !!! danger "Caution"
     An API for creating new data sources is not provided. To use the Ingest API, you must first create a data source in the console.
 
-<a id="ingest.snapshot"></a>
-### Snapshot Upload (File Upload) { #ingest.snapshot }
+<a id="ingest-snapshot"></a>
+### Snapshot Upload (File Upload) { #ingest-snapshot }
 
 **Replaces all** data in the data source with the contents of the uploaded file. The upload process consists of three steps.
 
@@ -96,8 +96,8 @@ Upload limits:
 - More than `100MB` → **Multipart Upload (MULTIPART)**
 - Use the `formPost` field values **exactly as returned** in the response.
 
-<a id="ingest.snapshot.init"></a>
-#### 1. Upload Initialization (init) { #ingest.snapshot.init }
+<a id="ingest-snapshot-init"></a>
+#### 1. Upload Initialization (init) { #ingest-snapshot-init }
 
 | Method | URI |
 | --- | --- |
@@ -207,8 +207,8 @@ Response example (MULTIPART):
 | body.formPost.maxFileSize | Maximum file size (bytes) |
 | body.formPost.maxFileCount | Maximum file count |
 
-<a id="ingest.snapshot.upload.single"></a>
-#### 2-A. Single File Upload (100 MB or Less) { #ingest.snapshot.upload.single }
+<a id="ingest-snapshot-upload-single"></a>
+#### 2-A. Single File Upload (100 MB or Less) { #ingest-snapshot-upload-single }
 
 Send a multipart/form-data POST request to the `uploadUrl` from the init response.
 This request is sent directly to Object Storage, so no separate authentication is required (the `signature` serves as authentication).
@@ -228,8 +228,8 @@ curl -X POST "{uploadUrl}" \
 !!! danger "Caution"
     The `file` field must be added **last** in the form data. On success, you will receive an HTTP `201 Created` response.
 
-<a id="ingest.snapshot.upload.multipart"></a>
-#### 2-B. Large File Upload (More than 100 MB, MULTIPART) { #ingest.snapshot.upload.multipart }
+<a id="ingest-snapshot-upload-multipart"></a>
+#### 2-B. Large File Upload (More than 100 MB, MULTIPART) { #ingest-snapshot-upload-multipart }
 
 Receive the `parts[]` array from the response and upload each part individually.
 Each part is processed in the following order: **(1) upload → (2) retrieve ETag with HEAD request → (3) collect into `partETags[]` in ascending `partNumber` order**.
@@ -255,8 +255,8 @@ curl -X POST "{parts[i].uploadUrl}" \
 curl -I "{parts[i].headUrl}" | grep -i '^etag:'
 ```
 
-<a id="ingest.snapshot.complete"></a>
-#### 3. Upload Complete (complete) { #ingest.snapshot.complete }
+<a id="ingest-snapshot-complete"></a>
+#### 3. Upload Complete (complete) { #ingest-snapshot-complete }
 
 | Method | URI |
 | --- | --- |
@@ -314,10 +314,10 @@ Response example:
 
 | Field | Description |
 | --- | --- |
-| body.jobId | Job ID. Used for [Query Job Status](#ingest.snapshot.job.status). |
+| body.jobId | Job ID. Used for [Query Job Status](#ingest-snapshot-job-status). |
 
-<a id="ingest.snapshot.cancel"></a>
-#### Cancel Upload { #ingest.snapshot.cancel }
+<a id="ingest-snapshot-cancel"></a>
+#### Cancel Upload { #ingest-snapshot-cancel }
 
 | Method | URI |
 | --- | --- |
@@ -339,8 +339,8 @@ curl -X DELETE "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceI
   -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
 ```
 
-<a id="ingest.snapshot.job.status"></a>
-#### Query Job Status { #ingest.snapshot.job.status }
+<a id="ingest-snapshot-job-status"></a>
+#### Query Job Status { #ingest-snapshot-job-status }
 
 | Method | URI |
 | --- | --- |
@@ -412,16 +412,16 @@ The job status (`status`) can have the following values:
 | COMPLETED | Job completed successfully |
 | FAILED | Job failed |
 
-<a id="event.ingest.api"></a>
-### Ingest Events { #event.ingest.api }
+<a id="event-ingest-api"></a>
+### Ingest Events { #event-ingest-api }
 
 Sends change events while retaining existing data. This is used with data sources of the file type, and you must first enable the **Event API**. You can enable it from the event settings tab in the console or by using the activation API below.
 
 !!! danger "Caution"
-    Enabling the Event API blocks snapshot uploads. In addition, schema changes are restricted, so you must disable the Event API before making any schema changes. For instructions on how to enable and disable it, see "Event Settings" in the [Console User Guide](./console-user-guide/#datasource.detail.event).
+    Enabling the Event API blocks snapshot uploads. In addition, schema changes are restricted, so you must disable the Event API before making any schema changes. For instructions on how to enable and disable it, see "Event Settings" in the [Console User Guide](./console-user-guide/#datasource-detail-event).
 
-<a id="event.ingest.api.enable"></a>
-#### Enable/Disable Event API { #event.ingest.api.enable }
+<a id="event-ingest-api-enable"></a>
+#### Enable/Disable Event API { #event-ingest-api-enable }
 
 | Method | URI |
 | --- | --- |
@@ -460,8 +460,8 @@ Response example:
 - Activation is processed asynchronously. Immediately after the request, the response shows `enabled` as false and `status` as ENABLING. Events are collected after the status becomes ENABLED.
 - If you request activation again while activation is in progress, the request is rejected. You can check the progress on the Event Settings tab in the console.
 
-<a id="event.ingest.api.send"></a>
-#### Send a Single Event { #event.ingest.api.send }
+<a id="event-ingest-api-send"></a>
+#### Send a Single Event { #event-ingest-api-send }
 
 | Method | URI |
 | --- | --- |
@@ -518,8 +518,8 @@ Response example:
 | body.success | Whether the processing was successful |
 | body.errorMessage | Error message on failure |
 
-<a id="event.ingest.api.batch"></a>
-#### Send Multiple Events { #event.ingest.api.batch }
+<a id="event-ingest-api-batch"></a>
+#### Send Multiple Events { #event-ingest-api-batch }
 
 | Method | URI |
 | --- | --- |
@@ -555,8 +555,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 The `body` of the response is an array of processing results for each event.
 
-<a id="metrics.ingest.api"></a>
-### Metric Collection { #metrics.ingest.api }
+<a id="metrics-ingest-api"></a>
+### Metric Collection { #metrics-ingest-api }
 
 Sends metric data to a data source of the Prometheus API type. The sent metrics can be viewed in the Analysis menu and can also be used as input for the univariate time-series anomaly detection app.
 
@@ -612,11 +612,11 @@ The collection rules are as follows:
 !!! tip "Tips"
     Loading is independent of the transmission interval. However, if this data source is connected to a univariate time-series anomaly detection app, you must send the same time series continuously, one per minute without interruption. Because the app groups metrics in 1-minute intervals for evaluation, sending at longer intervals will create gaps, which may prevent preparation from completing in precise mode.
 
-<a id="univariate.api"></a>
-## Univariate Time Series Anomaly Detection API { #univariate.api }
+<a id="univariate-api"></a>
+## Univariate Time Series Anomaly Detection API { #univariate-api }
 
-<a id="univariate.group.api"></a>
-### Enable, Disable, and Delete Groups { #univariate.group.api }
+<a id="univariate-group-api"></a>
+### Enable, Disable, and Delete Groups { #univariate-group-api }
 
 Enables, disables, and deletes groups of a univariate time-series anomaly detection app. The three APIs share the same request format and differ only in their paths.
 
@@ -665,13 +665,13 @@ The request rules are as follows:
     Disabling a group does not stop the transmission of detection results. Only the status displayed in the group list changes to disabled.
     A deleted group is permanently removed along with its status history and cannot be recovered.
 
-<a id="recommendation.api"></a>
-## Recommendation API { #recommendation.api }
+<a id="recommendation-api"></a>
+## Recommendation API { #recommendation-api }
 
 Requests recommendation results from the recommendation system app that you created. If the user's interaction history is sufficient, the server performs model-based inference (Sequential); if the history is insufficient, it performs attribute-based inference (Cold Start).
 
-<a id="recommendation.api.recommend"></a>
-### Request Recommendations { #recommendation.api.recommend }
+<a id="recommendation-api-recommend"></a>
+### Request Recommendations { #recommendation-api-recommend }
 
 | Method | URI |
 | --- | --- |
@@ -718,8 +718,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 - If `options.mode` is not specified, the server determines the inference type. If the app does not have a model for the determined type, the server recommends an alternative type that is integrated with the app instead. The type actually used can be checked in `body.metadata.inferenceType` of the response.
 - If the app does not have a model for the requested type and there is no alternative type, HTTP `503` and result code `5030001` are returned. Check which models have been created in the app and whether training has completed, then call again. Requests that specify a type via `options.mode` are not substituted, so you may receive this response.
 
-<a id="recommendation.api.signal"></a>
-#### Behavior Signals { #recommendation.api.signal }
+<a id="recommendation-api-signal"></a>
+#### Behavior Signals { #recommendation-api-signal }
 
 `context.impressions` is used to reorder recommendation results based on the recommendation information exposed to the user.
 `context.interactions` and `context.feedback` are fields that convey actions the user took on the recommendation results, and reflect user behavior-based data into model inference.
@@ -768,7 +768,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 - Each field must be sent in chronological order, from oldest to most recent.
 - `impressions` allows a maximum of 10 entries, with up to 100 `itemKeys` per entry. `interactions` and `feedback` each allow a maximum of 10 entries per `type`. Requests that exceed these limits are rejected.
 - Behavior signals are used only as inference input for the current recommendation request and are not stored. If the `feedback` for the same item changes, only the most recent value is reflected, so resend the data with every request to maintain the effect.
-- To store reaction events for analysis, use the [Recommendation Event API](#recommendation.event.api) together.
+- To store reaction events for analysis, use the [Recommendation Event API](#recommendation-event-api) together.
 
 !!! tip "Note"
     The collection method and field types of the `userAttributes` schema may change in the future depending on the implementation direction of Preference Elicitation.
@@ -809,13 +809,13 @@ Response example:
 | body.metadata.inferenceType | Inference type. sequential (history-based), cold_start (attribute-based), popular (popularity-based) |
 | body.metadata.abTestGroup | A/B test group (currently returns an empty value) |
 
-<a id="recommendation.event.api"></a>
-## Recommendation Event API { #recommendation.event.api }
+<a id="recommendation-event-api"></a>
+## Recommendation Event API { #recommendation-event-api }
 
 Collects user interaction events (such as clicks) in response to recommendation results. You can analyze the recommendation success rate using the collected event data.
 
-<a id="recommendation.event.api.send"></a>
-### Send Recommendation Event { #recommendation.event.api.send }
+<a id="recommendation-event-api-send"></a>
+### Send Recommendation Event { #recommendation-event-api-send }
 
 | Method | URI |
 | --- | --- |

@@ -2,8 +2,8 @@
 
 <!-- pre-align:aligned sig=47be59ae2082 -->
 
-<a id="foundry.api.guide"></a>
-## Machine Learning > NHN Cloud Foundry > API ガイド { #foundry.api.guide }
+<a id="foundry-api-guide"></a>
+## Machine Learning > NHN Cloud Foundry > API ガイド { #foundry-api-guide }
 
 NHN Cloud Foundry が提供する API について説明します。
 
@@ -13,11 +13,11 @@ NHN Cloud Foundry が提供する API について説明します。
 | レコメンデーション照会 API | 作成したレコメンデーションシステムアプリへの推薦結果のリクエスト |
 | レコメンデーションイベント API | 推薦結果に対するユーザーの反応イベントの収集 |
 
-<a id="auth.common"></a>
-## 認証および共通事項 { #auth.common }
+<a id="auth-common"></a>
+## 認証および共通事項 { #auth-common }
 
-<a id="auth.common.preparation"></a>
-### 事前準備 { #auth.common.preparation }
+<a id="auth-common-preparation"></a>
+### 事前準備 { #auth-common-preparation }
 
 API を使用するには、**Appkey** と**認証トークン**が必要です。
 
@@ -25,8 +25,8 @@ API を使用するには、**Appkey** と**認証トークン**が必要です�
 - API は **gateway-public** エンドポイントを使用します。
 - 認証トークン（`X-NHN-Authorization` ヘッダーの Bearer トークン）の発行方法については、[User Access Key トークン](/nhncloud/ja/public-api/user-access-key-token/) ガイドを参照してください。
 
-<a id="auth.common.request"></a>
-### リクエスト共通事項 { #auth.common.request }
+<a id="auth-common-request"></a>
+### リクエスト共通事項 { #auth-common-request }
 
 必須ヘッダー:
 
@@ -42,8 +42,8 @@ Base URL:
 https://{gateway-public-host}/api/v1.0
 ```
 
-<a id="auth.common.response"></a>
-### レスポンス共通事項 { #auth.common.response }
+<a id="auth-common-response"></a>
+### レスポンス共通事項 { #auth-common-response }
 
 すべての API レスポンスは `header` と `body` で構成されます。
 
@@ -67,8 +67,8 @@ https://{gateway-public-host}/api/v1.0
 
 リクエストが拒否された場合でも、HTTP ステータスコードは `200` で返される場合があります。成否は HTTP ステータスコードではなく、`header.isSuccessful` と `header.resultCode` で判定します。認証トークンがない場合または有効期限切れの場合は、HTTP `401` を返します。
 
-<a id="ingest.api"></a>
-## Ingest API { #ingest.api }
+<a id="ingest-api"></a>
+## Ingest API { #ingest-api }
 
 Ingest APIは、コンソールで作成済みのデータソースにデータを積載するAPIです。データソースのタイプに応じて、次の方式を提供します。
 
@@ -81,8 +81,8 @@ Ingest APIは、コンソールで作成済みのデータソースにデータ�
 !!! danger "注意"
     データソースを新規作成する API は提供していません。Ingest API を使用するには、コンソールでデータソースを先に作成する必要があります。
 
-<a id="ingest.snapshot"></a>
-### スナップショットアップロード（ファイルアップロード） { #ingest.snapshot }
+<a id="ingest-snapshot"></a>
+### スナップショットアップロード（ファイルアップロード） { #ingest-snapshot }
 
 アップロードしたファイルの内容でデータソースのデータを**すべて置き換え**ます。アップロードは 3 段階で進みます。
 
@@ -96,8 +96,8 @@ Ingest APIは、コンソールで作成済みのデータソースにデータ�
 - `100MB` 超 → **マルチパートアップロード（MULTIPART）**
 - `formPost` フィールドの値は、レスポンスに含まれる値を**そのまま**リクエストに使用します。
 
-<a id="ingest.snapshot.init"></a>
-#### 1. アップロード初期化（init） { #ingest.snapshot.init }
+<a id="ingest-snapshot-init"></a>
+#### 1. アップロード初期化（init） { #ingest-snapshot-init }
 
 | メソッド | URI |
 | --- | --- |
@@ -207,8 +207,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | body.formPost.maxFileSize | 最大ファイルサイズ（bytes） |
 | body.formPost.maxFileCount | 最大ファイル数 |
 
-<a id="ingest.snapshot.upload.single"></a>
-#### 2-A. 単一ファイルアップロード（100MB 以下） { #ingest.snapshot.upload.single }
+<a id="ingest-snapshot-upload-single"></a>
+#### 2-A. 単一ファイルアップロード（100MB 以下） { #ingest-snapshot-upload-single }
 
 init レスポンスの `uploadUrl` に multipart/form-data POST を送信します。
 このリクエストは Object Storage に直接送信するため、別途の認証は不要です（`signature` が認証の役割を担います）。
@@ -228,8 +228,8 @@ curl -X POST "{uploadUrl}" \
 !!! danger "注意"
     `file` フィールドは必ずフォームデータの**末尾**に追加する必要があります。成功時は HTTP `201 Created` レスポンスを受け取ります。
 
-<a id="ingest.snapshot.upload.multipart"></a>
-#### 2-B. 大容量ファイルアップロード（100MB 超、MULTIPART） { #ingest.snapshot.upload.multipart }
+<a id="ingest-snapshot-upload-multipart"></a>
+#### 2-B. 大容量ファイルアップロード（100MB 超、MULTIPART） { #ingest-snapshot-upload-multipart }
 
 レスポンスの `parts[]` 配列を受け取り、パートごとにアップロードします。
 各パートは **(1) アップロード → (2) HEAD で ETag 取得 → (3) `partETags[]` に `partNumber` 昇順で収集** の順で処理します。
@@ -255,8 +255,8 @@ curl -X POST "{parts[i].uploadUrl}" \
 curl -I "{parts[i].headUrl}" | grep -i '^etag:'
 ```
 
-<a id="ingest.snapshot.complete"></a>
-#### 3. アップロード完了（complete） { #ingest.snapshot.complete }
+<a id="ingest-snapshot-complete"></a>
+#### 3. アップロード完了（complete） { #ingest-snapshot-complete }
 
 | メソッド | URI |
 | --- | --- |
@@ -314,10 +314,10 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 | フィールド | 説明 |
 | --- | --- |
-| body.jobId | ジョブ ID。[ジョブステータス確認](#ingest.snapshot.job.status)に使用 |
+| body.jobId | ジョブ ID。[ジョブステータス確認](#ingest-snapshot-job-status)に使用 |
 
-<a id="ingest.snapshot.cancel"></a>
-#### アップロードキャンセル { #ingest.snapshot.cancel }
+<a id="ingest-snapshot-cancel"></a>
+#### アップロードキャンセル { #ingest-snapshot-cancel }
 
 | メソッド | URI |
 | --- | --- |
@@ -339,8 +339,8 @@ curl -X DELETE "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceI
   -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
 ```
 
-<a id="ingest.snapshot.job.status"></a>
-#### ジョブステータス確認 { #ingest.snapshot.job.status }
+<a id="ingest-snapshot-job-status"></a>
+#### ジョブステータス確認 { #ingest-snapshot-job-status }
 
 | メソッド | URI |
 | --- | --- |
@@ -412,16 +412,16 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 | COMPLETED | ジョブ正常完了 |
 | FAILED | ジョブ失敗 |
 
-<a id="event.ingest.api"></a>
-### イベント収集 { #event.ingest.api }
+<a id="event-ingest-api"></a>
+### イベント収集 { #event-ingest-api }
 
 既存のデータを維持したまま変更イベントを送信します。タイプがファイルのデータソースで使用し、**Event API** を先に有効化する必要があります。有効化はコンソールのイベント設定タブまたは以下の有効化 API で行います。
 
 !!! danger "注意"
-    Event API を有効にすると、スナップショットのアップロードが遮断されます。また、スキーマの変更が制限されるため、スキーマを変更するには Event API を先に無効にする必要があります。有効化・無効化の方法については、[コンソールユーザーガイド](./console-user-guide/#datasource.detail.event)の「イベント設定」を参照してください。
+    Event API を有効にすると、スナップショットのアップロードが遮断されます。また、スキーマの変更が制限されるため、スキーマを変更するには Event API を先に無効にする必要があります。有効化・無効化の方法については、[コンソールユーザーガイド](./console-user-guide/#datasource-detail-event)の「イベント設定」を参照してください。
 
-<a id="event.ingest.api.enable"></a>
-#### Event API 有効化・無効化 { #event.ingest.api.enable }
+<a id="event-ingest-api-enable"></a>
+#### Event API 有効化・無効化 { #event-ingest-api-enable }
 
 | メソッド | URI |
 | --- | --- |
@@ -460,8 +460,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 - 有効化は非同期で処理されます。リクエスト直後のレスポンスでは `enabled` が false、`status` が ENABLING となり、ENABLED になった後からイベントを収集します。
 - 有効化が進行中に再度有効化をリクエストすると、リクエストは拒否されます。進行状況はコンソールのイベント設定タブで確認できます。
 
-<a id="event.ingest.api.send"></a>
-#### イベント単件送信 { #event.ingest.api.send }
+<a id="event-ingest-api-send"></a>
+#### イベント単件送信 { #event-ingest-api-send }
 
 | メソッド | URI |
 | --- | --- |
@@ -518,8 +518,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | body.success | 処理成否 |
 | body.errorMessage | 失敗時のエラーメッセージ |
 
-<a id="event.ingest.api.batch"></a>
-#### 複数イベントの一括送信 { #event.ingest.api.batch }
+<a id="event-ingest-api-batch"></a>
+#### 複数イベントの一括送信 { #event-ingest-api-batch }
 
 | メソッド | URI |
 | --- | --- |
@@ -555,8 +555,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 レスポンスの `body` はイベントごとの処理結果の配列です。
 
-<a id="metrics.ingest.api"></a>
-### 指標収集 { #metrics.ingest.api }
+<a id="metrics-ingest-api"></a>
+### 指標収集 { #metrics-ingest-api }
 
 タイプがPrometheus APIのデータソースに指標データを転送します。転送した指標は分析メニューで照会でき、単変量時系列異常検出アプリの入力としても使用できます。
 
@@ -612,11 +612,11 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 !!! tip "ヒント"
     積載は転送周期とは無関係です。ただし、このデータソースを単変量時系列異常検知アプリに接続した場合は、同じ時系列を1分に1つずつ途切れなく送信する必要があります。アプリはメトリクスを1分単位でまとめて判定するため、それより長い間隔で送信すると空白の期間が生じ、精度モードで準備が完了しない場合があります。
 
-<a id="univariate.api"></a>
-## 単変量時系列異常検出 API { #univariate.api }
+<a id="univariate-api"></a>
+## 単変量時系列異常検出 API { #univariate-api }
 
-<a id="univariate.group.api"></a>
-### グループの使用開始・停止・削除 { #univariate.group.api }
+<a id="univariate-group-api"></a>
+### グループの使用開始・停止・削除 { #univariate-group-api }
 
 単変量時系列異常検出アプリのグループの使用開始、停止、削除を行います。3つのAPIのリクエスト形式は同じで、パスのみ異なります。
 
@@ -665,13 +665,13 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingP
     グループを停止しても、検出結果の送信は停止しません。グループ一覧に表示される状態のみが無効に変わります。
     削除したグループは状態の記録とともに削除され、復旧することはできません。
 
-<a id="recommendation.api"></a>
-## レコメンデーション照会 API { #recommendation.api }
+<a id="recommendation-api"></a>
+## レコメンデーション照会 API { #recommendation-api }
 
 作成したレコメンデーションシステムアプリにレコメンデーション結果をリクエストします。ユーザーの履歴が十分な場合はモデルベース (Sequential)、不足している場合は属性ベース (Cold Start) で推論します。
 
-<a id="recommendation.api.recommend"></a>
-### レコメンデーションリクエスト { #recommendation.api.recommend }
+<a id="recommendation-api-recommend"></a>
+### レコメンデーションリクエスト { #recommendation-api-recommend }
 
 | メソッド | URI |
 | --- | --- |
@@ -718,8 +718,8 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 - `options.mode` を指定しない場合、サーバーが推論方式を決定します。このとき、決定された方式のモデルがアプリに存在しない場合は、アプリに連動している別の方式で代わりに推薦します。実際に使用された方式は、レスポンスの `body.metadata.inferenceType` で確認できます。
 - 要求した方式のモデルがアプリに存在せず、代替となる方式もない場合は、HTTP `503` と結果コード `5030001` を返します。アプリにどのモデルが作成されているか、および学習が完了しているかを確認してから再度呼び出します。`options.mode` で方式を指定したリクエストは代替されないため、このレスポンスを受け取る場合があります。
 
-<a id="recommendation.api.signal"></a>
-#### 行動シグナル { #recommendation.api.signal }
+<a id="recommendation-api-signal"></a>
+#### 行動シグナル { #recommendation-api-signal }
 
 `context.impressions` は、ユーザーに表示された推薦情報をもとに推薦結果を再順位付けするために使用されます。
 `context.interactions`、`context.feedback` は、ユーザーが推薦結果に対して示した行動を渡すフィールドで、ユーザー行動ベースのデータをモデル推論に反映します。
@@ -768,7 +768,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 - 各フィールドは古いものから新しい順に渡します。
 - `impressions` は最大 10 件で、1 件あたりの `itemKeys` は最大 100 個です。`interactions` と `feedback` は `type` ごとに最大 10 件です。上限を超えるとリクエストが拒否されます。
 - 行動シグナルは今回の推薦リクエストの推論入力としてのみ使用し、保存しません。同じアイテムの `feedback` が変わった場合は最新の値のみ反映されるため、効果を維持するにはリクエストのたびに再送信します。
-- 反応イベントを保存して分析に活用するには、[推薦イベント API](#recommendation.event.api) を併用します。
+- 反応イベントを保存して分析に活用するには、[推薦イベント API](#recommendation-event-api) を併用します。
 
 !!! tip "ヒント"
     `userAttributes` スキーマは、今後の選好誘導（Preference Elicitation）の実装方針によって、収集方式やフィールドの種類が変更される場合があります。
@@ -809,13 +809,13 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | body.metadata.inferenceType | 推論タイプ。sequential（履歴ベース）、cold_start（属性ベース）、popular（人気ベース） |
 | body.metadata.abTestGroup | A/B テストグループ（現在は空の値を返す） |
 
-<a id="recommendation.event.api"></a>
-## 推薦イベント API { #recommendation.event.api }
+<a id="recommendation-event-api"></a>
+## 推薦イベント API { #recommendation-event-api }
 
 推薦結果に対するユーザーの反応（クリックなど）のイベントを収集します。収集されたイベントデータを使用して、推薦の成功率を分析できます。
 
-<a id="recommendation.event.api.send"></a>
-### 推薦イベント送信 { #recommendation.event.api.send }
+<a id="recommendation-event-api-send"></a>
+### 推薦イベント送信 { #recommendation-event-api-send }
 
 | メソッド | URI |
 | --- | --- |
