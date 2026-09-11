@@ -713,6 +713,9 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | options.longtail | Boolean | X | 인기가 낮은 항목까지 포함해 추천 다양성 향상. sequential일 때만 적용 |
 | options.excludeItemKeys | Array | X | 추천에서 제외할 아이템 키 목록. 제외한 아이템은 최대 추천 수에 미포함 |
 
+- `options.mode`를 지정하지 않으면 서버가 추론 방식을 정합니다. 이때 정해진 방식의 모델이 앱에 없으면 앱에 연동된 다른 방식으로 대신 추천합니다. 실제로 사용한 방식은 응답의 `body.metadata.inferenceType`에서 확인합니다.
+- 요청한 방식의 모델이 앱에 없고 대신할 방식도 없으면 HTTP `503`과 결과 코드 `5030001`을 반환합니다. 앱에 어떤 모델이 만들어져 있는지와 학습이 끝났는지 확인한 뒤 다시 호출합니다. `options.mode`로 방식을 지정한 요청은 대체하지 않으므로 이 응답을 받을 수 있습니다.
+
 <a id="recommendation.api.signal"></a>
 #### 행동 신호 { #recommendation.api.signal }
 
