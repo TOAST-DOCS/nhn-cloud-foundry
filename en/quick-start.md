@@ -16,7 +16,7 @@ After completing the prerequisites (applying for the service and preparing data)
 4. Retrieve recommendation results
 5. Collect recommendation events
 
-**Univariate Anomaly Detection App**
+**Univariate Time Series Anomaly Detection App**
 
 1. Create a metric data source
 2. Transfer metrics
@@ -48,7 +48,7 @@ To create a recommendation system app, you need the following three CSV data fil
 | Item table | Item ID | Item information (additional attribute columns are optional) |
 | History table | User ID, Item ID, Timestamp | User-item interaction history (rating and category columns are optional) |
 
-Univariate anomaly detection apps require metric (time series) data sent via the collection API instead of CSV. Refer to 'Creating a Univariate Anomaly Detection App'.
+The univariate time series anomaly detection app requires metric (time series) data sent via the collection API instead of CSV. Refer to "Creating a Univariate Time Series Anomaly Detection App."
 
 <a id="datasource.create"></a>
 ## 1. Create a data source { #datasource.create }
@@ -73,7 +73,7 @@ For a detailed description of each setting, see 'Create a data source' in the [C
 
     ![Data source list](../static/images/quick-start/데이터소스목록.png){ height="70%" }
 
-Prometheus API type for receiving metric (time series) data is created differently. Refer to "Create a Metric Data Source" in "Create a Univariate Anomaly Detection App."
+The Prometheus API type that receives metric (time-series) data is created differently. Refer to "Create a Metric Data Source" in "Create a Univariate Time-Series Anomaly Detection App."
 
 <a id="app.create"></a>
 ## 2. Create an app { #app.create }
@@ -173,9 +173,9 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
     After an event API request, it may take up to 10 minutes for the data to be loaded into the dataset.
 
 <a id="univariate"></a>
-## Create a Univariate Anomaly Detection App { #univariate }
+## Create a Univariate Time Series Anomaly Detection App { #univariate }
 
-To automatically find values in metrics that fall outside the normal range, use a univariate anomaly detection app. This is a separate flow from the recommendation system.
+To automatically find values in metrics that fall outside the normal range, use the univariate time-series anomaly detection app. This is a separate flow from the recommendation system.
 
 <a id="univariate.datasource"></a>
 ### 1. Create a Metric Data Source { #univariate.datasource }
@@ -231,7 +231,7 @@ For a detailed description of the request format, see "Metric Collection" in the
 
 On the **Machine Learning > NHN Cloud Foundry > App** tab, click the **Create App** button.
 
-1. In the basic settings, enter the app name and description, and select **Univariate Anomaly Detection** as the app type.
+In the default settings, enter the app name and description, and select **Univariate Time Series Anomaly Detection** as the app type.
 
     ![Create app - Basic settings](../static/images/quick-start/이상탐지앱생성1.png){ height="70%" }
 
@@ -244,10 +244,10 @@ On the **Machine Learning > NHN Cloud Foundry > App** tab, click the **Create Ap
 3. In the final review, check the entered information and click the **Save** button.
     - The completion window displays the estimated time for the training and deployment process and results to appear. Continue sending metrics during this time.
 
-For a detailed description of each item, refer to "Univariate Anomaly Detection Detailed Settings" in the [Console User Guide](./console-user-guide/#app.create.detail.univariate).
+For more details on each item, see "Detailed Settings for Univariate Time Series Anomaly Detection" in the [Console User Guide](./console-user-guide/#app.create.detail.univariate).
 
 !!! tip "Tips"
-    You can create only one univariate anomaly detection app per metric data source. For the result delivery transmission mode, the default Accurate mode is recommended. If you want to receive values immediately before preparation is complete, select Instant mode.
+    You can create only one univariate time-series anomaly detection app per metric data source. We recommend using the default Exact mode for the result transmission mode. If you want to receive values immediately before preparation is complete, select Instant mode.
 
 <a id="univariate.result"></a>
 ### 4. Check Detection Results { #univariate.result }
@@ -256,16 +256,17 @@ Click the app you created in the app list to go to the details screen.
 
 1. On the **App Info** tab, check the training status and group status.
 
-    ![Univariate anomaly detection app info](../static/images/quick-start/이상탐지앱정보.png){ height="70%" }
+![Univariate time series anomaly detection app information](../static/images/quick-start/이상탐지앱정보.png){ height="70%" }
 
 2. Check the group status in the **Group List** tab.
     - Groups are registered after metrics arrive, so the list is empty immediately after you create an app.
-    - Waiting for activation means the system is collecting data to use for detection; once activated, detection results will be sent.
-    - In the Activation Time column, you can check when the group started sending results.
+    - Pending activation means the system is collecting data to use for analysis; once activated, detection results are sent.
+    - In the Detection Start Time column, you can check when a group started sending results.
+    - In the Inference Status column, check whether inference is running normally.
 
     ![Group list](../static/images/quick-start/이상탐지그룹목록.png){ height="70%" }
 
 3. The anomaly score and threshold, which are the detection results, are sent to the specified Prometheus and also stored in the result data source.
 4. View the stored results using queries or charts on the **Analysis** tab.
 
-For detailed descriptions of each item, see "Univariate Anomaly Detection App Details" in the [Console User Guide](./console-user-guide/#app.detail.univariate).
+For more information on each item, see "Univariate Time Series Anomaly Detection App Details" in the [Console User Guide](./console-user-guide/#app.detail.univariate).
