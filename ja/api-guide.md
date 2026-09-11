@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=47be59ae2082 -->
+<!-- pre-align:aligned sig=d3aa4d31c69a -->
 
 <a id="foundry-api-guide"></a>
 ## Machine Learning > NHN Cloud Foundry > API ガイド { #foundry-api-guide }
