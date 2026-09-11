@@ -61,9 +61,8 @@ Console path: **Machine Learning > NHN Cloud Foundry > Data Source** tab
 A data source is the unit that stores data for analysis in NHN Cloud Foundry. You can create, view, and delete data sources in the console.
 
 !!! danger "Caution"
-    Be careful not to enter any information containing personal data when using this service.
-    This service does not provide separate security measures for personal information that you enter, so we recommend that you refrain from entering and storing information that contains personal data.
-    This notice also appears as a pop-up when you access the console. If you select **Don't show again**, it will not be displayed again in the same browser, but it will appear again in other browsers or other projects.
+    When using this service, do not enter any information that contains personal data.
+    This service does not provide separate security measures for personal data entered by customers, so we recommend that you refrain from entering and storing information that contains personal data.
 
 <a id="datasource.list"></a>
 ### Data Source List { #datasource.list }
@@ -87,7 +86,7 @@ Type:
 | File | A data source created from an uploaded CSV file |
 | Prometheus API | A data source that receives metric (time-series) data via a collection API |
 | Recommendation | A data source where recommendation results are stored |
-| Univariate anomaly detection results | Data source where univariate anomaly detection results are stored |
+| Univariate time series anomaly detection results | Data Source where univariate time series anomaly detection results are stored |
 | Dataset | A data source created by a pipeline |
 
 Status:
@@ -115,7 +114,7 @@ For data sources of type File, the result of the most recent file upload is disp
 - You can adjust the number of items displayed per page (10, 20, or 50 items; default is 10).
 
 !!! tip "Note"
-    Items of type Recommendation, Univariate Anomaly Detection Result, and Dataset cannot be created by the user directly. Recommendations and Univariate Anomaly Detection Results are automatically created when an app is created, and Datasets are automatically created when a pipeline is run.
+    Items of type Recommendation, Univariate Time-Series Anomaly Detection Result, and Dataset cannot be created directly by users. Recommendations and Univariate Time-Series Anomaly Detection Results are created automatically when you create an app, and Datasets are created automatically when you run a pipeline.
 
 <a id="datasource.create"></a>
 ### Create a Data Source { #datasource.create }
@@ -145,7 +144,7 @@ See the table below for available types and their descriptions:
 | Value | Description |
 | --- | --- |
 | File Upload | Upload a CSV file to load data. After creation, update data using CSV or the Ingest API. |
-| Prometheus API | Load metric data in real time using a collection API. Used as input for the univariate anomaly detection app. |
+| Prometheus API | Loads metric data in real time via a collection API. You can also use it as input for a univariate time-series anomaly detection app. |
 
 <a id="datasource.create.detail"></a>
 #### Upload File Detailed Settings { #datasource.create.detail }
@@ -802,12 +801,13 @@ Use SQL to query and analyze data from a data source.
 5. Click **Run Query**.
 
 - The execution results are displayed in a data grid format. The column structure is dynamically generated based on the query results, and pagination is supported.
-- When you select a data source, a schema panel appears to the right of the query input field, where you can view field names and data types. You can search by field name.
+- When you select a data source, a schema panel appears to the right of the query input field, where you can check field names and data types. You can search by field name.
 - Press **Ctrl+Enter** (or **⌘+Enter** on macOS) in the query input field to run the query.
-- If a query fails to run, the reason for the failure is displayed in the results area.
-- Click **Reset** to clear the query that you have written.
-- Click **Download Query Results** to save the results as a CSV file (file name: `query_name_date_time.csv`).
-- Use the table name as shown in the data source list in the FROM clause (`SELECT * FROM {table_name}`).
+- If the query fails to execute, the cause of the failure is displayed in the results area.
+- If the query results are too large, execution is rejected. Narrow the conditions or reduce the row limit, then run the query again.
+- Click the **Reset** button to clear the query that you have entered.
+- Click the **Download Query Results** button to save the results as a CSV file (file name: `query name_date_time.csv`).
+- In the FROM clause, use the table name exactly as it appears in the data source list (`SELECT * FROM {table name}`).
 - Only a single SELECT statement can be executed. All other statements are rejected.
 
 <a id="query.save"></a>
@@ -1037,12 +1037,12 @@ To modify a chart placed on the dashboard, turn off edit mode. When edit mode is
 
 Console path: **Machine Learning > NHN Cloud Foundry > App** tab
 
-Creates and manages apps that connect AI models to data. Two app types are available: **Recommendation System** and **Univariate Anomaly Detection**.
+Create and manage apps that connect AI models to data. Two app types are available: **Recommendation System** and **Univariate Time Series Anomaly Detection**.
 
 | App Type | Description |
 | --- | --- |
 | Recommendation system | Analyzes user behavior patterns to provide personalized recommendations. |
-| Univariate anomaly detection | Learns each metric individually to detect values that fall outside the normal range. |
+| Univariate Time Series Anomaly Detection | Trains on each metric individually to detect values that fall outside the normal range. |
 
 <a id="app.list"></a>
 ### App List { #app.list }
@@ -1097,6 +1097,7 @@ The **Resource Check** results are displayed at the bottom of the app creation s
 | There are resources available to create an app. | Can be created |
 | You can create the app, but the reflection of retraining results may be delayed due to insufficient remaining resources. | Creation is possible, but resources are insufficient |
 | Insufficient resources have been allocated, making it difficult to create additional apps. | Unable to create. Cannot proceed to the next step. |
+| There is no space on the GPU to load a new model, so the retraining result cannot be applied. | Displayed when GPU is selected as the device. Cannot be created. You can proceed by lowering the model CPU or changing the device to CPU. |
 | Insufficient allocated resources to run training. | The app can be created, but there are not enough resources to run training. |
 | No GPUs are available. | Cannot create additional apps that use GPUs. Remove existing GPU apps or select CPU instead. |
 | GPU is not available in the current service environment. | No GPU nodes in the cluster, so GPU cannot be selected for the device |
@@ -1113,7 +1114,7 @@ The **Resource Check** results are displayed at the bottom of the app creation s
 | --- | --- | --- |
 | App name | O | Name to identify the app (up to 255 characters). Supports Korean, Japanese, English, numbers, spaces, hyphens (-), and underscores (_). |
 | App description | O | Description of the app |
-| App Type | O | Select **Recommendation System** or **Univariate Anomaly Detection**. When you select a type, the type description appears below. |
+| App Type | O | Select **Recommendation System** or **Univariate Time Series Anomaly Detection**. When you select a type, a description of the type is displayed below. |
 
 <a id="app.create.detail"></a>
 #### Recommendation System Detailed Settings { #app.create.detail }
@@ -1161,8 +1162,6 @@ The first training run for the model also executes at the time specified in this
 | Weekly | Day of week, Hour, Minute |
 | Hourly | Hour interval, Minute |
 
-The configured time is applied based on the time zone of the browser you are using.
-
 <a id="app.create.detail.connection"></a>
 ##### Data Connection Settings { #app.create.detail.connection }
 
@@ -1209,9 +1208,9 @@ This is an optional setting for connecting skill and category data used to const
 | Cold start data source | Only user IDs in this table are identified as cold starters. Both the data source and user ID column must be selected. |
 
 <a id="app.create.detail.univariate"></a>
-#### Univariate Anomaly Detection Detail Settings { #app.create.detail.univariate }
+#### Detailed Settings for Univariate Time-Series Anomaly Detection { #app.create.detail.univariate }
 
-The univariate anomaly detection app learns each metric individually and detects values that fall outside the normal range. The detail settings are organized in the following order: data source, model resources, retraining, detection options, and result transmission.
+The univariate time-series anomaly detection app trains on each metric individually to detect values that fall outside the normal range. The detailed settings are configured in the following order: Data Source, model resources, retraining, detection options, and result transfer.
 
 <a id="app.create.detail.univariate.source"></a>
 ##### Data Source { #app.create.detail.univariate.source }
@@ -1222,9 +1221,9 @@ The univariate anomaly detection app learns each metric individually and detects
 
 - A data source of the Prometheus API type must be created first for it to appear in the list.
 - The series identification label and group label specified for the selected data source serve as the criteria for dividing time series and groups.
-- Only one univariate anomaly detection app can be created per metric data source. Data sources that are already in use by another univariate anomaly detection app are not displayed in the list.
-- If the selected data source has no data, "No data yet." is displayed below the item, and a **Data Check** box appears under Resource Check at the bottom of the screen. If you did not specify a retraining cycle, the training at creation time is the only training, so you cannot proceed to the next step until data arrives. If you specified a retraining cycle, only a message indicating that the first training will fail and will be retried at the next retraining is displayed, and you can proceed.
-- If multiple different values arrive for the same time series within a single minute during the last 5 minutes, an information box is displayed. This does not prevent creation, but in this state, only the first value to arrive each minute is used for analysis and the rest are discarded. Send each time series only once per minute; if you collect data at a shorter interval, aggregate it into a 1-minute average before sending.
+- You can create only one univariate time-series anomaly detection app per metric data source. Data sources already in use by another univariate time-series anomaly detection app are not displayed in the list.
+- If the selected data source has no data, "No data yet." appears below the item, and a **Check Data** box appears under the resource check at the bottom of the screen. If you did not specify a retraining interval, the training performed at creation is the only training, so you cannot proceed to the next step until data arrives. If you specified a retraining interval, a notice is displayed indicating that the first training will fail and will be retried at the next retraining cycle, and you can proceed.
+- If multiple different values have arrived for the same time series within one minute in the last 5 minutes, an information box is displayed. This does not prevent creation, but in this state, only the first value to arrive each minute is used for analysis, and the rest are discarded. Send each time series only once per minute; if you collect data at a shorter interval, aggregate the values into a 1-minute average before sending.
 
 <a id="app.create.detail.univariate.resource"></a>
 ##### Model Resources { #app.create.detail.univariate.resource }
@@ -1249,9 +1248,8 @@ Model resources cannot be changed after the app is created.
 | Weekly | Day of week, hour, and minute. |
 | Hourly Interval | Interval and minute. Select the interval from 1, 2, 3, 4, 6, 8, or 12 hours. |
 
-- The configured time is applied based on the time zone of the browser you are using.
-- If you do not specify an interval, the app is trained only once when it is created, and automatic retraining does not occur afterward. In this case, you cannot create an app with a data source that has no data.
-- We recommend that you specify a time period with low traffic, as training uses a large amount of resources.
+- If no recurrence interval is specified, training runs only once when the app is created, and automatic retraining does not occur afterward. In this case, you cannot create an app with a data source that has no data.
+- Because training consumes a large amount of resources, we recommend that you specify a time period with low traffic.
 
 <a id="app.create.detail.univariate.option"></a>
 ##### Detection Options { #app.create.detail.univariate.option }
@@ -1269,11 +1267,11 @@ Select one of the following transmission modes:
 | Precise Mode | Default. Transmits only reliable values after metric preparation is complete. |
 | Immediate Mode | Transmits immediately after activation. Values before preparation is complete are for reference only. |
 
-- The app groups metrics in 1-minute intervals and evaluates each time series. The data source connected to the app must send one value per minute for the same time series without interruption. If values are sent at longer intervals, gaps occur and the app may not finish preparing in precise mode. If multiple values are sent within a minute, only the first value received is used for evaluation. Loading metrics into the data source is independent of the transmission interval.
-- For newly incoming metrics, it takes several hours for enough data to accumulate for evaluation and for the threshold to be calibrated to the metric's distribution.
-- If transmission is interrupted for more than a few minutes, the accumulated interval is broken and the app returns to the preparing state. In precise mode, no results are output until the interval is refilled.
-- When score scaling is enabled, scores are compressed to a range of 0 to 1, then multiplied by 100 to output values in a range of 0 to 100. The threshold is also calculated on the same scale. Use this when aligning the scale with dashboards that use a percentage axis. When disabled, the original values are output as-is.
-- The same device is used for both inference and training. Training and inference work with the default CPU, and GPU may not be available depending on the resource status of the service environment.
+- The app groups metrics in 1-minute intervals and evaluates each time series individually. The data source connected to the app must continuously send one data point per minute for each time series without interruption. Sending at longer intervals creates gaps that may prevent preparation from completing in precise mode, and if multiple values are sent within a single minute, only the first value received is used for evaluation. Loading metrics into the data source itself is independent of the transmission interval.
+- For newly received metrics, it typically takes about 6 hours for enough data to accumulate for evaluation and for the threshold to be calibrated to the metric's distribution, and it may take longer depending on the pattern of incoming metrics.
+- If transmission is interrupted for more than a few minutes, the accumulated intervals are invalidated and the system returns to a preparation state. In precise mode, no results are output until the data is refilled.
+- When score scaling is enabled, scores are converted to a range from 0 to 100 before being output, and thresholds are also calculated using the same scale. Use this when aligning the scale with dashboards that use a percentage axis. When disabled, raw values are output as-is.
+- The same device applies to both inference and training. Training and inference work with the default CPU setting, and GPU may not be available depending on the resource availability in the service environment.
 
 !!! danger "Caution"
     The score scale cannot be changed after the app is created.
@@ -1332,7 +1330,7 @@ Recommendation System:
 | Model Settings | Selected model, serving resources, batch schedule, and data connection information |
 | Additional Settings | Additional settings such as skill tables |
 
-Univariate anomaly detection:
+Univariate time series anomaly detection:
 
 | Review Item | Description |
 | --- | --- |
@@ -1344,18 +1342,17 @@ Univariate anomaly detection:
 
 Click the **Save** button to create the app. On success, a completion modal is displayed and you are redirected to the list. On failure, an error message is displayed.
 
-The completion modal of the univariate anomaly detection app displays information about what will happen next.
+The completion modal for the univariate time series anomaly detection app displays information about the next steps to proceed.
 
-- Train and deploy the model. Check the progress by monitoring the status in the app list.
-- In precise mode, even after activation, results will not be sent until enough metrics have accumulated for judgment, which typically takes several hours.
-- You must continue sending metrics during this time.
+- Train and deploy the model. You can check the progress by viewing the status in the app list.
+- In exact mode, even after the model is activated, results are not generated until enough metrics have accumulated for evaluation. This typically takes around 6 hours. You must continue sending metrics during this time.
 
 <a id="app.delete"></a>
 ### Delete App { #app.delete }
 
 1. Select the checkbox of the app to delete. Only one app can be selected at a time; selecting another app deselects the previous selection.
 2. Click **Delete**.
-3. In the confirmation modal, verify the app name and click **Confirm**.
+3. In the confirmation modal, verify the app name and click **Delete**.
 
 !!! danger "Caution"
     Deleted apps cannot be recovered. The serving pipelines connected to the app are also deleted.
@@ -1364,7 +1361,7 @@ The completion modal of the univariate anomaly detection app displays informatio
 <a id="app.detail"></a>
 ### Recommendation System App Details { #app.detail }
 
-Click an app in the app list to go to the details screen. The details screen varies depending on the app type. For recommendation system apps, it consists of three tabs: **Recommendation API Call**, **App Information**, and **Training Management**.
+Click an app in the app list to go to the details screen. The recommendation system app consists of three tabs: **Recommendation API Call**, **App Information**, and **Training Management**.
 
 <a id="app.detail.recommend"></a>
 #### Recommendation API Call { #app.detail.recommend }
@@ -1437,7 +1434,7 @@ Setting reflection status:
 
 | Value | Description |
 | --- | --- |
-| Not Checked | Whether the setting was applied has not yet been verified |
+| Before verification | Not yet verified for application. Immediately after creating an app, the status automatically starts as verified and applied. |
 | Applying | The updated setting is being applied |
 | Applied | The updated setting has been successfully applied |
 | Failed | Application failed. A retry is required |
@@ -1448,7 +1445,7 @@ Use the buttons at the top to perform the following actions. The actions apply t
 | --- | --- |
 | Run Training | Runs training immediately |
 | Stop Automatic Retraining | Stops automatic retraining |
-| Resume Automatic Retraining | Resumes stopped automatic retraining |
+| Resume auto-retraining | Resume stopped auto-retraining. If no training cycle has been specified, you must configure a cycle first. |
 | Refresh | Retrieves the latest training status |
 
 When a button is inactive, hover over it to see the reason.
@@ -1460,6 +1457,7 @@ When a button is inactive, hover over it to see the reason.
 | Automatic retraining is enabled | You can run training after stopping automatic retraining. |
 | Settings have not finished applying | All models must have a setting reflection status of Applied before you can run training. |
 | A previous change has not been confirmed | A previous automatic retraining change is pending confirmation. |
+| Training cycle is not set | You must set the training cycle before you can resume. |
 
 Click the **Change Training Cycle** button to change the cycle in the modal.
 
@@ -1468,9 +1466,8 @@ Click the **Change Training Cycle** button to change the cycle in the modal.
 | Cycle | O | Select daily, weekly, or time interval, and specify the time |
 | Reason for Change | X | Enter the reason for the change |
 
-- The specified time is applied based on the timezone of the browser you are using.
-- Saving places the change in a requested state. You can verify whether the change was applied by checking the Setting Reflection Status column in the list.
-- If the settings were not applied to some models, a notification is displayed along with a list of the affected models.
+- When you save, the status changes to pending change request. You can check whether the changes have been applied in the Settings Applied Status column in the list.
+- If only some models have not been applied, a notification is displayed along with the list of those models.
 
 !!! tip "Note"
     You can run training only when automatic retraining is stopped.
@@ -1492,9 +1489,9 @@ Select a training model from the list to view the training artifact history for 
 If no model has been trained yet, the message "No trained models yet." is displayed.
 
 <a id="app.detail.univariate"></a>
-### Univariate Anomaly Detection App Details { #app.detail.univariate }
+### Univariate Time Series Anomaly Detection App Details { #app.detail.univariate }
 
-The univariate anomaly detection app displays the **App > App Name** path at the top and consists of two tabs: **App Information** and **Group List**. To return to the app list, click **App** in the path.
+The univariate time-series anomaly detection app displays the **App > App Name** path at the top and consists of two tabs: **App Information** and **Group List**. To return to the app list, click **App** in the path.
 
 <a id="app.detail.univariate.info"></a>
 #### App Information { #app.detail.univariate.info }
@@ -1511,7 +1508,7 @@ The header displays the app name, status, app type, app ID, creation date, modif
 | Series Identification Label | Label used to distinguish time series. If not specified, displays 'Use all labels' |
 | Data Source ID, Data Source Table Name | Used for inquiries or log reference |
 
-**Processing**: Univariate anomaly detection model
+**Processing**: Univariate time-series anomaly detection model
 
 | Item | Description |
 | --- | --- |
@@ -1534,13 +1531,13 @@ The header displays the app name, status, app type, app ID, creation date, modif
 | Data Source ID, Data Source Table Name | Used for inquiries or log reference |
 
 - You can view the description by hovering over the question mark icon next to the item label.
-- Apps that have no send address configured display the message: "The result is not sent externally and is saved only to the result data source."
-- Values entered in static headers and dynamic headers are not displayed on the screen.
-- Inference results are always saved to the result data source regardless of Prometheus transfers, and can be viewed in the Analysis menu.
-- Below the card, the group status is displayed as four numbers: **All**, **Active**, **Pending Activation**, and **Inactive**. Clicking a number navigates to the Group List tab and filters by that status.
-- You can view the meaning of the three statuses by hovering over the question mark icon next to the group status heading. Pending Activation typically takes several hours in Accurate mode, while Instant mode activates immediately after the group is turned on.
-- If retraining fails, the training status is displayed as Training Failed. Results continue to be generated using the most recently trained model, and training is retried at the next retraining cycle. If the initial training fails, the app enters a failed state and can be deleted.
-- The date and time are displayed in the time zone of the browser you are using.
+- Apps that do not have a destination address configured display the message: 'Save to the result data source only without sending externally.'
+- Values entered in the static header and dynamic header are not displayed on the screen.
+- Inference results are always saved to the result data source independently of Prometheus transmission, and can be viewed in the Analysis menu.
+- Below the card, the group status is displayed as five numbers: **Total**, **Active**, **Pending Activation**, **Inactive**, and **Error**. Clicking a number navigates to the Group List tab and filters by the corresponding status.
+- **Error** is the number of groups where inference has failed and results are not being output. Because it is on a different axis from the preceding three values, it is not added to the total, and error groups that are turned on are also counted in the active count.
+- You can view the meaning of the three statuses by hovering over the question mark icon next to the Group Status heading. Pending Activation typically takes about 6 hours in Precise mode, while in Instant mode, groups are activated immediately after being turned on.
+- If retraining fails, the training status is displayed as Training Failed. Results continue to be output using the previously trained model, and retraining is attempted again in the next retraining cycle. If the initial training fails, the app enters a failed state and can be deleted.
 
 <a id="app.detail.univariate.groups"></a>
 #### Group List { #app.detail.univariate.groups }
@@ -1553,7 +1550,8 @@ Anomaly detection is performed per time series, and a group is a unit that bundl
 | Value | The value of that label. Displayed as 'Single Group' for apps that have no group key field |
 | Group Hash | A 16-character hash that identifies the group. Automatically calculated from the group key value |
 | Status | The current status of the group |
-| Enabled Time | The time when enough data was collected for evaluation and results began to be generated. Displays a hyphen for groups that are waiting to be enabled. |
+| Inference status | Whether the inference for this group is running normally. A different axis from the Status column |
+| Detection start time | The time at which enough data was collected for evaluation and results began to be produced. Groups waiting to be activated show a hyphen |
 | Disabled Time | The last time the group was disabled. This value is retained even after re-enabling, so the previous history remains. Displays a hyphen if the group has never been disabled. |
 | Created On | The date and time when the group was registered |
 | Modified On | The date and time when the group information was last changed |
@@ -1566,15 +1564,26 @@ Status:
 | Activation Pending | The group is turned on, but results are not yet being sent because data is still being collected |
 | Inactive | A group that has been turned off and is not in use |
 
-- If you assign a group label to a data source, one group is created for each value. If you do not assign a label, the entire data source becomes a single group.
+Inference Status:
+
+| Value | Description |
+| --- | --- |
+| Normal | Detection has started and no errors have been reported |
+| Error | Inference failed or the preparation time has been exceeded. No results are produced during this time |
+| No verdict | Detection has not started yet, or the group is turned off |
+
+- The inference status is a separate axis from the status column. A group that is turned off may still have error records, and a group that is in an error state will display as active if it is turned on.
+- If metrics are interrupted for more than 10 minutes, the status is automatically restored to normal rather than error.
+
+- If you assign a group label to a data source, one group is created for each value. If you do not assign one, the entire data source becomes a single group.
 - Groups are registered when metrics arrive, not when the app is created. The list is empty immediately after the app is created.
-- Activation pending typically takes several hours in accurate mode. Instant mode activates immediately after the group is turned on.
-- Errors are determined at the group level. If inference stops for even one time series in a group, the entire group enters an error state, and the group returns to normal only when that time series recovers.
-- You can narrow the list by filtering by status or searching by group key or group hash.
-- You can sort the Group Key, Activation Time, Deactivation Time, Created On, and Modified On columns by clicking the column header. Sorting applies to all groups, and changing the sort order navigates to page 1. The Value, Group Hash, and Status columns cannot be sorted; values are sorted within the Group Key column.
+- Pending activation in precise mode typically takes around 6 hours. In instant mode, activation occurs immediately after the group is turned on.
+- Errors are assessed at the group level. If inference stops for even a single time series in the group, the entire group enters an error state, and it returns to normal only when that time series recovers.
+- You can narrow the list by filtering by status and inference status separately, or by searching by group key or group hash. The two filters operate on different axes, so you can apply both at the same time.
+- You can sort the Group Key, Detection Start Time, Deactivation Time, Created On, and Modified On columns by clicking their headers. Sorting applies across all groups, and changing the sort order moves you to page 1. The Value, Group Hash, Status, and Inference Status columns cannot be sorted. Sort by value using the Group Key column, and narrow by inference status using the filter.
 - You can adjust the number of items displayed per page (20, 50, or 100; default is 20).
-- If no groups are registered, the message "No groups are registered. Groups will appear here when data arrives and groups are registered." is displayed. If no groups match the search or filter conditions, "No groups match the conditions." is displayed.
-- To start, stop, or delete specific groups individually, refer to "Start, Stop, and Delete Groups" in the [API Guide](./api-guide/#univariate.group.api). These operations are not available in the console.
+- If no groups are registered, the message "No groups are registered. Groups will appear here once data arrives and they are registered." is displayed. If no groups match the search or filter conditions, "No groups match the specified conditions." is displayed.
+- To start, stop, or delete specific groups individually, refer to "Start, Stop, and Delete Groups" in the [API Guide](./api-guide/#univariate.group.api). This operation is not available in the console.
 
 <a id="app.detail.univariate.groups.hash"></a>
 ##### Hash Calculator { #app.detail.univariate.groups.hash }
