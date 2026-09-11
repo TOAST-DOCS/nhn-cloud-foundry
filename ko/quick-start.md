@@ -245,7 +245,7 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
 각 항목의 자세한 설명은 [콘솔 유저 가이드](./console-user-guide/#app.create.detail.univariate)의 '단변량 시계열 이상탐지 상세 설정'을 참고합니다.
 
 !!! tip "알아두기"
-    지표 데이터 소스 하나에는 단변량 시계열 이상탐지 앱을 하나만 만들 수 있습니다. 결과 전송의 전송 모드는 기본값인 정확 모드를 권장하며, 준비가 끝나기 전 값이라도 바로 받아 보려면 즉시 모드를 선택합니다.
+    지표 데이터 소스 하나에는 단변량 시계열 이상탐지 앱을 하나만 만들 수 있습니다. 결과 전송의 전송 모드는 기본값인 정확 모드를 권장하며, 준비가 끝나기 전 값이라도 바로 받으려면 즉시 모드를 선택합니다.
 
 <a id="univariate.result"></a>
 ### 4. 탐지 결과 확인하기 { #univariate.result }
