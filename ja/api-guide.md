@@ -418,7 +418,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 既存のデータを維持したまま変更イベントを送信します。タイプがファイルのデータソースで使用し、**Event API** を先に有効化する必要があります。有効化はコンソールのイベント設定タブまたは以下の有効化 API で行います。
 
 !!! danger "注意"
-    Event API を有効化すると、スナップショットのアップロードが遮断されます。また、アクティブ状態ではデータソーススキーマの変更（カタログフィールドの追加）が制限されるため、フィールドを追加するには Event API を先に無効化する必要があります。有効化・無効化の方法については、[コンソールユーザーガイド](./console-user-guide/#datasource.detail.event)の「イベント設定」を参照してください。
+    Event API を有効にすると、スナップショットのアップロードが遮断されます。また、スキーマの変更が制限されるため、スキーマを変更するには Event API を先に無効にする必要があります。有効化・無効化の方法については、[コンソールユーザーガイド](./console-user-guide/#datasource.detail.event)の「イベント設定」を参照してください。
 
 <a id="event.ingest.api.enable"></a>
 #### Event API 有効化・無効化 { #event.ingest.api.enable }
@@ -558,7 +558,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 <a id="metrics.ingest.api"></a>
 ### 指標収集 { #metrics.ingest.api }
 
-タイプが Prometheus API のデータソースに指標データを転送します。転送した指標は、単変量異常検知アプリの入力として使用します。
+タイプがPrometheus APIのデータソースに指標データを転送します。転送した指標は分析メニューで照会でき、単変量時系列異常検出アプリの入力としても使用できます。
 
 | メソッド | URI |
 | --- | --- |
@@ -610,15 +610,15 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 - 転送が遅延したデータは保存されますが、リアルタイム推論の対象から除外される場合があります。
 
 !!! tip "ヒント"
-    積載は転送周期とは無関係です。ただし、このデータソースを単変量異常検知アプリに接続している場合は、同じ時系列を1分に1つずつ途切れなく送信する必要があります。アプリがメトリクスを1分単位でまとめて判定するため、それより長い間隔で送信すると空白区間が生じ、精度モードで準備が完了しない場合があります。
+    積載は転送周期とは無関係です。ただし、このデータソースを単変量時系列異常検知アプリに接続した場合は、同じ時系列を1分に1つずつ途切れなく送信する必要があります。アプリはメトリクスを1分単位でまとめて判定するため、それより長い間隔で送信すると空白の期間が生じ、精度モードで準備が完了しない場合があります。
 
 <a id="univariate.api"></a>
-## 単変量異常検出 API { #univariate.api }
+## 単変量時系列異常検出 API { #univariate.api }
 
 <a id="univariate.group.api"></a>
 ### グループの使用開始・停止・削除 { #univariate.group.api }
 
-単変量異常検知アプリのグループの使用開始、停止、削除を行います。3つのAPIのリクエスト形式は同じで、パスのみ異なります。
+単変量時系列異常検出アプリのグループの使用開始、停止、削除を行います。3つのAPIのリクエスト形式は同じで、パスのみ異なります。
 
 | メソッド | URI |
 | --- | --- |
@@ -714,6 +714,9 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | options.mode | String | X | 推論方式を指定します。sequential (履歴ベース)、cold_start (属性ベース)、popular (人気ベース) のいずれか。未指定の場合はサーバーが自動で決定します。 |
 | options.longtail | Boolean | X | 人気の低いアイテムも含めてレコメンデーションの多様性を向上させます。sequential の場合のみ適用されます。 |
 | options.excludeItemKeys | Array | X | レコメンデーションから除外するアイテムキーのリスト。除外したアイテムは最大レコメンデーション数に含まれません。 |
+
+- `options.mode` を指定しない場合、サーバーが推論方式を決定します。このとき、決定された方式のモデルがアプリに存在しない場合は、アプリに連動している別の方式で代わりに推薦します。実際に使用された方式は、レスポンスの `body.metadata.inferenceType` で確認できます。
+- 要求した方式のモデルがアプリに存在せず、代替となる方式もない場合は、HTTP `503` と結果コード `5030001` を返します。アプリにどのモデルが作成されているか、および学習が完了しているかを確認してから再度呼び出します。`options.mode` で方式を指定したリクエストは代替されないため、このレスポンスを受け取る場合があります。
 
 <a id="recommendation.api.signal"></a>
 #### 行動シグナル { #recommendation.api.signal }
