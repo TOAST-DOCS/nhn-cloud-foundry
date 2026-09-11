@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=c85588b241bb -->
+<!-- pre-align:aligned sig=2e5f8a3ad55b -->
 
 <a id="foundry-getting-started"></a>
 ## Machine Learning > NHN Cloud Foundry > Getting Started { #foundry-getting-started }
