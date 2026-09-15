@@ -456,7 +456,9 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | body.status | 활성화 상태. DISABLED, ENABLING, ENABLED, ENABLE_FAILED |
 
 - 활성화는 비동기로 진행됩니다. 요청 직후 응답은 `enabled`가 false, `status`가 ENABLING이며, ENABLED가 된 뒤부터 이벤트를 수집합니다.
-- 활성화가 진행 중일 때 다시 활성화를 요청하면 거절됩니다. 진행 상황은 콘솔의 이벤트 설정 탭에서 확인할 수 있습니다.
+- 이미 활성인 데이터 소스에 다시 활성화를 요청하면 상태를 그대로 돌려줍니다. 비활성 상태에 비활성화를 요청할 때도 같습니다. 여러 번 호출해도 결과가 달라지지 않습니다.
+- 다만 활성화가 진행 중(`ENABLING`)일 때 다시 활성화를 요청하면 거절됩니다. 진행 상황은 콘솔의 이벤트 설정 탭에서 확인할 수 있습니다.
+- 없는 데이터 소스로 호출하면 데이터 소스를 찾을 수 없다는 오류가 반환됩니다.
 
 <a id="event.ingest.api.send"></a>
 #### 이벤트 단건 전송 { #event.ingest.api.send }
