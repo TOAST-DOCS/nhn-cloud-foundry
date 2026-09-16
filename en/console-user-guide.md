@@ -226,10 +226,10 @@ In the detail settings, you specify the following two items.
 | Series identification labels | O | Specifies which label combination distinguishes a single time series. Select either **Use all labels** or **Specify manually**. The default is **Use all labels**. |
 | Group labels | X | The unit for grouping and managing time series. Time series with the same specified label values form one group. If left empty, the entire data source becomes one group. |
 
-- Series identification labels: Training and inference are performed separately for each time series. **Use all labels** treats data with different label combinations as different time series. **Manual assign** groups only data with the same specified label values into one time series, and does not use the remaining labels for differentiation.
-- Group labels: For example, if you specify a rule ID label, one group is created for each rule value. If left empty, the entire data source becomes a single group. A group is registered only when metrics arrive.
-- Label names must start with an English letter or `_`, and can only contain English letters, numbers, and `_`. To specify multiple labels, separate them with commas. You cannot enter the same label twice.
-- If you have set series identification labels to **Manual assign** and a group label is not included in that list, a warning is displayed. We recommend that you include the group label in the series identification labels, as data from different groups may be merged into the same time series.
+- Series Identification Label: Each time series is trained and inferred separately. **Use all labels** treats combinations with different labels as different time series. **Specify directly** groups only data with the same specified label values into one time series, and does not use the remaining labels for differentiation.
+- Group Label: For example, if you specify a rule ID label, one group is created for each rule value. If left empty, the entire data source becomes one group. If left empty, that one group is registered when app creation is complete; if a label is specified, you must register groups via API.
+- Label names must start with a letter or `_`, and can only contain letters, numbers, and `_`. Enter multiple labels separated by commas, and you can't enter the same label twice.
+- If you **specify** the Series Identification Label directly but the Group Label is not in that list, a warning is displayed. We recommend that you include the Group Label in the Series Identification Label as well, because groups that differ may still be merged into the same time series.
 
 Under the group label, the **View Example** row displays how many series and groups the example metric is divided into based on the label settings you entered, in the format 'N series · M groups'. If the group label is left empty, it displays '1 group · The entire Data Source is one group'.
 
@@ -506,8 +506,10 @@ Only operators available for the selected column type are displayed.
 
 Select the value to compare from **Enter Manually**, **Time (based on current time)**, **Other Column**, or **Function/Expression**.
 
-- **Functions/Expressions**: Enter a constant expression. Use this to filter a time column stored as a millisecond epoch against the current time. Example: `CAST(UNIX_TIMESTAMP(NOW() - INTERVAL 7 DAY) * 1000 AS BIGINT)`
-- Functions/Expressions support only time calculation and type conversion functions, CAST target types, and INTERVAL units. Column references, quotation marks, semicolons, comments, and expressions exceeding 500 characters are rejected when saved.
+- **For functions/expressions**, enter a constant expression. Use this when filtering a time column stored as a millisecond epoch relative to the current time. Example: `CAST(UNIX_TIMESTAMP(NOW() - INTERVAL 7 DAY) * 1000 AS BIGINT)`
+- In functions/expressions, you can only use time calculation and type conversion functions, CAST target types, and INTERVAL units. You can only enter letters, numbers, spaces, and `_ ( ) + - * / , . :`, with a maximum of 500 characters.
+- To compare against a column, change the value type to **Another column**. You cannot use column names in functions/expressions.
+- If you enter a value that is not allowed, the reason is displayed immediately below the input field and the Save button is disabled. SQL comments are also not allowed.
 
 Logical operators `AND` and `OR` are supported. Use the **Add Group** button to nest conditions up to three levels deep.
 
@@ -800,14 +802,15 @@ Use SQL to query and analyze data from a data source.
 4. Select a **Row Limit** (10, 100, 1,000, 10,000, or 100,000; default: 1,000).
 5. Click **Run Query**.
 
-- The execution results are displayed in a data grid format. The column structure is dynamically generated based on the query results, and pagination is supported.
+- The execution results are displayed in a data grid format. The column structure is generated dynamically based on the query results, and pagination is supported.
 - When you select a data source, a schema panel appears to the right of the query input field, where you can check field names and data types. You can search by field name.
-- Press **Ctrl+Enter** (or **⌘+Enter** on macOS) in the query input field to run the query.
-- If the query fails to execute, the cause of the failure is displayed in the results area.
-- If the query results are too large, execution is rejected. Narrow the conditions or reduce the row limit, then run the query again.
-- Click the **Reset** button to clear the query that you have entered.
-- Click the **Download Query Results** button to save the results as a CSV file (file name: `query name_date_time.csv`).
-- In the FROM clause, use the table name exactly as it appears in the data source list (`SELECT * FROM {table name}`).
+- Press **Ctrl+Enter** (or **⌘+Enter** on macOS) in the query input field to execute the query.
+- If query execution fails, the cause of the failure is displayed in the results area. If there is a SQL syntax error, the location and details reported by the query engine are shown as-is.
+- If the query results are too large, exceed the memory required for processing, or the execution time is exceeded, the execution is rejected. Narrow the conditions, reduce joins and sorting, or lower the row limit, then try again.
+- For other errors, an error ID is displayed instead of the details. Providing this value when contacting support helps resolve the issue faster.
+- Click the **Reset** button to clear the query that you have written.
+- Click the **Download Query Results** button to save the results as a CSV file (filename: `query-name_date_time.csv`).
+- Use the table name shown in the data source list as-is in the FROM clause (`SELECT * FROM {table name}`).
 - Only a single SELECT statement can be executed. All other statements are rejected.
 
 <a id="query-save"></a>
@@ -1530,14 +1533,15 @@ The header displays the app name, status, app type, app ID, creation date, modif
 | Result Data Source | The name of the data source where results are stored |
 | Data Source ID, Data Source Table Name | Used for inquiries or log reference |
 
-- You can view the description by hovering over the question mark icon next to the item label.
-- Apps that do not have a destination address configured display the message: 'Save to the result data source only without sending externally.'
-- Values entered in the static header and dynamic header are not displayed on the screen.
-- Inference results are always saved to the result data source independently of Prometheus transmission, and can be viewed in the Analysis menu.
-- Below the card, the group status is displayed as five numbers: **Total**, **Active**, **Pending Activation**, **Inactive**, and **Error**. Clicking a number navigates to the Group List tab and filters by the corresponding status.
-- **Error** is the number of groups where inference has failed and results are not being output. Because it is on a different axis from the preceding three values, it is not added to the total, and error groups that are turned on are also counted in the active count.
-- You can view the meaning of the three statuses by hovering over the question mark icon next to the Group Status heading. Pending Activation typically takes about 6 hours in Precise mode, while in Instant mode, groups are activated immediately after being turned on.
-- If retraining fails, the training status is displayed as Training Failed. Results continue to be output using the previously trained model, and retraining is attempted again in the next retraining cycle. If the initial training fails, the app enters a failed state and can be deleted.
+- You can check the description by hovering the mouse over the question mark icon next to the item label.
+- Apps without a configured transmission address display 'Saves to the Result Data Source only without sending externally.'
+- Values entered in fixed headers and dynamic headers are not displayed on the screen.
+- Inference results are always saved to the Result Data Source regardless of Prometheus transmission, and you can view them in the Analysis menu.
+- Below the card, the group status is displayed as five numbers: **Total**, **Active**, **Activation Pending**, **Inactive**, and **Error**. Clicking a number navigates to the Group List tab and filters by that status.
+- **Error** is the number of groups where inference has failed and results are not being produced. It is on a different axis from the first three values, so it is not added to the total, and error groups that are turned on are also counted in the Active count.
+- You can check the meaning of the three statuses by hovering the mouse over the question mark icon next to the group status title. Activation Pending typically takes around 6 hours in precise mode, while instant mode activates immediately after the group is turned on.
+- If retraining fails, the training status is displayed as Training Failed. This can occur when there is insufficient or no data to train on. When enough data accumulates, the system retries on the next retraining cycle. In the meantime, results continue to be produced using the previously trained model. If the initial training fails, the app enters a failed state and can be deleted.
+- You can check the meaning of each value from the question mark next to the training status label. Retraining Stopped means automatic retraining is turned off, and Deleted means the training configuration has been cleared.
 
 <a id="app-detail-univariate-groups"></a>
 #### Group List { #app-detail-univariate-groups }
@@ -1550,7 +1554,7 @@ Anomaly detection is performed per time series, and a group is a unit that bundl
 | Value | The value of that label. Displayed as 'Single Group' for apps that have no group key field |
 | Group Hash | A 16-character hash that identifies the group. Automatically calculated from the group key value |
 | Status | The current status of the group |
-| Inference status | Whether the inference for this group is running normally. A different axis from the Status column |
+| Inference Status | Whether inference for this group is running normally. This is a separate axis from the Status column. Hover over the value to check the verdict time. |
 | Detection start time | The time at which enough data was collected for evaluation and results began to be produced. Groups waiting to be activated show a hyphen |
 | Disabled Time | The last time the group was disabled. This value is retained even after re-enabling, so the previous history remains. Displays a hyphen if the group has never been disabled. |
 | Created On | The date and time when the group was registered |
@@ -1572,18 +1576,22 @@ Inference Status:
 | Error | Inference failed or the preparation time has been exceeded. No results are produced during this time |
 | No verdict | Detection has not started yet, or the group is turned off |
 
-- The inference status is a separate axis from the status column. A group that is turned off may still have error records, and a group that is in an error state will display as active if it is turned on.
-- If metrics are interrupted for more than 10 minutes, the status is automatically restored to normal rather than error.
+- The inference status is on a different axis from the Status column. A disabled group may still retain error records, and a group with errors is displayed as Active if it is enabled.
+- If a metric is interrupted for more than 10 minutes, the status automatically recovers to Normal instead of Error.
+- If you hover over an inference status value, the verdict time is displayed. If no verdict record exists, the time is displayed as unknown.
 
-- If you assign a group label to a data source, one group is created for each value. If you do not assign one, the entire data source becomes a single group.
-- Groups are registered when metrics arrive, not when the app is created. The list is empty immediately after the app is created.
-- Pending activation in precise mode typically takes around 6 hours. In instant mode, activation occurs immediately after the group is turned on.
-- Errors are assessed at the group level. If inference stops for even a single time series in the group, the entire group enters an error state, and it returns to normal only when that time series recovers.
-- You can narrow the list by filtering by status and inference status separately, or by searching by group key or group hash. The two filters operate on different axes, so you can apply both at the same time.
-- You can sort the Group Key, Detection Start Time, Deactivation Time, Created On, and Modified On columns by clicking their headers. Sorting applies across all groups, and changing the sort order moves you to page 1. The Value, Group Hash, Status, and Inference Status columns cannot be sorted. Sort by value using the Group Key column, and narrow by inference status using the filter.
+- If you assign a Group Label to a data source, one group is created for each value. If no Group Label is assigned, the entire data source becomes a single group.
+- If no Group Label is assigned to the data source, one group is registered when app creation is complete. The list is empty while the app is being created, and it appears when creation is complete.
+- If a Group Label is assigned, groups are not registered automatically. You must register the target group through "Start, Stop, and Delete Group Usage" in the [API Guide](./api-guide/#univariate.group.api) for it to appear in the list.
+- Activation Pending typically takes around 6 hours in precise mode. In immediate mode, the group is activated immediately after it is turned on.
+- Errors are determined at the group level. If inference stops for even a single time series within a group, the entire group enters an error state, and the group returns to normal only when that time series recovers.
+- You can narrow the list by filtering by Status and Inference Status separately, or by searching by Group Key or Group Hash. The two filters operate on different axes and can be applied simultaneously.
+- The Inference Status filter provides three values: Normal, Error, and No verdict. These three values are mutually exclusive and together cover all cases.
+- You can refresh the list by clicking the **Refresh** button in the toolbar.
+- The Group Key, Detection start time, Deactivation time, Created on, and Modified on columns can be sorted by clicking the column header. Sorting applies to all groups, and changing the sort order navigates to page 1. The Value, Group Hash, Status, and Inference Status columns cannot be sorted. Values are sorted via the Group Key column, and inference status is narrowed using filters.
 - You can adjust the number of items displayed per page (20, 50, or 100; default is 20).
-- If no groups are registered, the message "No groups are registered. Groups will appear here once data arrives and they are registered." is displayed. If no groups match the search or filter conditions, "No groups match the specified conditions." is displayed.
-- To start, stop, or delete specific groups individually, refer to "Start, Stop, and Delete Groups" in the [API Guide](./api-guide/#univariate-group-api). This operation is not available in the console.
+- If no groups have been registered, "No groups have been registered. Groups will appear here once data is received and groups are registered." is displayed. If no groups match the search or filter conditions, "No groups match the specified conditions." is displayed.
+- To start, stop, or delete usage for specific groups, refer to "Start, Stop, and Delete Group Usage" in the [API Guide](./api-guide/#univariate-group-api). This operation is not available in the console.
 
 <a id="app-detail-univariate-groups-hash"></a>
 ##### Hash Calculator { #app-detail-univariate-groups-hash }

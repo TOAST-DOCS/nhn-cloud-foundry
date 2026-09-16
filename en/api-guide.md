@@ -457,8 +457,10 @@ Response example:
 | body.enabled | Whether event collection is available |
 | body.status | Activation status. DISABLED, ENABLING, ENABLED, ENABLE_FAILED |
 
-- Activation is processed asynchronously. Immediately after the request, the response shows `enabled` as false and `status` as ENABLING. Events are collected after the status becomes ENABLED.
-- If you request activation again while activation is in progress, the request is rejected. You can check the progress on the Event Settings tab in the console.
+- Activation is performed asynchronously. Immediately after the request, the response has `enabled` set to false and `status` set to ENABLING. Events are collected only after the status becomes ENABLED.
+- If you request activation again on a data source that is already active, the current status is returned as-is. The same applies when you request deactivation on a data source that is already inactive. Calling the API multiple times does not change the result.
+- However, if you request activation again while activation is in progress (`ENABLING`), the request is rejected. You can check the progress on the **Event Settings** tab in the console.
+- If you call the API with a data source that does not exist, an error is returned indicating that the data source cannot be found.
 
 <a id="event-ingest-api-send"></a>
 #### Send a Single Event { #event-ingest-api-send }
@@ -659,7 +661,7 @@ The request rules are as follows:
 - Stopping or deleting a group that is not registered returns an error.
 
 !!! tip "Note"
-    When metrics arrive, groups are automatically registered and start operating. This API is used to selectively enable, disable, or delete specific groups; this operation is not available in the console. You can check registered groups and their status on the **Group List** tab in the app details in the console.
+    If you did not assign a group label to a data source, the entire data source is registered as a single group when app creation is complete, so this API is not required. If you assigned a group label, groups are not registered automatically — you must register the target group using the Start API to receive detection results. This operation is not available in the console. You can check registered groups and their statuses on the **Group List** tab in the app details page of the console.
 
 !!! danger "Warning"
     Disabling a group does not stop the transmission of detection results. Only the status displayed in the group list changes to disabled.

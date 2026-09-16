@@ -258,11 +258,11 @@ Click the app you created in the app list to go to the details screen.
 
 ![Univariate time series anomaly detection app information](../static/images/quick-start/이상탐지앱정보.png){ height="70%" }
 
-2. Check the group status in the **Group List** tab.
-    - Groups are registered after metrics arrive, so the list is empty immediately after you create an app.
-    - Pending activation means the system is collecting data to use for analysis; once activated, detection results are sent.
-    - In the Detection Start Time column, you can check when a group started sending results.
-    - In the Inference Status column, check whether inference is running normally.
+2. On the **Group List** tab, check the group status.
+    - If you did not specify a group label, one group is registered when app creation is complete. The list is empty while it is being created.
+    - Activation Pending means data for evaluation is being collected; once active, detection results are sent.
+    - In the Detection start time column, you can check when each group started sending results.
+    - In the inference status column, check whether inference is running normally.
 
     ![Group list](../static/images/quick-start/이상탐지그룹목록.png){ height="70%" }
 
