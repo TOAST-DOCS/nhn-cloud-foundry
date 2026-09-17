@@ -29,7 +29,7 @@
 <a id="preparation-service-enable"></a>
 ### サービス利用申請 { #preparation-service-enable }
 
-NHN Cloud Foundry はコンソールから直接有効化することはできません。サービスを利用するには、[1:1 お問い合わせ](https://www.nhncloud.com/kr/support/inquiry)から申請する必要があります。
+NHN Cloud Foundry は[1:1 お問い合わせ](https://www.nhncloud.com/kr/support/inquiry)からお申し込みいただくことでご利用いただけます。
 
 1. NHN Cloud コンソールで、サービスを利用する組織とプロジェクトを選択します。
 2. **[Machine Learning > NHN Cloud Foundry > 現況]** タブで **[1:1 お問い合わせ]** ボタンをクリックし、希望するリソースサイズを含めて利用を申請します。
@@ -48,7 +48,7 @@ NHN Cloud Foundry はコンソールから直接有効化することはでき�
 | アイテムテーブル | アイテム ID | アイテム情報（追加の特性カラムは任意） |
 | 履歴テーブル | ユーザー ID、アイテム ID、タイムスタンプ | ユーザーとアイテムの相互作用履歴（評価、カテゴリカラムは任意） |
 
-単変量時系列異常検出アプリは、CSV の代わりに収集 API で送信するメトリクス（時系列）データが必要です。「単変量時系列異常検出アプリの作成」を参照してください。
+単変量時系列異常検出アプリには、収集 API で転送する指標（時系列）データが必要です。
 
 <a id="datasource-create"></a>
 ## 1. データソースの作成 { #datasource-create }
@@ -72,8 +72,6 @@ NHN Cloud Foundry はコンソールから直接有効化することはでき�
 8. 一覧でステータスが `COMPLETED` になるまで待ちます。
 
     ![データソース一覧](../static/images/quick-start/데이터소스목록.png){ height="70%" }
-
-メトリクス（時系列）データを受信する Prometheus API タイプは、作成方法が異なります。「単変量時系列異常検出アプリの作成」の「メトリクスデータソースの作成」を参照してください。
 
 <a id="app-create"></a>
 ## 2. アプリの作成 { #app-create }
@@ -175,7 +173,7 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
 <a id="univariate"></a>
 ## 単変量時系列異常検出アプリの作成 { #univariate }
 
-メトリクスで正常範囲を外れた値を自動的に検出するには、単変量時系列異常検出アプリを使用します。推薦システムとは別のフローです。
+指標の正常範囲を外れた値を自動的に検出するには、単変量時系列異常検出アプリを使用します。
 
 <a id="univariate-datasource"></a>
 ### 1. 指標データソースの作成 { #univariate-datasource }
