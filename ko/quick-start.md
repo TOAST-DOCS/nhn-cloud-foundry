@@ -27,7 +27,7 @@
 <a id="preparation-service-enable"></a>
 ### 서비스 이용 신청 { #preparation-service-enable }
 
-NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비스를 이용하려면 [1:1 문의](https://www.nhncloud.com/kr/support/inquiry)로 신청해야 합니다.
+NHN Cloud Foundry는 [1:1 문의](https://www.nhncloud.com/kr/support/inquiry)로 신청해야 이용할 수 있습니다.
 
 1. NHN Cloud 콘솔에서 서비스를 이용할 조직과 프로젝트를 선택합니다.
 2. **Machine Learning > NHN Cloud Foundry > 현황** 탭에서 **1:1 문의** 버튼을 클릭하고, 원하는 리소스 크기를 포함하여 이용을 신청합니다.
@@ -46,7 +46,7 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 | 아이템 테이블 | 아이템 ID | 아이템 정보(추가 특성 칼럼 선택 가능) |
 | 히스토리 테이블 | 사용자 ID, 아이템 ID, 타임스탬프 | 사용자-아이템 상호작용 이력(평점, 카테고리 칼럼 선택 가능) |
 
-단변량 시계열 이상탐지 앱은 CSV 대신 수집 API로 보낼 지표(시계열) 데이터가 필요합니다. '단변량 시계열 이상탐지 앱 만들기'를 참고합니다.
+단변량 시계열 이상탐지 앱에는 수집 API로 전송할 지표(시계열) 데이터가 필요합니다.
 
 <a id="datasource-create"></a>
 ## 1. 데이터 소스 생성하기 { #datasource-create }
@@ -70,8 +70,6 @@ NHN Cloud Foundry는 콘솔에서 직접 활성화할 수 없습니다. 서비�
 8. 목록에서 상태가 `COMPLETED`가 될 때까지 기다립니다.
 
     ![데이터 소스 목록](../static/images/quick-start/데이터소스목록.png){ height="70%" }
-
-지표(시계열) 데이터를 받는 Prometheus API 유형은 만드는 방법이 다릅니다. '단변량 시계열 이상탐지 앱 만들기'의 '지표 데이터 소스 생성하기'를 참고합니다.
 
 <a id="app-create"></a>
 ## 2. 앱 생성하기 { #app-create }
@@ -173,7 +171,7 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
 <a id="univariate"></a>
 ## 단변량 시계열 이상탐지 앱 만들기 { #univariate }
 
-지표에서 정상 범위를 벗어난 값을 자동으로 찾으려면 단변량 시계열 이상탐지 앱을 사용합니다. 추천 시스템과는 별개의 흐름입니다.
+지표에서 정상 범위를 벗어난 값을 자동으로 찾으려면 단변량 시계열 이상탐지 앱을 사용합니다.
 
 <a id="univariate-datasource"></a>
 ### 1. 지표 데이터 소스 생성하기 { #univariate-datasource }
