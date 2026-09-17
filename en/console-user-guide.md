@@ -286,7 +286,7 @@ The Event API is a feature that collects real-time event data via HTTP API. Use 
 
 !!! danger "Caution"
     Enabling the Event API blocks CSV file uploads and Ingest API snapshot uploads. To upload a snapshot, you must first disable the Event API.
-    Changing the data source schema is also restricted while the Event API is enabled. To add fields to the catalog, you must first disable the Event API.
+    While the Event API is enabled, changes to the data source schema are also restricted. To add a field to the catalog, you must first disable the Event API.
     If you re-enable the Event API after uploading a snapshot, the event collection offset is reset to the latest offset.
 
 For information about how to send events, see "Event Ingestion" in the [API Guide](./api-guide/#event-ingest-api).
@@ -1270,11 +1270,12 @@ Select one of the following transmission modes:
 | Precise Mode | Default. Transmits only reliable values after metric preparation is complete. |
 | Immediate Mode | Transmits immediately after activation. Values before preparation is complete are for reference only. |
 
-- The app groups metrics in 1-minute intervals and evaluates each time series individually. The data source connected to the app must continuously send one data point per minute for each time series without interruption. Sending at longer intervals creates gaps that may prevent preparation from completing in precise mode, and if multiple values are sent within a single minute, only the first value received is used for evaluation. Loading metrics into the data source itself is independent of the transmission interval.
-- For newly received metrics, it typically takes about 6 hours for enough data to accumulate for evaluation and for the threshold to be calibrated to the metric's distribution, and it may take longer depending on the pattern of incoming metrics.
-- If transmission is interrupted for more than a few minutes, the accumulated intervals are invalidated and the system returns to a preparation state. In precise mode, no results are output until the data is refilled.
-- When score scaling is enabled, scores are converted to a range from 0 to 100 before being output, and thresholds are also calculated using the same scale. Use this when aligning the scale with dashboards that use a percentage axis. When disabled, raw values are output as-is.
-- The same device applies to both inference and training. Training and inference work with the default CPU setting, and GPU may not be available depending on the resource availability in the service environment.
+- The app groups metrics in 1-minute intervals and evaluates each time series. The data source connected to the app must send one data point per time series every minute without interruption. If values are sent at longer intervals, gaps will appear and preparation may not complete in accurate mode. If multiple values are sent within one minute, only the first value received is used for evaluation. Loading metrics into the data source itself is independent of the transmission interval.
+- For newly incoming metrics, it typically takes about 6 hours for enough data to accumulate for evaluation and for the threshold to be calibrated to the distribution of that metric. It may take longer depending on the pattern of incoming metrics.
+- If the data source has only one time series, training fails. You must have two or more time series and send metrics continuously for at least about 4 hours per time series for training to work correctly.
+- If transmission is interrupted for more than a few minutes, the accumulated interval is broken and the app returns to a preparation state. In accurate mode, no results are output until the interval is filled again.
+- When Score Scale is enabled, scores are converted to a range of 0 to 100 before being output, and the threshold is also calculated on the same scale. Use this to align the scale with dashboards that use a percentage axis. When disabled, the original values are output as-is.
+- The same device is used for both inference and training. Training and inference work with the default CPU setting, and GPU may not be available depending on the resource status of the service environment.
 
 !!! danger "Caution"
     The score scale cannot be changed after the app is created.
@@ -1576,13 +1577,15 @@ Inference Status:
 | Error | Inference failed or the preparation time has been exceeded. No results are produced during this time |
 | No verdict | Detection has not started yet, or the group is turned off |
 
-- The inference status is determined independently of the Status column. A group that is turned off may still have error records, and a group with errors is displayed as Active if it is turned on.
-- If a metric is interrupted for more than 10 minutes, it is automatically recovered to Normal instead of Error.
-- Hovering over an inference status value displays the time of the verdict. If there is no verdict record, the time is displayed as unknown.
+- A group contains multiple time series. If inference stops for even one of them, the entire group enters an error state, and the group returns to normal only when that time series recovers.
+- Errors are determined at two points in time. If no detection results are produced within 30 minutes after the first metric data enters a group, the preparation time is considered to have exceeded the limit. For a group where detection was already running, if no results are produced for more than 10 minutes despite metric data continuing to arrive, the inference is considered to have failed.
+- The inference status is determined independently of the status column. A disabled group may still have error records, and a group in an error state is displayed as active if it is turned on.
+- The absence of incoming metric data is not considered an error in itself. If metric data for a time series in an error state is interrupted for more than 10 minutes, that time series is excluded from evaluation and automatically recovers to normal status.
+- Hovering over an inference status value displays the time of the determination. If there is no determination record, the time is displayed as unknown.
 
 - If you assign a Group Label to a data source, one group is created for each value. If you do not assign one, the entire data source becomes a single group.
 - If you do not assign a Group Label to the data source, one group is registered when the app is created. The list is empty while the app is being created, and the group appears once creation is complete.
-- If you assign a Group Label, groups are not registered automatically. You must register the target groups using "Start, Stop, or Delete Group Usage" in the [API Guide](./api-guide/#univariate.group.api) for them to appear in the list.
+- If you assign a Group Label, groups are not registered automatically. You must register the target groups using "Start, Stop, or Delete Group Usage" in the [API Guide](./api-guide/#univariate-group-api) for them to appear in the list.
 - Activation Pending typically takes about 6 hours in Accurate mode. In Instant mode, the group is activated immediately after it is enabled.
 - Errors are assessed at the group level. If inference stops for even one time series within a group, the entire group enters an Error state, and it returns to Normal only when that time series recovers.
 - You can narrow the list by filtering by Status or Inference Status, or by searching by Group Key or Group Hash. The two filters are independent of each other and can be applied at the same time.

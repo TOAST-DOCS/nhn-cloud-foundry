@@ -29,9 +29,9 @@
 <a id="foundry-release-notes-2026-08-25-new-service"></a>
 #### New Service Launch { #foundry-release-notes-2026-08-25-new-service }
 
-- NHN Cloud Foundry is now available.
+- NHN Cloud Foundry has been released.
 - The following features are available:
-    - Data source: Create a data source by defining a schema, and load data via file upload or the Ingest API (snapshot upload) for use in recommendations and analysis.
-    - Analysis: Query loaded data and analyze it by visualizing it with charts and dashboards.
-    - Pipeline: Transform data from data sources into analyzable datasets using filtering, aggregation, joining, and more, with support for automatic execution on a batch schedule. The transformed datasets can be used for analysis or recommendation model training.
-    - App: Create a recommendation system app trained on user, item, and interaction data, and use the recommendation results in your service via the recommendation API.
+    - Data Source: Define a schema to create a data source, load data via file upload or the Ingest API (snapshot upload), and use it for recommendations and analysis.
+    - Analysis: Query the loaded data and visualize it with charts and dashboards for analysis.
+    - Pipeline: Transform data from a data source through filtering, aggregation, joining, and other operations to produce an analyzable dataset, with support for automatic execution on a batch schedule. The transformed dataset can be used for analysis or recommendation model training.
+    - App: Create a Recommendation System app by training a recommendation model on user, item, and interaction data, and use the recommendation results in your service via the recommendation API.

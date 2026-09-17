@@ -9,7 +9,7 @@ Describes the APIs provided by NHN Cloud Foundry.
 
 | API | Description |
 | --- | --- |
-| Ingest API | Collects data into an already created data source. Provides snapshot file upload, event collection, and indicator collection. |
+| Ingest API | Ingest data into an existing data source. Supports snapshot file upload, event collection, and indicator collection. |
 | Recommendation Query API | Requests recommendation results from a recommendation system app. |
 | Recommendation Event API | Collects user reaction events to recommendation results. |
 
@@ -82,12 +82,12 @@ Ingest API is an API for loading data into a data source that you have already c
     An API for creating new data sources is not provided. To use the Ingest API, you must first create a data source in the console.
 
 <a id="ingest-snapshot"></a>
-### Snapshot Upload (File Upload) { #ingest-snapshot }
+### Upload Snapshot (File Upload) { #ingest-snapshot }
 
 **Replaces all** data in the data source with the contents of the uploaded file. The upload process consists of three steps.
 
 !!! danger "Caution"
-    Snapshot upload replaces all data already loaded in the data source. Existing data cannot be recovered.
+    Uploading a snapshot replaces all data already loaded in the data source. Existing data cannot be recovered.
 
 Upload limits:
 
@@ -388,7 +388,7 @@ Response example:
 | --- | --- |
 | body.jobId | Job ID |
 | body.dataSourceId | Target data source ID |
-| body.jobType | Job type. SNAPSHOT (snapshot load) or EVENT (change event) |
+| body.jobType | Job type. SNAPSHOT (snapshot ingestion) or EVENT (change event) |
 | body.status | Job status. See the status values below. |
 | body.obsFilePath | OBS file path |
 | body.statistics.totalRecords | Total record count |
@@ -418,7 +418,7 @@ The job status (`status`) can have the following values:
 Sends change events while retaining existing data. This is used with data sources of the file type, and you must first enable the **Event API**. You can enable it from the event settings tab in the console or by using the activation API below.
 
 !!! danger "Caution"
-    Enabling the Event API blocks snapshot uploads. In addition, schema changes are restricted, so you must disable the Event API before making any schema changes. For instructions on how to enable and disable it, see "Event Settings" in the [Console User Guide](./console-user-guide/#datasource-detail-event).
+    Enabling the Event API blocks snapshot uploads. In addition, schema changes are restricted, so you must disable the Event API before making schema changes. For how to enable and disable it, see 'Event Settings' in the [Console User Guide](./console-user-guide/#datasource-detail-event).
 
 <a id="event-ingest-api-enable"></a>
 #### Enable/Disable Event API { #event-ingest-api-enable }
@@ -612,7 +612,8 @@ The collection rules are as follows:
 - Data that arrives late is saved, but may be excluded from real-time inference.
 
 !!! tip "Tips"
-    Loading is independent of the transmission interval. However, if this data source is connected to a univariate time-series anomaly detection app, you must send the same time series continuously, one per minute without interruption. Because the app groups metrics in 1-minute intervals for evaluation, sending at longer intervals will create gaps, which may prevent preparation from completing in precise mode.
+    Data ingestion is independent of the transmission interval. However, if this data source is connected to a Univariate Time-Series Anomaly Detection app, you must send data points for the same time series one per minute without interruption. Because the app groups metrics in 1-minute intervals for evaluation, sending data at longer intervals can create gaps, which may prevent the accurate mode from completing its preparation.
+    Training also has requirements. If the data source has only one time series, training fails, so you must have two or more time series, and each time series must accumulate data continuously for at least approximately 4 hours for training to complete successfully.
 
 <a id="univariate-api"></a>
 ## Univariate Time Series Anomaly Detection API { #univariate-api }
