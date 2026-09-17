@@ -7,7 +7,7 @@ NHN Cloud Foundry가 제공하는 API를 설명합니다.
 
 | API | 설명 |
 | --- | --- |
-| Ingest API | 이미 만든 데이터 소스에 데이터 수집. 스냅샷 파일 업로드, 이벤트 수집, 지표 수집 제공 |
+| Ingest API | 이미 만든 데이터 소스에 데이터 수집. 스냅숏 파일 업로드, 이벤트 수집, 지표 수집 제공 |
 | 추천 조회 API | 생성한 추천 시스템 앱에 추천 결과 요청 |
 | 추천 이벤트 API | 추천 결과에 사용자가 보인 반응 이벤트 수집 |
 
@@ -72,7 +72,7 @@ Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재
 
 | 방식 | 대상 데이터 소스 | 설명 |
 | --- | --- | --- |
-| 스냅샷 업로드 | 파일 | 업로드한 파일로 데이터를 전부 교체 |
+| 스냅숏 업로드 | 파일 | 업로드한 파일로 데이터를 전부 교체 |
 | 이벤트 수집 | 파일 | 기존 데이터를 유지한 채 변경 이벤트를 건별로 추가 |
 | 지표 수집 | Prometheus API | 지표(시계열) 데이터를 실시간으로 전송 |
 
@@ -80,12 +80,12 @@ Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재
     데이터 소스를 새로 만드는 API는 제공하지 않습니다. Ingest API를 사용하려면 콘솔에서 데이터 소스를 먼저 생성해야 합니다.
 
 <a id="ingest.snapshot"></a>
-### 스냅샷 업로드(파일 업로드) { #ingest.snapshot }
+### 스냅숏 업로드(파일 업로드) { #ingest.snapshot }
 
 업로드한 파일의 내용으로 데이터 소스의 데이터를 **전부 교체**합니다. 업로드는 3단계로 진행됩니다.
 
 !!! danger "주의"
-    스냅샷 업로드는 데이터 소스에 이미 적재된 데이터를 모두 교체합니다. 기존 데이터는 복구할 수 없습니다.
+    스냅숏 업로드는 데이터 소스에 이미 적재된 데이터를 모두 교체합니다. 기존 데이터는 복구할 수 없습니다.
 
 업로드 제한:
 
@@ -386,7 +386,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 | --- | --- |
 | body.jobId | 작업 ID |
 | body.dataSourceId | 대상 데이터 소스 ID |
-| body.jobType | 작업 타입. SNAPSHOT(스냅샷 적재) 또는 EVENT(변경 이벤트) |
+| body.jobType | 작업 타입. SNAPSHOT(스냅숏 적재) 또는 EVENT(변경 이벤트) |
 | body.status | 작업 상태. 아래 상태 값 참고 |
 | body.obsFilePath | OBS 파일 경로 |
 | body.statistics.totalRecords | 총 레코드 수 |
@@ -416,7 +416,7 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 기존 데이터를 유지한 채 변경 이벤트를 전송합니다. 타입이 파일인 데이터 소스에서 사용하며, **Event API**를 먼저 활성화해야 합니다. 활성화는 콘솔의 이벤트 설정 탭 또는 아래 활성화 API로 합니다.
 
 !!! danger "주의"
-    Event API를 활성화하면 스냅샷 업로드가 차단됩니다. 또한 스키마 변경이 제한되므로, 스키마를 변경하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](./console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
+    Event API를 활성화하면 스냅숏 업로드가 차단됩니다. 또한 스키마 변경이 제한되므로, 스키마를 변경하려면 Event API를 먼저 비활성화해야 합니다. 활성화·비활성화 방법은 [콘솔 유저 가이드](./console-user-guide/#datasource.detail.event)의 '이벤트 설정'을 참고합니다.
 
 <a id="event.ingest.api.enable"></a>
 #### Event API 활성화·비활성화 { #event.ingest.api.enable }
