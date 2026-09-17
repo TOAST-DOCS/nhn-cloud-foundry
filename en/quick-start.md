@@ -29,7 +29,7 @@ After completing the prerequisites (applying for the service and preparing data)
 <a id="preparation-service-enable"></a>
 ### Request service { #preparation-service-enable }
 
-NHN Cloud Foundry cannot be enabled directly from the console. To use the service, you must submit a request via [1:1 Inquiry](https://www.nhncloud.com/kr/support/inquiry).
+To use NHN Cloud Foundry, you must submit a request through [1:1 Inquiry](https://www.nhncloud.com/kr/support/inquiry).
 
 1. Select the organization and project where you want to use the service in the NHN Cloud console.
 2. On the **Machine Learning > NHN Cloud Foundry > Status** tab, click the **1:1 Inquiry** button, and submit a request including the resource size that you want.
@@ -48,7 +48,7 @@ To create a recommendation system app, you need the following three CSV data fil
 | Item table | Item ID | Item information (additional attribute columns are optional) |
 | History table | User ID, Item ID, Timestamp | User-item interaction history (rating and category columns are optional) |
 
-The univariate time series anomaly detection app requires metric (time series) data sent via the collection API instead of CSV. Refer to "Creating a Univariate Time Series Anomaly Detection App."
+The Univariate Time-Series Anomaly Detection app requires metric (time series) data to be sent via the collection API.
 
 <a id="datasource-create"></a>
 ## 1. Create a data source { #datasource-create }
@@ -72,8 +72,6 @@ For a detailed description of each setting, see 'Create a data source' in the [C
 8. Wait until the status changes to `COMPLETED` in the list.
 
     ![Data source list](../static/images/quick-start/데이터소스목록.png){ height="70%" }
-
-The Prometheus API type that receives metric (time-series) data is created differently. Refer to "Create a Metric Data Source" in "Create a Univariate Time-Series Anomaly Detection App."
 
 <a id="app-create"></a>
 ## 2. Create an app { #app-create }
@@ -175,7 +173,7 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
 <a id="univariate"></a>
 ## Create a Univariate Time Series Anomaly Detection App { #univariate }
 
-To automatically find values in metrics that fall outside the normal range, use the univariate time-series anomaly detection app. This is a separate flow from the recommendation system.
+To automatically detect values that fall outside the normal range in a metric, use the Univariate Time-Series Anomaly Detection app.
 
 <a id="univariate-datasource"></a>
 ### 1. Create a Metric Data Source { #univariate-datasource }

@@ -25,7 +25,7 @@ On the Status tab, you can check the service activation status and tenant settin
 <a id="status-activate"></a>
 ### Request Service Activation { #status-activate }
 
-Service activation cannot be performed directly from the console. Contact us through [1:1 Inquiry](https://www.nhncloud.com/kr/support/inquiry) with your preferred resource size. Once the requested cluster is created, you can use the service starting from creating a data source.
+Service activation can only be requested via [1:1 Inquiry](https://www.nhncloud.com/kr/support/inquiry). Include the desired resource size in your inquiry. Once the requested cluster is created, you can use it starting from data source creation in order.
 
 The features available for each resource size are as follows:
 
@@ -1093,7 +1093,7 @@ Click the **Create App** button to go to the app creation screen. App creation p
 | Detailed Settings | Model, data connection, and resource settings based on app type |
 | Final Review | Review input and create |
 
-The **Resource Check** results are displayed at the bottom of the app creation screen, regardless of the step you are on. The results are displayed regardless of the app type, and you can check whether the app can be created before you create it.
+The **Resource Check** results are displayed at the bottom of the app creation screen. The results are shown regardless of the step or app type, and you can check whether the app can be created before creating it.
 
 | Note | Description |
 | --- | --- |
@@ -1208,7 +1208,7 @@ This is an optional setting for connecting skill and category data used to const
 | User interest skill data source | Table of interest skills per user. When no interest skill is passed to the recommendation API, this table is queried to generate interest-based recommendation reasons. |
 | User attribute mapping | Specifies the key name for passing each item in the userAttributes of the recommendation API. |
 | Recommendation reason template data source | Table of recommendation reason phrase templates. If not selected, reasons are not included in recommendation results. |
-| Cold start data source | Only user IDs in this table are identified as cold starters. Both the data source and user ID column must be selected. |
+| Cold Start Data Source | Only user IDs in this table are identified as cold starters. Both the data source and the User ID column must be selected together. |
 
 <a id="app-create-detail-univariate"></a>
 #### Detailed Settings for Univariate Time-Series Anomaly Detection { #app-create-detail-univariate }
@@ -1222,11 +1222,11 @@ The univariate time-series anomaly detection app trains on each metric individua
 | --- | --- | --- |
 | Metric Data Source | O | The data source from which the metrics to detect are received. Only data sources of type Prometheus API can be selected. |
 
-- A data source of the Prometheus API type must be created first for it to appear in the list.
+- A data source of type Prometheus API must be created first for it to appear in the list.
 - The series identification label and group label specified for the selected data source serve as the criteria for dividing time series and groups.
-- You can create only one univariate time-series anomaly detection app per metric data source. Data sources already in use by another univariate time-series anomaly detection app are not displayed in the list.
-- If the selected data source has no data, "No data yet." appears below the item, and a **Check Data** box appears under the resource check at the bottom of the screen. If you did not specify a retraining interval, the training performed at creation is the only training, so you cannot proceed to the next step until data arrives. If you specified a retraining interval, a notice is displayed indicating that the first training will fail and will be retried at the next retraining cycle, and you can proceed.
-- If multiple different values have arrived for the same time series within one minute in the last 5 minutes, an information box is displayed. This does not prevent creation, but in this state, only the first value to arrive each minute is used for analysis, and the rest are discarded. Send each time series only once per minute; if you collect data at a shorter interval, aggregate the values into a 1-minute average before sending.
+- Only one univariate time-series anomaly detection app can be created per metric data source. Data sources that are already in use by another univariate time-series anomaly detection app do not appear in the list.
+- If the selected data source has no data, 'No data yet.' is displayed below the item, and the **Check Data** box is displayed under Resource Check at the bottom of the screen. If a retraining cycle is not specified, the initial training at creation time is the only training, so you cannot proceed to the next step until data arrives. If a retraining cycle is specified, a message is displayed indicating that the first training will fail and will be retried at the next retraining cycle, and you can proceed.
+- If multiple different values arrive for the same time series within a single minute during the last 5 minutes, an information box is displayed. You can still create the app in this case, but only the first value to arrive each minute is used for analysis and the rest are discarded. Send each time series only once per minute; if you collect data at a shorter interval, aggregate it into a 1-minute average before sending.
 
 <a id="app-create-detail-univariate-resource"></a>
 ##### Model Resources { #app-create-detail-univariate-resource }
@@ -1306,9 +1306,9 @@ Click **Expand Additional Transmission Settings** to configure the following ite
 - If delivery to the destination URL fails, it is not displayed in the console. If the results are not visible in the receiving Prometheus, verify them by comparing with the results stored in the result data source.
 
 !!! tip "Note"
-    Inference results are always stored in the result data source, independently of Prometheus transmission. The result data source is automatically created when the app is created and can be viewed from the Analysis menu.
+    Inference results are always saved to the result data source, independently of Prometheus transmission. The result data source is created automatically when you create an app, and you can view it in the **Analysis** menu.
 
-The schema for the result data source is as follows. Use these columns to query or create charts in the Analysis menu.
+The schema for the result data source is as follows. Use these columns to query in the **Analysis** menu's queries or charts.
 
 | Field Name | Type | Description |
 | --- | --- | --- |
@@ -1421,7 +1421,7 @@ You can view the app ID, app name, status, app type, description, creation date,
 <a id="app-detail-training"></a>
 #### Training Management { #app-detail-training }
 
-Change the training cycle of training models included in the app, stop or resume automatic retraining, or run training manually. You can also view the training artifact history on this tab.
+Change the training cycle of the learning model included in the app, stop or resume automatic retraining, or run training manually. Check the training artifact history on this tab.
 
 | Column | Description |
 | --- | --- |
@@ -1437,7 +1437,7 @@ Setting reflection status:
 
 | Value | Description |
 | --- | --- |
-| Before verification | Not yet verified for application. Immediately after creating an app, the status automatically starts as verified and applied. |
+| Before verification | The state where it has not yet been confirmed whether the changes have been applied. Immediately after an app is created, this is automatically verified and starts as "Applied." |
 | Applying | The updated setting is being applied |
 | Applied | The updated setting has been successfully applied |
 | Failed | Application failed. A retry is required |
@@ -1448,7 +1448,7 @@ Use the buttons at the top to perform the following actions. The actions apply t
 | --- | --- |
 | Run Training | Runs training immediately |
 | Stop Automatic Retraining | Stops automatic retraining |
-| Resume auto-retraining | Resume stopped auto-retraining. If no training cycle has been specified, you must configure a cycle first. |
+| Resume Automatic Retraining | Resume automatic retraining that was stopped. If no training cycle has been specified, you must set one first. |
 | Refresh | Retrieves the latest training status |
 
 When a button is inactive, hover over it to see the reason.
@@ -1534,14 +1534,14 @@ The header displays the app name, status, app type, app ID, creation date, modif
 | Data Source ID, Data Source Table Name | Used for inquiries or log reference |
 
 - You can check the description by hovering the mouse over the question mark icon next to the item label.
-- Apps without a configured transmission address display 'Saves to the Result Data Source only without sending externally.'
+- Apps that do not have a transmission address configured display 'Not sent externally; results are saved to the result data source only.'
 - Values entered in fixed headers and dynamic headers are not displayed on the screen.
-- Inference results are always saved to the Result Data Source regardless of Prometheus transmission, and you can view them in the Analysis menu.
-- Below the card, the group status is displayed as five numbers: **Total**, **Active**, **Activation Pending**, **Inactive**, and **Error**. Clicking a number navigates to the Group List tab and filters by that status.
-- **Error** is the number of groups where inference has failed and results are not being produced. It is on a different axis from the first three values, so it is not added to the total, and error groups that are turned on are also counted in the Active count.
-- You can check the meaning of the three statuses by hovering the mouse over the question mark icon next to the group status title. Activation Pending typically takes around 6 hours in precise mode, while instant mode activates immediately after the group is turned on.
-- If retraining fails, the training status is displayed as Training Failed. This can occur when there is insufficient or no data to train on. When enough data accumulates, the system retries on the next retraining cycle. In the meantime, results continue to be produced using the previously trained model. If the initial training fails, the app enters a failed state and can be deleted.
-- You can check the meaning of each value from the question mark next to the training status label. Retraining Stopped means automatic retraining is turned off, and Deleted means the training configuration has been cleared.
+- Results stored in the result data source can be viewed in the **Analysis** menu.
+- Below the card, the group status is displayed as five numbers: **Total**, **Active**, **Activation Pending**, **Inactive**, and **Error**. Clicking a number navigates to the Group List tab and filters by the corresponding status.
+- **Error** is the number of groups for which inference has failed and no results are being output. It is counted on a different basis from Active, Activation Pending, and Inactive, and is not added to their total. Error groups that are turned on are also counted under Active.
+- You can check the meaning of the three statuses by hovering the mouse over the question mark icon next to the group status title. Activation Pending typically takes around 6 hours in accurate mode, while instant mode activates immediately after the group is turned on.
+- If retraining fails, the training status is displayed as Training Failed. This can occur when there is insufficient or no data available for training. When enough data has accumulated, it will retry at the next retraining cycle. In the meantime, results continue to be generated using the most recently trained model. If the initial training fails, the app enters a failed state and can be deleted.
+- You can check the meaning of each value by hovering over the question mark next to the training status label. Retraining Stopped indicates that automatic retraining is turned off, and Deleted indicates that the training configuration has been cleared.
 
 <a id="app-detail-univariate-groups"></a>
 #### Group List { #app-detail-univariate-groups }
@@ -1554,7 +1554,7 @@ Anomaly detection is performed per time series, and a group is a unit that bundl
 | Value | The value of that label. Displayed as 'Single Group' for apps that have no group key field |
 | Group Hash | A 16-character hash that identifies the group. Automatically calculated from the group key value |
 | Status | The current status of the group |
-| Inference Status | Whether inference for this group is running normally. This is a separate axis from the Status column. Hover over the value to check the verdict time. |
+| Inference Status | Whether inference for this group is running normally. Displayed separately from the Status column. Hover over the value to display the verdict time. |
 | Detection start time | The time at which enough data was collected for evaluation and results began to be produced. Groups waiting to be activated show a hyphen |
 | Disabled Time | The last time the group was disabled. This value is retained even after re-enabling, so the previous history remains. Displays a hyphen if the group has never been disabled. |
 | Created On | The date and time when the group was registered |
@@ -1576,22 +1576,22 @@ Inference Status:
 | Error | Inference failed or the preparation time has been exceeded. No results are produced during this time |
 | No verdict | Detection has not started yet, or the group is turned off |
 
-- The inference status is on a different axis from the Status column. A disabled group may still retain error records, and a group with errors is displayed as Active if it is enabled.
-- If a metric is interrupted for more than 10 minutes, the status automatically recovers to Normal instead of Error.
-- If you hover over an inference status value, the verdict time is displayed. If no verdict record exists, the time is displayed as unknown.
+- The inference status is determined independently of the Status column. A group that is turned off may still have error records, and a group with errors is displayed as Active if it is turned on.
+- If a metric is interrupted for more than 10 minutes, it is automatically recovered to Normal instead of Error.
+- Hovering over an inference status value displays the time of the verdict. If there is no verdict record, the time is displayed as unknown.
 
-- If you assign a Group Label to a data source, one group is created for each value. If no Group Label is assigned, the entire data source becomes a single group.
-- If no Group Label is assigned to the data source, one group is registered when app creation is complete. The list is empty while the app is being created, and it appears when creation is complete.
-- If a Group Label is assigned, groups are not registered automatically. You must register the target group through "Start, Stop, and Delete Group Usage" in the [API Guide](./api-guide/#univariate.group.api) for it to appear in the list.
-- Activation Pending typically takes around 6 hours in precise mode. In immediate mode, the group is activated immediately after it is turned on.
-- Errors are determined at the group level. If inference stops for even a single time series within a group, the entire group enters an error state, and the group returns to normal only when that time series recovers.
-- You can narrow the list by filtering by Status and Inference Status separately, or by searching by Group Key or Group Hash. The two filters operate on different axes and can be applied simultaneously.
-- The Inference Status filter provides three values: Normal, Error, and No verdict. These three values are mutually exclusive and together cover all cases.
-- You can refresh the list by clicking the **Refresh** button in the toolbar.
-- The Group Key, Detection start time, Deactivation time, Created on, and Modified on columns can be sorted by clicking the column header. Sorting applies to all groups, and changing the sort order navigates to page 1. The Value, Group Hash, Status, and Inference Status columns cannot be sorted. Values are sorted via the Group Key column, and inference status is narrowed using filters.
+- If you assign a Group Label to a data source, one group is created for each value. If you do not assign one, the entire data source becomes a single group.
+- If you do not assign a Group Label to the data source, one group is registered when the app is created. The list is empty while the app is being created, and the group appears once creation is complete.
+- If you assign a Group Label, groups are not registered automatically. You must register the target groups using "Start, Stop, or Delete Group Usage" in the [API Guide](./api-guide/#univariate.group.api) for them to appear in the list.
+- Activation Pending typically takes about 6 hours in Accurate mode. In Instant mode, the group is activated immediately after it is enabled.
+- Errors are assessed at the group level. If inference stops for even one time series within a group, the entire group enters an Error state, and it returns to Normal only when that time series recovers.
+- You can narrow the list by filtering by Status or Inference Status, or by searching by Group Key or Group Hash. The two filters are independent of each other and can be applied at the same time.
+- The Inference Status filter provides three values: Normal, Error, and No Verdict. The three values are mutually exclusive and together cover all groups.
+- You can refresh the list by choosing the **Refresh** button in the toolbar.
+- You can sort the Group Key, Detection Start Time, Deactivation Time, Created On, and Modified On columns by clicking their headers. Sorting applies to all groups, and changing the sort order moves you to page 1. The Value, Group Hash, Status, and Inference Status columns cannot be sorted. Values are sorted in the Group Key column, and Inference Status can be narrowed using the filter.
 - You can adjust the number of items displayed per page (20, 50, or 100; default is 20).
-- If no groups have been registered, "No groups have been registered. Groups will appear here once data is received and groups are registered." is displayed. If no groups match the search or filter conditions, "No groups match the specified conditions." is displayed.
-- To start, stop, or delete usage for specific groups, refer to "Start, Stop, and Delete Group Usage" in the [API Guide](./api-guide/#univariate-group-api). This operation is not available in the console.
+- If no groups are registered, the message "No groups are registered. Groups will appear here once data arrives and groups are registered." is displayed. If no groups match the search or filter conditions, the message "No groups match the specified conditions." is displayed.
+- The ability to selectively start, stop, or delete specific groups is available through the API only. Refer to "Start, Stop, or Delete Group Usage" in the [API Guide](./api-guide/#univariate-group-api).
 
 <a id="app-detail-univariate-groups-hash"></a>
 ##### Hash Calculator { #app-detail-univariate-groups-hash }

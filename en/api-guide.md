@@ -661,7 +661,7 @@ The request rules are as follows:
 - Stopping or deleting a group that is not registered returns an error.
 
 !!! tip "Note"
-    If you did not assign a group label to a data source, the entire data source is registered as a single group when app creation is complete, so this API is not required. If you assigned a group label, groups are not registered automatically — you must register the target group using the Start API to receive detection results. This operation is not available in the console. You can check registered groups and their statuses on the **Group List** tab in the app details page of the console.
+    If you did not assign a group label to the data source, the entire data source is registered as a single group when app creation is complete, so this API is not required for the service to function. If you assigned a group label, groups are not registered automatically — you must register the target groups using the Start Service API to receive detection results. This operation is available via API only. You can check the registered groups and their status on the **Group List** tab in the app details view of the console.
 
 !!! danger "Warning"
     Disabling a group does not stop the transmission of detection results. Only the status displayed in the group list changes to disabled.
