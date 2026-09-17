@@ -1,22 +1,22 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=0eb4ce54bb90 -->
+<!-- pre-align:aligned sig=0742b98c1a91 -->
 
-<a id="foundry.overview"></a>
-## Machine Learning > NHN Cloud Foundry > Overview { #foundry.overview }
+<a id="foundry-overview"></a>
+## Machine Learning > NHN Cloud Foundry > Overview { #foundry-overview }
 
 NHN Cloud Foundry is a service that integrates customer data and uses machine learning models (such as recommendation, time-series forecasting/anomaly detection, and structured data classification/numerical prediction) to support effective decision-making.
 You can load data, process it through a visual workflow, and then analyze it using queries, charts, and dashboards, or create an app connected to a recommendation model to use recommendation results in your service.
 
-<a id="main.feature"></a>
-## Main features { #main.feature }
+<a id="main-feature"></a>
+## Main features { #main-feature }
 
 | Feature | Description |
 | --- | --- |
-| **Data Source** | A unit for storing data to be analyzed. You can create a data source by defining a schema and loading data into it; for data sources that have already been created, you can add or update data using the Ingest API. You can also create a data source that receives metric (time-series) data in real time. |
+| **Data Source** | A unit for storing data to be analyzed. Create a data source by defining a schema, load data into it, and add or update data in an existing data source using the Ingest API. |
 | **Pipeline** | Transforms data from a data source into a dataset for analysis or model training by processing it through a node-connected workflow. Supports automatic execution based on a batch schedule. |
 | **Analysis** | Query data using SQL **queries**, visualize it with **charts**, and monitor it comprehensively using **dashboards**. |
-| **App** | Create and manage apps by connecting AI models to data. Two types available: recommendation system and univariate anomaly detection |
+| **App** | Create and manage apps by connecting AI models to data. Provides a recommendation system and univariate time-series anomaly detection. |
 
 <a id="datasource"></a>
 ## Data source { #datasource }
@@ -28,7 +28,7 @@ Data sources are created in the console, and you can upload data at the same tim
 To add or update data in an existing data source, use the Ingest API.
 Two methods are provided: snapshot upload, which replaces all data, and event method, which adds new data while retaining existing data.
 
-When working with metric data, create a Prometheus API type data source and send data in real time via the collection API. The metrics loaded this way are used as input for the univariate anomaly detection app.
+When handling metric data, create a Prometheus API type data source and send the data in real time using the collection API. The loaded metrics can be viewed in the Analysis menu and can also be used as input for the univariate time-series anomaly detection app.
 
 !!! danger "Caution"
     Do not enter information that contains personal data when using this service.
@@ -60,17 +60,19 @@ Use it by checking data with queries, creating charts, and arranging them on a d
 <a id="app"></a>
 ## App { #app }
 
-AI models can be connected to data to create and manage apps. Two app types are provided: recommendation system and univariate anomaly detection.
+A feature for creating and managing apps by connecting AI models to data. Two app types are available: recommendation system and univariate time series anomaly detection.
 
-The **Recommendation System** lets you select a recommendation model to use and connect user, item, and history data sources — training and deployment then proceed automatically. Once the app is active, you can request the recommendation API.
-You can check recommendation results by calling the API directly from the console or by sending API requests. When you collect user interactions through the recommendation event API, you can analyze the recommendation success rate using the loaded event data.
-You can also change the training cycle, stop or resume automatic retraining, run training manually, and view training artifact history from the console.
+The **Recommendation System** automatically performs training and deployment once you select a recommendation model to use and connect user, item, and history data sources. When the app becomes active, you can call the recommendation API.
 
-**Univariate anomaly detection** learns each time series from collected metrics and detects values that fall outside the normal range.
-The anomaly scores and threshold values from the detection results are sent to the specified Prometheus, and are also stored in the result data source for use in analysis.
+You can check recommendation results by calling them directly from the console or by making requests via the API. If you collect user responses through the Recommendation Event API, you can analyze the recommendation success rate using the accumulated event data.
 
-<a id="public.api"></a>
-## API { #public.api }
+The console supports changing the training cycle, stopping and resuming automatic retraining, running training manually, and viewing the training artifact history.
+
+**Univariate time-series anomaly detection** learns from the collected metrics for each time series and detects values that fall outside the normal range.
+The anomaly scores and threshold values from the detection results are sent to the specified Prometheus and are also stored in the result data source, where they can be used for analysis.
+
+<a id="public-api"></a>
+## API { #public-api }
 
 NHN Cloud Foundry provides APIs in addition to the console.
 You can use the Ingest API to load snapshots, events, and metrics into a data source that you have already created, as well as APIs to request recommendation results from a created app and to send user reaction events.

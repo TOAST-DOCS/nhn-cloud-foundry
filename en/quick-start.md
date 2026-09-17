@@ -1,9 +1,9 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=c85588b241bb -->
+<!-- pre-align:aligned sig=2e5f8a3ad55b -->
 
-<a id="foundry.getting.started"></a>
-## Machine Learning > NHN Cloud Foundry > Getting Started { #foundry.getting.started }
+<a id="foundry-getting-started"></a>
+## Machine Learning > NHN Cloud Foundry > Getting Started { #foundry-getting-started }
 
 This document describes the process of creating an app in NHN Cloud Foundry and using the results.
 After completing the prerequisites (applying for the service and preparing data), follow the steps below based on the type of app you want to create.
@@ -16,7 +16,7 @@ After completing the prerequisites (applying for the service and preparing data)
 4. Retrieve recommendation results
 5. Collect recommendation events
 
-**Univariate Anomaly Detection App**
+**Univariate Time Series Anomaly Detection App**
 
 1. Create a metric data source
 2. Transfer metrics
@@ -26,10 +26,10 @@ After completing the prerequisites (applying for the service and preparing data)
 <a id="preparation"></a>
 ## Prerequisites { #preparation }
 
-<a id="preparation.service.enable"></a>
-### Request service { #preparation.service.enable }
+<a id="preparation-service-enable"></a>
+### Request service { #preparation-service-enable }
 
-NHN Cloud Foundry cannot be enabled directly from the console. To use the service, you must submit a request via [1:1 Inquiry](https://www.nhncloud.com/kr/support/inquiry).
+To use NHN Cloud Foundry, you must submit a request through [1:1 Inquiry](https://www.nhncloud.com/kr/support/inquiry).
 
 1. Select the organization and project where you want to use the service in the NHN Cloud console.
 2. On the **Machine Learning > NHN Cloud Foundry > Status** tab, click the **1:1 Inquiry** button, and submit a request including the resource size that you want.
@@ -37,8 +37,8 @@ NHN Cloud Foundry cannot be enabled directly from the console. To use the servic
 
 ![Request service](../static/images/quick-start/서비스이용신청.png){ height="70%" }
 
-<a id="preparation.data"></a>
-### Prepare data { #preparation.data }
+<a id="preparation-data"></a>
+### Prepare data { #preparation-data }
 
 To create a recommendation system app, you need the following three CSV data files:
 
@@ -48,13 +48,13 @@ To create a recommendation system app, you need the following three CSV data fil
 | Item table | Item ID | Item information (additional attribute columns are optional) |
 | History table | User ID, Item ID, Timestamp | User-item interaction history (rating and category columns are optional) |
 
-Univariate anomaly detection apps require metric (time series) data sent via the collection API instead of CSV. Refer to 'Creating a Univariate Anomaly Detection App'.
+The Univariate Time-Series Anomaly Detection app requires metric (time series) data to be sent via the collection API.
 
-<a id="datasource.create"></a>
-## 1. Create a data source { #datasource.create }
+<a id="datasource-create"></a>
+## 1. Create a data source { #datasource-create }
 
 Go to the **Machine Learning > NHN Cloud Foundry > Data Source** tab.
-For a detailed description of each setting, see 'Create a data source' in the [Console User Guide](./console-user-guide/#datasource.create).
+For a detailed description of each setting, see 'Create a data source' in the [Console User Guide](./console-user-guide/#datasource-create).
 
 1. Click the **Create data source** button.
 
@@ -73,23 +73,21 @@ For a detailed description of each setting, see 'Create a data source' in the [C
 
     ![Data source list](../static/images/quick-start/데이터소스목록.png){ height="70%" }
 
-Prometheus API type for receiving metric (time series) data is created differently. Refer to "Create a Metric Data Source" in "Create a Univariate Anomaly Detection App."
-
-<a id="app.create"></a>
-## 2. Create an app { #app.create }
+<a id="app-create"></a>
+## 2. Create an app { #app-create }
 
 Go to the **Machine Learning > NHN Cloud Foundry > Apps** tab and click the **Create app** button.
-For a detailed description of each setting, see 'Create an app' in the [Console User Guide](./console-user-guide/#app.create).
+For a detailed description of each setting, see 'Create an app' in the [Console User Guide](./console-user-guide/#app-create).
 
-<a id="app.create.basic"></a>
-### Basic settings { #app.create.basic }
+<a id="app-create-basic"></a>
+### Basic settings { #app-create-basic }
 
 Enter the app name and description, select **Recommendation system** as the app type, and click **Next**.
 
 ![Create app - basic settings](../static/images/quick-start/앱생성화면1.png){ height="70%" }
 
-<a id="app.create.detail"></a>
-### Detailed settings { #app.create.detail }
+<a id="app-create-detail"></a>
+### Detailed settings { #app-create-detail }
 
 1. Click the **Add model** button to add the model to use. For a new service, we recommend the **Cold User** model; if you have sufficient user behavior history, use **Warm User (Transformer)**.
 
@@ -104,32 +102,32 @@ Enter the app name and description, select **Recommendation system** as the app 
 
     ![Create app - additional settings](../static/images/quick-start/앱생성화면4.png){ height="70%" }
 
-<a id="app.create.review"></a>
-### Final review { #app.create.review }
+<a id="app-create-review"></a>
+### Final review { #app-create-review }
 
 1. Review the basic settings, model settings, and additional settings that you entered.
 2. Click the **Save** button to create the app.
 
 ![Create app - final review](../static/images/quick-start/앱생성화면5.png){ height="70%" }
 
-<a id="app.status"></a>
-## 3. Check the app status { #app.status }
+<a id="app-status"></a>
+## 3. Check the app status { #app-status }
 
 After the app is created, training and deployment proceed automatically. The status changes through Initializing, Training, Deploying, and Activating before reaching Active.
 Wait until the status in the app list changes to Active.
 
 ![App list](../static/images/quick-start/앱목록.png){ height="70%" }
 
-For a detailed description of each status value, see 'App status' in the [Console User Guide](./console-user-guide/#app.list.status).
+For a detailed description of each status value, see 'App status' in the [Console User Guide](./console-user-guide/#app-list-status).
 
 !!! tip "Note"
     Training and deployment immediately after app creation is the process of preparing the app. The first training of the recommendation model runs at the time specified in the batch schedule settings. Until then, even if the recommendation API returns a response, it does not reflect the recommendations of a trained model.
 
-<a id="recommendation.query"></a>
-## 4. Retrieve recommendation results { #recommendation.query }
+<a id="recommendation-query"></a>
+## 4. Retrieve recommendation results { #recommendation-query }
 
 When the app becomes active, you can check recommendation results on the recommendation API call screen in the console, or retrieve recommendation results by calling the recommendation query API.
-For a detailed description of each item, see 'Call recommendation API' in the [Console User Guide](./console-user-guide/#app.detail.recommend).
+For a detailed description of each item, see 'Call recommendation API' in the [Console User Guide](./console-user-guide/#app-detail-recommend).
 
 1. In the app list, click the app that you created to go to the **Call recommendation API** tab on the details screen.
 2. Enter the user ID and specify the recommendation mode and maximum number of recommendations.
@@ -138,7 +136,7 @@ For a detailed description of each item, see 'Call recommendation API' in the [C
     ![Call recommendation API](../static/images/quick-start/추천API호출.png){ height="70%" }
 
 **Request preview** displays the actual API request JSON composed of the input values. You can copy it using the **Copy** button and use it for API integration development.
-For instructions on directly calling the recommendation query API, see 'Recommendation query API' in the [API Guide](./api-guide/#recommendation.api).
+For instructions on directly calling the recommendation query API, see 'Recommendation query API' in the [API Guide](./api-guide/#recommendation-api).
 
 The response includes the request identifier (`metadata.requestId`) and the list of recommended items (`recommendations[].itemKey`). These values are used when sending recommendation events in the next step.
 
@@ -146,11 +144,11 @@ On the **App info** tab, you can check the app ID, status, and version used for 
 
 ![App info](../static/images/quick-start/앱정보.png){ height="70%" }
 
-<a id="recommendation.event"></a>
-## 5. Collect recommendation events { #recommendation.event }
+<a id="recommendation-event"></a>
+## 5. Collect recommendation events { #recommendation-event }
 
 When a user interacts with recommendation results, such as clicking on them, send the event data using the recommendation event API. You can analyze the recommendation success rate using the accumulated event data.
-For a detailed description of each request field, see 'Recommendation event API' in the [API Guide](./api-guide/#recommendation.event.api).
+For a detailed description of each request field, see 'Recommendation event API' in the [API Guide](./api-guide/#recommendation-event-api).
 
 ```bash
 curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
@@ -173,12 +171,12 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
     After an event API request, it may take up to 10 minutes for the data to be loaded into the dataset.
 
 <a id="univariate"></a>
-## Create a Univariate Anomaly Detection App { #univariate }
+## Create a Univariate Time Series Anomaly Detection App { #univariate }
 
-To automatically find values in metrics that fall outside the normal range, use a univariate anomaly detection app. This is a separate flow from the recommendation system.
+To automatically detect values that fall outside the normal range in a metric, use the Univariate Time-Series Anomaly Detection app.
 
-<a id="univariate.datasource"></a>
-### 1. Create a Metric Data Source { #univariate.datasource }
+<a id="univariate-datasource"></a>
+### 1. Create a Metric Data Source { #univariate-datasource }
 
 On the **Machine Learning > NHN Cloud Foundry > Data Source** tab, click the **Create Data Source** button.
 
@@ -193,10 +191,10 @@ On the **Machine Learning > NHN Cloud Foundry > Data Source** tab, click the **C
 
     ![Create metric data source](../static/images/quick-start/지표데이터소스생성.png){ height="70%" }
 
-For a detailed description of each field, refer to the 'Prometheus API Detail Settings' section in the [Console User Guide](./console-user-guide/#datasource.create.detail.prometheus).
+For a detailed description of each field, refer to the 'Prometheus API Detail Settings' section in the [Console User Guide](./console-user-guide/#datasource-create-detail-prometheus).
 
-<a id="univariate.ingest"></a>
-### 2. Send Metrics { #univariate.ingest }
+<a id="univariate-ingest"></a>
+### 2. Send Metrics { #univariate-ingest }
 
 From the **Metric Collection** tab in the Data Source Created window or the Details view, use the **Copy** button to copy the endpoint, request headers, and request body examples, then send the metrics. For the authentication token field in the request header, enter the token that you issued.
 
@@ -221,17 +219,17 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
   }'
 ```
 
-For a detailed description of the request format, see "Metric Collection" in the [API Guide](./api-guide/#metrics.ingest.api).
+For a detailed description of the request format, see "Metric Collection" in the [API Guide](./api-guide/#metrics-ingest-api).
 
 !!! tip "Note"
     After creating an app, send metrics of the same time series one per minute without interruption. If you send them at longer intervals, gaps will occur and the system may not finish preparing in exact mode. If you send multiple values within 1 minute, only the first value received is used. If you collect data at a shorter interval, aggregate the values into a 1-minute average before sending.
 
-<a id="univariate.app"></a>
-### 3. Create an App { #univariate.app }
+<a id="univariate-app"></a>
+### 3. Create an App { #univariate-app }
 
 On the **Machine Learning > NHN Cloud Foundry > App** tab, click the **Create App** button.
 
-1. In the basic settings, enter the app name and description, and select **Univariate Anomaly Detection** as the app type.
+In the default settings, enter the app name and description, and select **Univariate Time Series Anomaly Detection** as the app type.
 
     ![Create app - Basic settings](../static/images/quick-start/이상탐지앱생성1.png){ height="70%" }
 
@@ -244,28 +242,29 @@ On the **Machine Learning > NHN Cloud Foundry > App** tab, click the **Create Ap
 3. In the final review, check the entered information and click the **Save** button.
     - The completion window displays the estimated time for the training and deployment process and results to appear. Continue sending metrics during this time.
 
-For a detailed description of each item, refer to "Univariate Anomaly Detection Detailed Settings" in the [Console User Guide](./console-user-guide/#app.create.detail.univariate).
+For more details on each item, see "Detailed Settings for Univariate Time Series Anomaly Detection" in the [Console User Guide](./console-user-guide/#app-create-detail-univariate).
 
 !!! tip "Tips"
-    You can create only one univariate anomaly detection app per metric data source. For the result delivery transmission mode, the default Accurate mode is recommended. If you want to receive values immediately before preparation is complete, select Instant mode.
+    You can create only one univariate time-series anomaly detection app per metric data source. We recommend using the default Exact mode for the result transmission mode. If you want to receive values immediately before preparation is complete, select Instant mode.
 
-<a id="univariate.result"></a>
-### 4. Check Detection Results { #univariate.result }
+<a id="univariate-result"></a>
+### 4. Check Detection Results { #univariate-result }
 
 Click the app you created in the app list to go to the details screen.
 
 1. On the **App Info** tab, check the training status and group status.
 
-    ![Univariate anomaly detection app info](../static/images/quick-start/이상탐지앱정보.png){ height="70%" }
+![Univariate time series anomaly detection app information](../static/images/quick-start/이상탐지앱정보.png){ height="70%" }
 
-2. Check the group status in the **Group List** tab.
-    - Groups are registered after metrics arrive, so the list is empty immediately after you create an app.
-    - Waiting for activation means the system is collecting data to use for detection; once activated, detection results will be sent.
-    - In the Activation Time column, you can check when the group started sending results.
+2. On the **Group List** tab, check the group status.
+    - If you did not specify a group label, one group is registered when app creation is complete. The list is empty while it is being created.
+    - Activation Pending means data for evaluation is being collected; once active, detection results are sent.
+    - In the Detection start time column, you can check when each group started sending results.
+    - In the inference status column, check whether inference is running normally.
 
     ![Group list](../static/images/quick-start/이상탐지그룹목록.png){ height="70%" }
 
 3. The anomaly score and threshold, which are the detection results, are sent to the specified Prometheus and also stored in the result data source.
 4. View the stored results using queries or charts on the **Analysis** tab.
 
-For detailed descriptions of each item, see "Univariate Anomaly Detection App Details" in the [Console User Guide](./console-user-guide/#app.detail.univariate).
+For more information on each item, see "Univariate Time Series Anomaly Detection App Details" in the [Console User Guide](./console-user-guide/#app-detail-univariate).
