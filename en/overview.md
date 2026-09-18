@@ -1,22 +1,22 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=0eb4ce54bb90 -->
+<!-- pre-align:aligned sig=0742b98c1a91 -->
 
-<a id="foundry.overview"></a>
-## Machine Learning > NHN Cloud Foundry > Overview { #foundry.overview }
+<a id="foundry-overview"></a>
+## Machine Learning > NHN Cloud Foundry > Overview { #foundry-overview }
 
-NHN Cloud Foundry is a service that integrates customer data and uses machine learning models (such as recommendation, time-series forecasting/anomaly detection, and structured data classification/numerical prediction) to support effective decision-making.
-You can load data, process it through a visual workflow, and then analyze it using queries, charts, and dashboards, or create an app connected to a recommendation model to use recommendation results in your service.
+NHN Cloud Foundry is a service that integrates customer data and uses machine learning models — such as recommendation, time-series forecasting/anomaly detection, and tabular data classification/numerical prediction — to support effective decision-making.
+You can load data, process it through a visual workflow, and then analyze it using queries, charts, and dashboards. By building an app connected to a model, you can use recommendation results or metric anomaly detection results in your service.
 
-<a id="main.feature"></a>
-## Main features { #main.feature }
+<a id="main-feature"></a>
+## Main features { #main-feature }
 
 | Feature | Description |
 | --- | --- |
-| **Data source** | A unit for storing data to be analyzed. You can define a schema to create a data source and load data. For an existing data source, you can add or update data using the Ingest API. |
+| **Data Source** | A unit for storing data to be analyzed. Create a data source by defining a schema, load data into it, and add or update data in an existing data source using the Ingest API. |
 | **Pipeline** | Transforms data from a data source into a dataset for analysis or model training by processing it through a node-connected workflow. Supports automatic execution based on a batch schedule. |
 | **Analysis** | Query data using SQL **queries**, visualize it with **charts**, and monitor it comprehensively using **dashboards**. |
-| **App** | Create and manage recommendation system apps by connecting a recommendation model to data. Recommendation results can be checked through the console and API. |
+| **App** | Create and manage apps by connecting AI models to data. Provides a recommendation system and univariate time-series anomaly detection. |
 
 <a id="datasource"></a>
 ## Data source { #datasource }
@@ -24,9 +24,11 @@ You can load data, process it through a visual workflow, and then analyze it usi
 A data source is a unit for storing data to be analyzed in NHN Cloud Foundry.
 When you create a data source by defining a schema, the data is loaded into a table and can then be used in pipelines, analysis, and apps.
 
-Data sources are created in the console, and you can upload data at the same time.
-To add or update data in an existing data source, use the Ingest API.
-Two methods are provided: snapshot upload, which replaces all data, and event method, which adds new data while retaining existing data.
+Data sources are created in the console, and you can upload data at the same time when creating them.
+When you need to add or update data in an existing data source, use the Ingest API.
+It supports snapshot uploads, which replace the entire dataset, and event-based uploads, which add new data while retaining the existing data.
+
+When handling metric data, create a Prometheus API type data source and send the data in real time using the collection API. The loaded metrics can be viewed in the Analysis menu and can also be used as input for the univariate time-series anomaly detection app.
 
 !!! danger "Caution"
     Do not enter information that contains personal data when using this service.
@@ -58,22 +60,29 @@ Use it by checking data with queries, creating charts, and arranging them on a d
 <a id="app"></a>
 ## App { #app }
 
-This feature allows you to create and manage recommendation system apps by connecting a recommendation model to data.
-When you select a recommendation model and connect user, item, and history data sources, training and deployment proceed automatically. Once the app becomes active, you can use the recommendation results.
+A feature for creating and managing apps by connecting AI models to data. Two app types are available: recommendation system and univariate time series anomaly detection.
 
-Recommendation results can be retrieved directly from the console or requested via API. By collecting user responses through the recommendation event API, you can analyze the recommendation success rate using the accumulated event data.
+The **Recommendation System** automatically performs training and deployment once you select a recommendation model to use and connect user, item, and history data sources. When the app becomes active, you can call the recommendation API.
 
-<a id="public.api"></a>
-## API { #public.api }
+You can check recommendation results by calling them directly from the console or by making requests via the API. If you collect user responses through the Recommendation Event API, you can analyze the recommendation success rate using the accumulated event data.
+
+The console supports changing the training cycle, stopping and resuming automatic retraining, running training manually, and viewing the training artifact history.
+
+**Univariate time-series anomaly detection** learns from the collected metrics for each time series and detects values that fall outside the normal range.
+The anomaly scores and threshold values from the detection results are sent to the specified Prometheus and are also stored in the result data source, where they can be used for analysis.
+
+<a id="public-api"></a>
+## API { #public-api }
 
 NHN Cloud Foundry provides APIs in addition to the console.
-You can use the Ingest API to add or update data in an existing data source, and APIs to request recommendation results from a created app and send user response events.
+You can use the Ingest API to load snapshots, events, and metrics into an existing data source; an API to request recommendation results from a created app and send user response events; and an API to start, stop, and delete groups for a univariate time-series anomaly detection app.
 
-For more information, see the [API Guide](../api-guide/).
+For more information, see the [API Guide](./api-guide/).
 
 <a id="target"></a>
 ## Target users { #target }
 
-- Teams that need a data loading, processing, and analysis environment without building their own data infrastructure
-- Services that want to consolidate scattered data in one place, process it regularly, and monitor it through metrics
+- Teams that need a data loading/processing/analysis environment without building their own data infrastructure
+- Services that need to consolidate scattered data in one place, process it regularly, and track it through metrics
 - Teams that want to apply recommendation results to their service without a separate model training and serving environment
+- Teams that want to automatically detect abnormalities in metrics being collected
