@@ -5,12 +5,18 @@
 <a id="foundry-getting-started"></a>
 ## Machine Learning > NHN Cloud Foundry > Getting Started { #foundry-getting-started }
 
-This document describes the process of creating an app in NHN Cloud Foundry and using the results.
-After completing the prerequisites (applying for the service and preparing data), follow the steps below based on the type of app you want to create.
+This document describes the process of uploading and analyzing data in NHN Cloud Foundry, creating an app, and using the results.
+After completing the prerequisites (applying for the service and preparing data), learn how to work with data using the basic features, then follow the steps below based on the type of app you want to create.
+
+**Default Features**
+
+1. [Create data source](#basics-datasource)
+2. [Make a dataset with a data pipeline](#basics-pipeline)
+3. [Analyze with queries, charts, and dashboards](#basics-analytics)
 
 **Recommended System App**
 
-1. Create a data source
+1. Create a data source (using the same method as [Basic Features](#basics-datasource))
 2. Create an app
 3. Check the app status
 4. Retrieve recommendation results
@@ -50,44 +56,141 @@ To create a recommendation system app, you need the following three CSV data fil
 
 The Univariate Time-Series Anomaly Detection app requires metric (time series) data to be sent via the collection API.
 
-<a id="datasource-create"></a>
-## 1. Create a data source { #datasource-create }
+The basic features can be followed along with a single CSV file.
+
+<a id="basics"></a>
+## Use Basic Features { #basics }
+
+Describes the basic workflow of creating a data source from a CSV file and analyzing the processed dataset using queries, charts, and dashboards through a pipeline.
+
+<a id="basics-datasource"></a>
+### 1. Create data source { #basics-datasource }
 
 Go to the **Machine Learning > NHN Cloud Foundry > Data Source** tab.
-For a detailed description of each setting, see 'Create a data source' in the [Console User Guide](./console-user-guide/#datasource-create).
+For detailed descriptions of each setting, see "Create data source" in the [Console User Guide](./console-user-guide/#datasource-create).
 
-1. Click the **Create data source** button.
+1. Click the **Create Data Source** button.
 
     ![Create data source](../static/images/quick-start/데이터소스생성모달1.png){ height="70%" }
 
-2. In Basic Settings, enter the data source name and table name.
-3. In Connection Settings, confirm that the data source type is **File Upload**.
-4. In Advanced Settings, select the CSV file. If the first row of the file contains column names, check **First row is header**. Enter the primary key field (e.g., `user_id`).
-5. Click the **Infer Types** button to automatically populate the schema from the CSV sample. Manually correct any incorrectly inferred types.
+2. Enter a data source name and table name in Basic Settings.
+3. In connection settings, confirm that the data source type is **File Upload**.
+4. In Detailed Settings, click the **Select File** button to select a CSV file.
+5. If the first row of the file contains column names, check **First row is header**.
+6. The primary key field is automatically set to the first column. If needed, change it to a different column from the drop-down list.
+7. Click the **Infer Types** button to automatically populate the schema from a CSV sample. Correct any types that were inferred incorrectly.
 
     ![Create data source - select file and infer types](../static/images/quick-start/데이터소스생성모달2.png){ height="70%" }
 
-6. Click **Add** to create the data source.
-7. Using the same method, create the **User**, **Item**, and **History** data sources.
-8. Wait until the status changes to `COMPLETED` in the list.
+6. Click the **Add** button and wait in the list until the status becomes `COMPLETED`.
 
     ![Data source list](../static/images/quick-start/데이터소스목록.png){ height="70%" }
 
+!!! tip "Note"
+    You can upload CSV files up to 100 MB in size. The data source name and table name cannot be changed after creation, and the table name is used as-is in the FROM clause of subsequent queries.
+
+<a id="basics-pipeline"></a>
+### 2. Create a Dataset Using a Data Pipeline { #basics-pipeline }
+
+A pipeline processes data from a data source by connecting it through nodes and saves the result as a dataset.
+Go to the **Machine Learning > NHN Cloud Foundry > Pipeline** tab.
+For detailed descriptions of each node's settings, refer to "Node Configuration" in the [Console User Guide](./console-user-guide/#pipeline-node).
+
+![Pipeline List](../static/images/quick-start/파이프라인목록.png){ height="70%" }
+
+1. Click the **Create Pipeline** button.
+2. Enter a pipeline name in the settings panel on the right.
+3. Click the **Create** button.
+
+    ![Create Pipeline](../static/images/quick-start/파이프라인생성.png){ height="70%" }
+
+4. Click the **Add Source Node** button in the tab bar.
+5. Select the data source you created in "1. Create a Data Source."
+6. Click the **Add Data Source** button.
+7. Click the source node on the canvas. The **Transform**, **Join**, **Union**, and **Dataset** buttons appear on the node.
+8. Click **Transform** and select the transformation type. For example, **Filter** keeps only rows that match a condition, and **Aggregate** aggregates data using grouping criteria and aggregation functions.
+9. Enter a node name and settings, then click the **Add Transform Node** button. The added node is automatically connected after the selected node.
+10. Click the last transform node and click **Dataset**.
+11. Enter a dataset name and click the **Add Dataset Node** button.
+
+    ![Pipeline Editor](../static/images/quick-start/파이프라인에디터.png){ height="70%" }
+
+12. Click the **Save** button.
+13. Click the **Run** button in the tab bar.
+14. Click **Run** in the confirmation dialog. On the first run, the build and execution proceed together.
+15. When the status badge shows **Completed**, the run is finished. You can check the run details for each node by clicking the **Run History** button.
+
+    ![Pipeline Run Results](../static/images/quick-start/파이프라인실행결과.png){ height="70%" }
+
+When the run is complete, a data source with the type **Dataset** is created in the data source list under the name specified in the dataset node.
+For detailed descriptions of how to run a pipeline, refer to "Pipeline Run" in the [Console User Guide](./console-user-guide/#pipeline-run).
+
+!!! tip "Note"
+    Pipelines are available when the resource size is MEDIUM or larger. Because a dataset name is used as both a data source name and a table name, it must contain only lowercase English letters, numbers, and `_`, and must not conflict with an existing data source name.
+
+<a id="basics-analytics"></a>
+### 3. Analyze with Queries, Charts, and Dashboards { #basics-analytics }
+
+On the **Machine Learning > NHN Cloud Foundry > Analysis** tab, you can query data sources and datasets using SQL, and visualize the results with charts and dashboards.
+
+**Run a query**
+
+1. On the **Query** tab, select a **Data Source**. You can check field names and data types in the schema panel on the right side of the query input area.
+2. Write SQL in the query input area. In the FROM clause, use the table name exactly as it appears in the data source list (for example, `SELECT * FROM {table name}`).
+3. Click the **Run Query** button or press **Ctrl+Enter** (or **⌘+Enter** on macOS) to display the results in a data grid.
+
+    ![Run query](../static/images/quick-start/쿼리실행.png){ height="70%" }
+
+**Create a chart**
+
+1. On the **Chart** tab, click the **Create Chart** button.
+2. In the basic settings, enter a chart name and select a chart visualization type (for example, **Line Chart**).
+3. In the data source settings, select the data source type (for example, **DATASET**) and the data source name.
+4. In the query settings, specify the X-axis (time axis), aggregation interval, and reference time, then add the target column and aggregation function under Columns.
+5. Click the **UPDATE CHART** button to check the preview, then click the **Create** button in the header.
+
+    ![Create chart](../static/images/quick-start/차트생성.png){ height="70%" }
+
+**Configure a dashboard**
+
+1. On the **Dashboard** tab, click the **Create Dashboard** button and enter a dashboard name.
+2. On the **CHARTS** tab in the edit panel, click or drag the chart card you created earlier onto the canvas.
+3. Drag the chart on the canvas to reposition it, and drag the corners to resize it.
+4. Click the **Save** button in the header. You can view the dashboard in detail by clicking it in the dashboard list.
+
+    ![Dashboard](../static/images/quick-start/대시보드.png){ height="70%" }
+
+For detailed descriptions of each item, see "Analysis - Query" in the [Console User Guide](./console-user-guide/#query), "Analysis - Chart" in the [Console User Guide](./console-user-guide/#chart), and "Analysis - Dashboard" in the [Console User Guide](./console-user-guide/#dashboard).
+
+!!! tip "Note"
+    Only SELECT queries can be executed. Because the required query settings differ by chart visualization type, refer to "Query Settings" in the [Console User Guide](./console-user-guide/#chart-create-query) for types other than Line Chart.
+
+<a id="recommendation"></a>
+## Create a Recommendation System App { #recommendation }
+
+You can use a recommendation system app to train a recommendation model with user, item, and interaction data and receive results through the recommendation API.
+
+<a id="datasource-create"></a>
+### 1. Create a data source { #datasource-create }
+
+Create **User**, **Item**, and **History** data sources in the same way as described in "1. Create data source" in [Basic Features](#basics-datasource).
+Wait until the status of all three data sources in the list becomes `COMPLETED`.
+
 <a id="app-create"></a>
-## 2. Create an app { #app-create }
+### 2. Create an app { #app-create }
 
 Go to the **Machine Learning > NHN Cloud Foundry > Apps** tab and click the **Create app** button.
 For a detailed description of each setting, see 'Create an app' in the [Console User Guide](./console-user-guide/#app-create).
 
 <a id="app-create-basic"></a>
-### Basic settings { #app-create-basic }
+#### Basic Settings { #app-create-basic }
 
 Enter the app name and description, select **Recommendation system** as the app type, and click **Next**.
 
 ![Create app - basic settings](../static/images/quick-start/앱생성화면1.png){ height="70%" }
 
 <a id="app-create-detail"></a>
-### Detailed settings { #app-create-detail }
+#### Detailed Settings { #app-create-detail }
 
 1. Click the **Add model** button to add the model to use. For a new service, we recommend the **Cold User** model; if you have sufficient user behavior history, use **Warm User (Transformer)**.
 
@@ -103,7 +206,7 @@ Enter the app name and description, select **Recommendation system** as the app 
     ![Create app - additional settings](../static/images/quick-start/앱생성화면4.png){ height="70%" }
 
 <a id="app-create-review"></a>
-### Final review { #app-create-review }
+#### Final Review { #app-create-review }
 
 1. Review the basic settings, model settings, and additional settings that you entered.
 2. Click the **Save** button to create the app.
@@ -111,7 +214,7 @@ Enter the app name and description, select **Recommendation system** as the app 
 ![Create app - final review](../static/images/quick-start/앱생성화면5.png){ height="70%" }
 
 <a id="app-status"></a>
-## 3. Check the app status { #app-status }
+### 3. Check the app status { #app-status }
 
 After the app is created, training and deployment proceed automatically. The status changes through Initializing, Training, Deploying, and Activating before reaching Active.
 Wait until the status in the app list changes to Active.
@@ -124,7 +227,7 @@ For a detailed description of each status value, see 'App status' in the [Consol
     Training and deployment immediately after app creation is the process of preparing the app. The first training of the recommendation model runs at the time specified in the batch schedule settings. Until then, even if the recommendation API returns a response, it does not reflect the recommendations of a trained model.
 
 <a id="recommendation-query"></a>
-## 4. Retrieve recommendation results { #recommendation-query }
+### 4. Retrieve recommendation results { #recommendation-query }
 
 When the app becomes active, you can check recommendation results on the recommendation API call screen in the console, or retrieve recommendation results by calling the recommendation query API.
 For a detailed description of each item, see 'Call recommendation API' in the [Console User Guide](./console-user-guide/#app-detail-recommend).
@@ -145,7 +248,7 @@ On the **App info** tab, you can check the app ID, status, and version used for 
 ![App info](../static/images/quick-start/앱정보.png){ height="70%" }
 
 <a id="recommendation-event"></a>
-## 5. Collect recommendation events { #recommendation-event }
+### 5. Collect recommendation events { #recommendation-event }
 
 When a user interacts with recommendation results, such as clicking on them, send the event data using the recommendation event API. You can analyze the recommendation success rate using the accumulated event data.
 For a detailed description of each request field, see 'Recommendation event API' in the [API Guide](./api-guide/#recommendation-event-api).
