@@ -60,10 +60,10 @@ https://{gateway-public-host}/api/v1.0
 
 | フィールド | タイプ | 説明 |
 | --- | --- | --- |
-| header.isSuccessful | Boolean | リクエストの成否。失敗時は `false` |
-| header.resultCode | Integer | 結果コード。成功時は `0`、失敗時は負のエラーコード |
-| header.resultMessage | String | 結果メッセージ。成功時は `SUCCESS`、失敗時はエラー原因 |
-| body | Object/Array | APIごとのレスポンスデータ。失敗時は `null` |
+| header.isSuccessful | Boolean | リクエストの成否。失敗時は`false` |
+| header.resultCode | Integer | 結果コード。成功時は`0`、失敗時は負のエラーコード |
+| header.resultMessage | String | 結果メッセージ。成功時は`SUCCESS`、失敗時はエラー原因 |
+| body | Object/Array | APIごとのレスポンスデータ。失敗時は`null` |
 
 失敗レスポンス例:
 
@@ -80,8 +80,8 @@ https://{gateway-public-host}/api/v1.0
 
 すべてのAPIに共通するエラーコードは、以下の[共通エラーコード](#auth-common-error-codes)に、API別のエラーコードは各APIセクション末尾の**エラーコード**に記載されています。
 
-- 認証トークンがない場合や期限切れの場合も、HTTP `200` に失敗レスポンスとして返されます。
-- ネットワーク障害などによりリクエストがサービスに到達しなかった場合は、`header` なしで別のHTTPステータスコードが返される場合があります。この場合も失敗として処理します。
+- 認証トークンがない場合や期限切れの場合も、HTTP `200`に失敗レスポンスとして返されます。
+- ネットワーク障害などによりリクエストがサービスに到達しなかった場合は、`header`なしで別のHTTPステータスコードが返される場合があります。この場合も失敗として処理します。
 
 !!! danger "注意"
     HTTPステータスコードで成否を判定すると、失敗レスポンスも成功として処理されます。クライアントは必ず`header.isSuccessful`で成否を判定し、失敗原因は`header.resultCode`で区別します。
@@ -664,7 +664,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 <a id="ingest-error-codes-snapshot"></a>
 #### スナップショットのアップロード { #ingest-error-codes-snapshot }
 
-| コード | メッセージ | 説明 | 対象 API |
+| コード | メッセージ | 説明 | 対象API |
 | --- | --- | --- | --- |
 | -4000202 | Invalid file name. | `fileName`が空であるか、英字、数字、`.`、`_`、`-`以外の文字を含んでいます。 | init, complete |
 | -4001107 | File size exceeds maximum limit. | `fileSize`が10GBを超えています。 | init |
@@ -680,7 +680,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 <a id="ingest-error-codes-event"></a>
 #### イベント収集 { #ingest-error-codes-event }
 
-| コード | メッセージ | 説明 | 対象 API |
+| コード | メッセージ | 説明 | 対象API |
 | --- | --- | --- | --- |
 | -4001101 | Invalid data source type. | ファイルタイプのデータソースではありません。 | 有効化、無効化 |
 | -4000201 | DataSource is not ready for ingest. | データソースがイベントを受け取れる状態にありません。スナップショットの読み込みが進行中の場合などです。 | 有効化、単件転送、複数件転送 |
@@ -688,7 +688,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | -4091103 | Stream API activation is in progress. Please wait. | 有効化が進行中です。完了するまでお待ちください。 | 有効化 |
 | -4091601 | Operation is in progress. Please wait for the current operation to complete. | 同じデータソースで別の処理が進行中です。完了後に再試行します。 | 有効化 |
 | -4000002 | Invalid strategy type. | イベント収集をサポートしていないデータソースタイプです。 | 単件転送、複数件転送 |
-| -4001109 | Stream API is not enabled. | Event APIが有効化されていません。有効化 APIを先に呼び出します。 | 単件転送、複数件転送 |
+| -4001109 | Stream API is not enabled. | Event APIが有効化されていません。有効化APIを先に呼び出します。 | 単件転送、複数件転送 |
 | -4000204 | Invalid operation. | `operation`がINSERT、UPDATE、DELETEのいずれでもないか、主キーのないデータソースにINSERT以外の操作を送信しました。 | 単件転送 |
 | -5004001 | Failed to serialize Kafka message. | イベントを保存形式に変換できませんでした。 | 単件転送 |
 | -5004002 | Kafka send timeout. | イベントの保存が制限時間内に完了しませんでした。しばらくしてから再試行します。 | 単件転送 |
@@ -765,9 +765,9 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingP
 <a id="univariate-error-codes"></a>
 ### エラーコード { #univariate-error-codes }
 
-[共通エラーコード](#auth-common-error-codes)以外に、グループの使用開始・停止・削除 APIから返される可能性があるエラーコードです。
+[共通エラーコード](#auth-common-error-codes)以外に、グループの使用開始・停止・削除APIから返される可能性があるエラーコードです。
 
-| コード | メッセージ | 説明 | 対象 API |
+| コード | メッセージ | 説明 | 対象API |
 | --- | --- | --- | --- |
 | -4000001 | Invalid request. | `groupKey`規則違反。グループラベルのないデータソースに`groupKey`を送信した場合、必要な`groupKey`がない場合、ラベル名のセットがデータソースのグループラベルと異なる場合、ラベル名の重複、値のリストが空またはリスト数が異なる場合。`X-NC-APP-KEY`ヘッダの欠如 | 開始、停止、削除 |
 | -4041301 | ServingPipeline not found. | `servingPipelineId`に該当するアプリが存在しないか、別のappKeyのアプリです。 | 開始、停止、削除 |
@@ -927,7 +927,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 
 | コード | メッセージ | 説明 |
 | --- | --- | --- |
-| -4004201 | Invalid request. または拒否理由 | リクエスト形式エラー。`userId`の欠落、`maxRecommendations`が1未満、カテゴリ最小推薦数ルール違反、カタログに存在しないカテゴリ、`context`の行動シグナルの形式・件数違反、`X-NC-APP-KEY`ヘッダの欠落など。`resultMessage`に拒否理由が含まれます。 |
+| -4004201 | Invalid request.または拒否理由 | リクエスト形式エラー。`userId`の欠落、`maxRecommendations`が1未満、カテゴリ最小推薦数ルール違反、カタログに存在しないカテゴリ、`context`の行動シグナルの形式・件数違反、`X-NC-APP-KEY`ヘッダの欠落など。`resultMessage`に拒否理由が含まれます。 |
 | -4044201 | Recommendation app not found. | `appId`に該当する推薦アプリが存在しないか、`X-NC-APP-KEY`とアプリが一致しません。 |
 | -4001301 | Invalid model type. | `appId`が推薦システムアプリではありません。 |
 | -4001302 | Serving pipeline is not active. | アプリがアクティブ状態ではありません。アプリの状態がアクティブになってから再試行します。 |
