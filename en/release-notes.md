@@ -1,9 +1,29 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=fef6db797893 -->
+<!-- pre-align:aligned sig=e1019368a5e9 -->
 
 <a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > Release Notes { #foundry }
+
+<a id="foundry-release-notes-2026-10-27"></a>
+### October 27, 2026 { #foundry-release-notes-2026-10-27 }
+
+<a id="foundry-release-notes-2026-10-27-query"></a>
+#### Analysis / Query { #foundry-release-notes-2026-10-27-query }
+
+- You can now run queries that include set operations such as `UNION` and StarRocks-specific syntax.
+
+<a id="foundry-release-notes-2026-10-27-app"></a>
+#### App { #foundry-release-notes-2026-10-27-app }
+
+- You can now check, step by step, whether an app is receiving data and producing results from the **Operation Status** column in the App List and the **App Status** tab in the app details.
+
+<a id="foundry-release-notes-2026-10-27-recommendation"></a>
+#### Recommendation App { #foundry-release-notes-2026-10-27-recommendation }
+
+- On the **Serving Management** tab, you can select a training version for each model to deploy and view the deployment history.
+- You can cancel an ongoing training run for the entire app or on a per-model basis.
+- When you resume automatic retraining, any cycles missed during the suspension period are not run immediately — retraining resumes from the next scheduled cycle.
 
 <a id="foundry-release-notes-2026-09-18"></a>
 ### September 18, 2026 { #foundry-release-notes-2026-09-18 }

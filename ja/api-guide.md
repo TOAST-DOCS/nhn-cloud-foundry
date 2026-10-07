@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=d3aa4d31c69a -->
+<!-- pre-align:aligned sig=a293d4083b4d -->
 
 <a id="foundry-api-guide"></a>
 ## Machine Learning > NHN Cloud Foundry > API ガイド { #foundry-api-guide }
@@ -45,7 +45,7 @@ https://{gateway-public-host}/api/v1.0
 <a id="auth-common-response"></a>
 ### レスポンス共通事項 { #auth-common-response }
 
-すべての API レスポンスは `header` と `body` で構成されます。
+すべてのAPIはHTTPステータスコード`200`でレスポンスし、レスポンス本文は`header`と`body`で構成されます。リクエストが拒否された場合や処理に失敗した場合もHTTPステータスコードは`200`であるため、成否はHTTPステータスコードではなく`header.isSuccessful`で判定します。
 
 ```json
 {
@@ -60,12 +60,48 @@ https://{gateway-public-host}/api/v1.0
 
 | フィールド | タイプ | 説明 |
 | --- | --- | --- |
-| header.isSuccessful | Boolean | リクエストの成否 |
-| header.resultCode | Integer | 結果コード。成功時は 0、失敗時はエラーコード |
-| header.resultMessage | String | 結果メッセージ。成功時は SUCCESS、失敗時はエラー詳細 |
-| body | Object/Array | API ごとのレスポンスデータ |
+| header.isSuccessful | Boolean | リクエストの成否。失敗時は`false` |
+| header.resultCode | Integer | 結果コード。成功時は`0`、失敗時は負のエラーコード |
+| header.resultMessage | String | 結果メッセージ。成功時は`SUCCESS`、失敗時はエラー原因 |
+| body | Object/Array | APIごとのレスポンスデータ。失敗時は`null` |
 
-リクエストが拒否された場合でも、HTTP ステータスコードは `200` で返される場合があります。成否は HTTP ステータスコードではなく、`header.isSuccessful` と `header.resultCode` で判定します。認証トークンがない場合または有効期限切れの場合は、HTTP `401` を返します。
+失敗レスポンス例:
+
+```json
+{
+  "header": {
+    "isSuccessful": false,
+    "resultCode": -4041102,
+    "resultMessage": "IngestJob not found."
+  },
+  "body": null
+}
+```
+
+すべてのAPIに共通するエラーコードは、以下の[共通エラーコード](#auth-common-error-codes)に、API別のエラーコードは各APIセクション末尾の**エラーコード**に記載されています。
+
+- 認証トークンがない場合や期限切れの場合も、HTTP `200`に失敗レスポンスとして返されます。
+- ネットワーク障害などによりリクエストがサービスに到達しなかった場合は、`header`なしで別のHTTPステータスコードが返される場合があります。この場合も失敗として処理します。
+
+!!! danger "注意"
+    HTTPステータスコードで成否を判定すると、失敗レスポンスも成功として処理されます。クライアントは必ず`header.isSuccessful`で成否を判定し、失敗原因は`header.resultCode`で区別します。
+
+<a id="auth-common-error-codes"></a>
+### 共通エラーコード { #auth-common-error-codes }
+
+すべてのAPIから返される可能性があるエラーコードです。API別のエラーコードは、各APIセクション末尾の**エラーコード**を参照してください。
+
+エラーコードの先頭3桁はHTTPステータスコードと同じ意味です。400番台のコードはリクエストに問題がある場合のため、`resultMessage`を確認してリクエストを修正してから再送します。500番台のコードはサービス側の問題のため、しばらくしてから同じリクエストを再試行し、引き続き失敗する場合はカスタマーセンターにお問い合わせください。
+
+| コード | メッセージ | 説明 |
+| --- | --- | --- |
+| -4010000 | Unauthorized | 認証失敗。認証トークンがないか、形式が正しくないか、有効期限切れか、トークンが指すappKeyがリクエスト対象と異なります。トークンを再発行してリクエストします。 |
+| -4040000 | Not Found | リクエストパスが存在しません。URIを確認します。 |
+| -4050000 | Method Not Allowed | パスは正しいですが、HTTPメソッドが異なります。 |
+| -4060000 | Not Acceptable | AcceptヘッダでJSONレスポンスを受け取ることができません。 |
+| -4150000 | Unsupported Media Type | リクエスト本文のContent-Typeがサポートされていません。`application/json`で送信します。 |
+| -5000000 | Internal Server Error | サーバー内部エラーです。しばらくしてから再試行し、引き続き発生する場合はカスタマーセンターにお問い合わせください。 |
+| -5030101 | Authentication service is not ready. Please retry. | 認証サービスの準備ができていません。しばらくしてから再試行します。 |
 
 <a id="ingest-api"></a>
 ## Ingest API { #ingest-api }
@@ -598,7 +634,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | metrics[].labels[].value | String | O | ラベル値。カンマと等号は使用不可 |
 | metrics[].metadata | Object | X | 付加情報。解釈せずそのまま保存・転送。identityKey キーはシステムが使用するため使用不可 |
 
-成功した場合は HTTP `202 Accepted` を返します。リクエストが拒否された場合は HTTP `200` に `header.isSuccessful` が `false` で返されるため、`header` で成否を判定します。
+成功した場合は`header.isSuccessful`が`true`で返され、`body`はありません。リクエストが拒否された場合は`header.isSuccessful`が`false`で返されるため、`header`で成否を判定します。
 
 収集ルールは次のとおりです。
 
@@ -608,12 +644,70 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 - `timestamp` はミリ秒単位のエポック値です。秒単位で送信すると、誤った時刻として保存されます。
 - データソースにグループラベルを指定した場合は、常にそのラベルを含めて転送します。ラベルが欠落していると、意図したグループに属しません。
 - `value` が NaN または Infinity の項目は保存せずにスキップします。同じリクエストの残りの項目は正常に処理されます。
-- `202` レスポンスは受信完了を意味します。保存は少し後に反映され、同じリクエストを再送すると同じデータが重複して保存される場合があります。
+- 成功レスポンスは受信完了を意味します。保存は少し後に反映され、同じリクエストを再送すると同じデータが重複して保存される場合があります。
 - 転送が遅延したデータは保存されますが、リアルタイム推論の対象から除外される場合があります。
 
 !!! tip "ヒント"
     ロードは転送周期に関係ありません。ただし、このデータソースを単変量時系列異常検出アプリに接続している場合は、同じ時系列を 1 分ごとに途切れなく送信する必要があります。アプリが指標を 1 分単位でまとめて判定するため、それより長い間隔で送信すると空白の区間が生じ、精度モードで準備が完了しない場合があります。
     学習にも条件があります。データソースに時系列が 1 つだけの場合は学習が失敗するため、時系列を 2 つ以上用意する必要があります。また、各時系列に約 4 時間以上のデータが途切れなく蓄積されていることで、正常に学習できます。
+
+<a id="ingest-error-codes"></a>
+### エラーコード { #ingest-error-codes }
+
+[共通エラーコード](#auth-common-error-codes)以外に、Ingest API全体で返される可能性があるエラーコードです。
+
+| コード | メッセージ | 説明 |
+| --- | --- | --- |
+| -4000001 | Invalid request. | リクエスト形式エラー。必須フィールドの欠落、値の範囲・形式違反、本文JSONのパース失敗、`X-NC-APP-KEY`ヘッダの欠落 |
+| -4041101 | DataSource not found. | `dataSourceId`に該当するデータソースが存在しないか、別のappKeyのデータソースです。 |
+
+<a id="ingest-error-codes-snapshot"></a>
+#### スナップショットのアップロード { #ingest-error-codes-snapshot }
+
+| コード | メッセージ | 説明 | 対象API |
+| --- | --- | --- | --- |
+| -4000202 | Invalid file name. | `fileName`が空であるか、英字、数字、`.`、`_`、`-`以外の文字を含んでいます。 | init, complete |
+| -4001107 | File size exceeds maximum limit. | `fileSize`が10GBを超えています。 | init |
+| -4001101 | Invalid data source type. | ファイルタイプのデータソースではありません。 | init |
+| -4001103 | DataSource is busy. | データソースが読み込み中であるか、Event APIが有効化されているため、スナップショットをアップロードできません。 | init, complete |
+| -4001104 | Ingest job is already running. | 同じデータソースで進行中のスナップショットアップロードジョブがあります。完了またはキャンセルされてから再試行します。 | init, complete |
+| -4000201 | DataSource is not ready for ingest. | データソースが読み込みを開始できる状態ではありません。 | complete |
+| -4041102 | IngestJob not found. | `jobId`に該当するジョブが存在しないか、別のappKeyのジョブです。 | complete, アップロードキャンセル, ジョブステータス照会 |
+| -4001105 | IngestJob is in invalid status. | ジョブがアップロード中の状態ではありません。すでに完了またはキャンセルされているか、アップロードの制限時間が経過して失敗処理されたジョブです。initから再開します。 | complete |
+| -4000203 | File name does not match. | initで送信した`fileName`と一致しません。 | complete |
+| -4291101 | Too many requests. Please try again later. | 処理待ちのジョブが多くリクエストを受け付けられません。しばらくしてから再試行します。 | init, complete |
+
+<a id="ingest-error-codes-event"></a>
+#### イベント収集 { #ingest-error-codes-event }
+
+| コード | メッセージ | 説明 | 対象API |
+| --- | --- | --- | --- |
+| -4001101 | Invalid data source type. | ファイルタイプのデータソースではありません。 | 有効化、無効化 |
+| -4000201 | DataSource is not ready for ingest. | データソースがイベントを受け取れる状態にありません。スナップショットの読み込みが進行中の場合などです。 | 有効化、単件転送、複数件転送 |
+| -4001104 | Ingest job is already running. | スナップショットのアップロード処理が進行中のため、有効化できません。 | 有効化 |
+| -4091103 | Stream API activation is in progress. Please wait. | 有効化が進行中です。完了するまでお待ちください。 | 有効化 |
+| -4091601 | Operation is in progress. Please wait for the current operation to complete. | 同じデータソースで別の処理が進行中です。完了後に再試行します。 | 有効化 |
+| -4000002 | Invalid strategy type. | イベント収集をサポートしていないデータソースタイプです。 | 単件転送、複数件転送 |
+| -4001109 | Stream API is not enabled. | Event APIが有効化されていません。有効化APIを先に呼び出します。 | 単件転送、複数件転送 |
+| -4000204 | Invalid operation. | `operation`がINSERT、UPDATE、DELETEのいずれでもないか、主キーのないデータソースにINSERT以外の操作を送信しました。 | 単件転送 |
+| -5004001 | Failed to serialize Kafka message. | イベントを保存形式に変換できませんでした。 | 単件転送 |
+| -5004002 | Kafka send timeout. | イベントの保存が制限時間内に完了しませんでした。しばらくしてから再試行します。 | 単件転送 |
+| -5004003 | Kafka send failed. | イベントの保存に失敗しました。しばらくしてから再試行します。 | 単件転送 |
+| -5004004 | Kafka send interrupted. | イベントの保存が中断されました。しばらくしてから再試行します。 | 単件転送 |
+
+複数件転送における項目別のエラーは、`header`ではなく`body[].success`および`body[].errorMessage`で返されます。データソースの検証に失敗した場合は、リクエスト全体が上記のコードで拒否されます。
+
+<a id="ingest-error-codes-metrics"></a>
+#### 指標収集 { #ingest-error-codes-metrics }
+
+| コード | メッセージ | 説明 |
+| --- | --- | --- |
+| -4000001 | Invalid request. | `metrics`が空であるか5,000件を超えるか、`timestamp`・`value`・`labels`が欠落しているか、ラベル名・値のルール違反、`X-NC-APP-KEY`ヘッダが欠落しています。リクエスト全体が拒否されます。 |
+| -4000002 | Invalid strategy type. | 指標収集をサポートしていないデータソースタイプです。 |
+| -4000201 | DataSource is not ready for ingest. | データソースが指標を受け取れる状態ではありません。 |
+| -5004001 | Failed to serialize Kafka message. | 指標を保存形式に変換できませんでした。 |
+| -5004004 | Kafka send interrupted. | 指標の保存が中断されました。しばらくしてから再試行します。 |
+| -5004005 | Kafka batch send partially failed. | 一部の指標の保存が失敗したか、タイムアウトしました。リクエストを再送信すると、すでに保存された指標が重複する可能性があります。 |
 
 <a id="univariate-api"></a>
 ## 単変量時系列異常検出 API { #univariate-api }
@@ -659,7 +753,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingP
 - データソースにグループラベルを指定した場合は、`groupKey`は必須であり、送信したラベル名の集合がデータソースのグループラベルと完全に一致する必要があります。同じラベル名を2回送信すると拒否されます。
 - グループラベルが複数ある場合は、値のリストを同じ順序でまとめてグループを作成します。たとえば、`rule_id`に`["a", "b"]`、`instance_id`に`["q", "w"]`を送信すると、`(a, q)`と`(b, w)`の2つのグループが対象になります。すべてのラベルの値の個数が同じである必要があり、異なる場合は拒否されます。
 - 値のリストが空の場合は拒否されます。同じグループが複数回指定された場合は、1回のみ処理されます。
-- 登録されていないグループを停止または削除すると、エラーが返されます。
+- 登録されていないグループを停止または削除すると、エラーが返され、リクエストに含まれる他のグループも処理されません。
 
 !!! tip "ヒント"
     データソースにグループラベルを指定しなかった場合、アプリの作成が完了したときにデータソース全体が1つのグループとして登録されるため、このAPIを使用しなくても動作します。グループラベルを指定した場合、グループは自動的に登録されないため、使用開始APIで対象グループを登録する必要があります。この操作はAPIでのみ提供されます。登録されたグループと状態は、コンソールのアプリ詳細にある **[グループ一覧]** タブで確認します。
@@ -667,6 +761,20 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingP
 !!! danger "注意"
     グループを停止しても、検出結果の送信は停止しません。グループ一覧に表示される状態のみが無効に変わります。
     削除したグループは状態の記録とともに削除され、復旧することはできません。
+
+<a id="univariate-error-codes"></a>
+### エラーコード { #univariate-error-codes }
+
+[共通エラーコード](#auth-common-error-codes)以外に、グループの使用開始・停止・削除APIから返される可能性があるエラーコードです。
+
+| コード | メッセージ | 説明 | 対象API |
+| --- | --- | --- | --- |
+| -4000001 | Invalid request. | `groupKey`規則違反。グループラベルのないデータソースに`groupKey`を送信した場合、必要な`groupKey`がない場合、ラベル名のセットがデータソースのグループラベルと異なる場合、ラベル名の重複、値のリストが空またはリスト数が異なる場合。`X-NC-APP-KEY`ヘッダの欠如 | 開始、停止、削除 |
+| -4041301 | ServingPipeline not found. | `servingPipelineId`に該当するアプリが存在しないか、別のappKeyのアプリです。 | 開始、停止、削除 |
+| -4041101 | DataSource not found. | アプリに接続された指標データソースが見つかりません。 | 開始、停止、削除 |
+| -4000201 | DataSource is not ready for ingest. | 指標データソースが使用可能な状態ではありません。 | 開始、停止、削除 |
+| -4001302 | Serving pipeline is not active. | アプリがアクティブ状態ではありません。アプリの状態がアクティブになってから再試行します。 | 開始 |
+| -4041306 | Group entry not found or has no trainingPipelineId. | リクエストしたグループの中に登録されていないグループがあります。リクエストに含まれる他のグループも処理されません。 | 停止、削除 |
 
 <a id="recommendation-api"></a>
 ## レコメンデーション照会 API { #recommendation-api }
@@ -812,6 +920,19 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | body.metadata.inferenceType | 推論タイプ。sequential（履歴ベース）、cold_start（属性ベース）、popular（人気ベース） |
 | body.metadata.abTestGroup | A/B テストグループ（現在は空の値を返す） |
 
+<a id="recommendation-error-codes"></a>
+### エラーコード { #recommendation-error-codes }
+
+[共通エラーコード](#auth-common-error-codes)以外に、推薦リクエストで返される可能性のあるエラーコードです。
+
+| コード | メッセージ | 説明 |
+| --- | --- | --- |
+| -4004201 | Invalid request.または拒否理由 | リクエスト形式エラー。`userId`の欠落、`maxRecommendations`が1未満、カテゴリ最小推薦数ルール違反、カタログに存在しないカテゴリ、`context`の行動シグナルの形式・件数違反、`X-NC-APP-KEY`ヘッダの欠落など。`resultMessage`に拒否理由が含まれます。 |
+| -4044201 | Recommendation app not found. | `appId`に該当する推薦アプリが存在しないか、`X-NC-APP-KEY`とアプリが一致しません。 |
+| -4001301 | Invalid model type. | `appId`が推薦システムアプリではありません。 |
+| -4001302 | Serving pipeline is not active. | アプリがアクティブ状態ではありません。アプリの状態がアクティブになってから再試行します。 |
+| -5034201 | Recommendation model is not ready. | リクエストした推薦モードのモデルがまだアプリに連携されていません。初回学習とデプロイが完了してから再試行します。 |
+
 <a id="recommendation-event-api"></a>
 ## 推薦イベント API { #recommendation-event-api }
 
@@ -871,3 +992,18 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
     - 成功レスポンス（200）は、収集パイプラインがイベントを受信したことを意味し、分析テーブルへの書き込み完了を保証するものではありません。
     - イベント API リクエスト後、データセットへの書き込みまで最大 10 分かかる場合があります。
     - タイムアウト後に再試行すると、同じイベントが重複して書き込まれる場合があります。分析時には重複排除を考慮してください。
+
+<a id="recommendation-event-error-codes"></a>
+### エラーコード { #recommendation-event-error-codes }
+
+[共通エラーコード](#auth-common-error-codes)以外に、推薦イベント送信で返される可能性のあるエラーコードです。
+
+| コード | メッセージ | 説明 |
+| --- | --- | --- |
+| -4004202 | Invalid event request. | リクエスト形式エラー。`eventType`が空、または64文字を超える、英字・数字・`_`以外の文字を含む、予約語(REQUEST、RESPONSE)である場合、`requestId`が空または128文字を超える場合、`itemKey`の未指定、必須ヘッダの未指定 |
+| -4044201 | Recommendation app not found. | `appId`に該当する推薦アプリが存在しないか、`X-NC-APP-KEY`とアプリが一致しません。 |
+| -4001301 | Invalid model type. | `appId`が推薦システムアプリではありません。 |
+| -4001302 | Serving pipeline is not active. | アプリがアクティブ状態ではありません。 |
+| -4094201 | Recommendation event dataset is not configured for this app. | アプリに推薦イベントを保存するデータソースが設定されていません。 |
+| -5034202 | Event publish failed. | イベントの保存に失敗しました。しばらくしてから再試行してください。 |
+| -5044201 | Event publish timed out. | イベントの保存が制限時間内に完了しませんでした。しばらくしてから再試行してください。 |

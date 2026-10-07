@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=d3aa4d31c69a -->
+<!-- pre-align:aligned sig=a293d4083b4d -->
 
 <a id="foundry-api-guide"></a>
 ## Machine Learning > NHN Cloud Foundry > API Guide { #foundry-api-guide }
@@ -45,7 +45,7 @@ https://{gateway-public-host}/api/v1.0
 <a id="auth-common-response"></a>
 ### Common Response Information { #auth-common-response }
 
-All API responses consist of a `header` and a `body`.
+All APIs respond with HTTP status code `200`, and the response body consists of a `header` and a `body`. Even when a request is rejected or processing fails, the HTTP status code is `200`, so success or failure is determined by `header.isSuccessful`, not by the HTTP status code.
 
 ```json
 {
@@ -60,12 +60,48 @@ All API responses consist of a `header` and a `body`.
 
 | Field | Type | Description |
 | --- | --- | --- |
-| header.isSuccessful | Boolean | Whether the request succeeded |
-| header.resultCode | Integer | Result code. 0 for success; error code for failure. |
-| header.resultMessage | String | Result message. SUCCESS for success; error details for failure. |
-| body | Object/Array | Response data for each API |
+| header.isSuccessful | Boolean | Whether the request succeeded. `false` on failure |
+| header.resultCode | Integer | Result code. `0` on success; negative error code on failure |
+| header.resultMessage | String | Result message. `SUCCESS` on success; error details on failure |
+| body | Object/Array | Response data for each API. `null` on failure |
 
-Even if a request is rejected, the HTTP status code may be returned as `200`. Whether the request was successful is determined not by the HTTP status code, but by `header.isSuccessful` and `header.resultCode`. If the authentication token is missing or expired, HTTP `401` is returned.
+Failure response example:
+
+```json
+{
+  "header": {
+    "isSuccessful": false,
+    "resultCode": -4041102,
+    "resultMessage": "IngestJob not found."
+  },
+  "body": null
+}
+```
+
+Error codes common to all APIs are in [Common Error Codes](#auth-common-error-codes) below, and error codes specific to each API are in the **Error Code** section at the end of each API section.
+
+- Even if the authentication token is missing or expired, the response is returned as HTTP `200` with a failure response.
+- If a request fails to reach the service due to a network failure or similar issue, a different HTTP status code may be returned without a `header`. This case is also treated as a failure.
+
+!!! danger "Caution"
+    If you determine success based on the HTTP status code, failed responses may be treated as successful. The client must determine success based on `header.isSuccessful`, and identify the cause of failure using `header.resultCode`.
+
+<a id="auth-common-error-codes"></a>
+### Common Error Codes { #auth-common-error-codes }
+
+These are error codes that may be returned by all APIs. For error codes specific to each API, refer to the **Error Codes** section at the end of each API section.
+
+The first three digits of an error code correspond to the HTTP status code. Codes in the 400 range indicate a problem with the request — check `resultMessage`, correct the request, and send it again. Codes in the 500 range indicate a problem on the service side — retry the same request after a moment, and if the failure continues, contact Customer Center.
+
+| Code | Message | Description |
+| --- | --- | --- |
+| -4010000 | Unauthorized | Authentication failed. The authentication token is missing, malformed, or expired, or the appKey that the token points to does not match the request target. Reissue the token and retry the request. |
+| -4040000 | Not Found | The requested path does not exist. Check the URI. |
+| -4050000 | Method Not Allowed | The path is correct, but the HTTP method is different. |
+| -4060000 | Not Acceptable | A JSON response cannot be received with the Accept header. |
+| -4150000 | Unsupported Media Type | The Content-Type of the request body is not supported. Send the request with `application/json`. |
+| -5000000 | Internal Server Error | An internal server error occurred. Try again after a moment, and if the problem persists, contact Customer Center. |
+| -5030101 | Authentication service is not ready. Please retry. | The authentication service is not ready. Try again after a moment. |
 
 <a id="ingest-api"></a>
 ## Ingest API { #ingest-api }
@@ -598,7 +634,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | metrics[].labels[].value | String | O | Label value. Commas and equals signs cannot be used |
 | metrics[].metadata | Object | X | Additional information. Stored and delivered as-is without interpretation. The identityKey key is reserved for system use and cannot be used |
 
-On success, returns HTTP `202 Accepted`. If the request is rejected, HTTP `200` is returned with `header.isSuccessful` set to `false`, so use `header` to determine whether the request succeeded.
+On success, `header.isSuccessful` is returned as `true` and there is no `body`. If the request is rejected, `header.isSuccessful` is returned as `false`, so use `header` to determine whether the request succeeded.
 
 The collection rules are as follows:
 
@@ -608,12 +644,70 @@ The collection rules are as follows:
 - `timestamp` is an epoch value in milliseconds. If you send it in seconds, it will be saved as an incorrect time.
 - If you have specified a group label in the Data Source, always include that label when sending data. If the label is missing, the data will not belong to the intended group.
 - Items where `value` is NaN or Infinity are skipped and not saved. The remaining items in the same request are processed normally.
-- A `202` response indicates that the data has been received. The data will be saved after a short delay. If you send the same request again, the same data may be stored in duplicate.
+- A successful response indicates that the data has been received. The data will be saved after a short delay. If you send the same request again, the same data may be stored in duplicate.
 - Data that arrives late is saved, but may be excluded from real-time inference.
 
 !!! tip "Tips"
     Data ingestion is independent of the transmission interval. However, if this data source is connected to a Univariate Time-Series Anomaly Detection app, you must send data points for the same time series one per minute without interruption. Because the app groups metrics in 1-minute intervals for evaluation, sending data at longer intervals can create gaps, which may prevent the accurate mode from completing its preparation.
     Training also has requirements. If the data source has only one time series, training fails, so you must have two or more time series, and each time series must accumulate data continuously for at least approximately 4 hours for training to complete successfully.
+
+<a id="ingest-error-codes"></a>
+### Error Codes { #ingest-error-codes }
+
+These are error codes that may be returned across all Ingest APIs, in addition to the [common error codes](#auth-common-error-codes).
+
+| Code | Message | Description |
+| --- | --- | --- |
+| -4000001 | Invalid request. | Invalid request format. Missing required fields, value range or format violations, request body JSON data parsing failure, or missing `X-NC-APP-KEY` header. |
+| -4041101 | DataSource not found. | No Data Source exists for the specified `dataSourceId`, or the Data Source belongs to a different appKey. |
+
+<a id="ingest-error-codes-snapshot"></a>
+#### Snapshot Upload { #ingest-error-codes-snapshot }
+
+| Code | Message | Description | Target API |
+| --- | --- | --- | --- |
+| -4000202 | Invalid file name. | `fileName` is empty or contains characters other than letters, numbers, `.`, `_`, and `-`. | init, complete |
+| -4001107 | File size exceeds maximum limit. | `fileSize` exceeds 10 GB. | init |
+| -4001101 | Invalid data source type. | The data source is not a file type. | init |
+| -4001103 | DataSource is busy. | The snapshot cannot be uploaded because the data source is loading data or the Event API is enabled. | init, complete |
+| -4001104 | Ingest job is already running. | There is a snapshot upload job already in progress for the same data source. Please try again after the job is completed or canceled. | init, complete |
+| -4000201 | DataSource is not ready for ingest. | The data source is not in a state where ingestion can start. | complete |
+| -4041102 | IngestJob not found. | No job matching the `jobId` was found, or the job belongs to a different appKey. | complete, Cancel Upload, Query Job Status |
+| -4001105 | IngestJob is in invalid status. | The job is not in an uploading state. It has already been completed, canceled, or marked as failed due to an upload timeout. Restart from init. | complete |
+| -4000203 | File name does not match. | The file name does not match the `fileName` sent during init. | complete |
+| -4291101 | Too many requests. Please try again later. | The request cannot be accepted because there are too many jobs waiting to be processed. Please try again later. | init, complete |
+
+<a id="ingest-error-codes-event"></a>
+#### Ingest Event { #ingest-error-codes-event }
+
+| Code | Message | Description | Target API |
+| --- | --- | --- | --- |
+| -4001101 | Invalid data source type. | The Data Source is not a file type. | Enable, Disable |
+| -4000201 | DataSource is not ready for ingest. | The Data Source is not in a state ready to receive events. For example, a snapshot upload may be in progress. | Enable, single event, Multiple Events |
+| -4001104 | Ingest job is already running. | A snapshot upload job is in progress, so the Data Source cannot be enabled. | Enable |
+| -4091103 | Stream API activation is in progress. Please wait. | Activation is in progress. Wait until it is completed. | Enable |
+| -4091601 | Operation is in progress. Please wait for the current operation to complete. | Another job is in progress on the same Data Source. Try again after it is completed. | Enable |
+| -4000002 | Invalid strategy type. | The Data Source type does not support event ingestion. | single event, Multiple Events |
+| -4001109 | Stream API is not enabled. | The Event API is not enabled. Call the activation API first. | single event, Multiple Events |
+| -4000204 | Invalid operation. | The `operation` value is not INSERT, UPDATE, or DELETE, or a non-INSERT operation was sent to a Data Source that has no primary key field. | single event |
+| -5004001 | Failed to serialize Kafka message. | The event could not be converted to the storage format. | single event |
+| -5004002 | Kafka send timeout. | The event was not saved within the timeout period. Please try again in a few minutes. | single event |
+| -5004003 | Kafka send failed. | Failed to save the event. Please try again in a few minutes. | single event |
+| -5004004 | Kafka send interrupted. | The event save operation was interrupted. Please try again in a few minutes. | single event |
+
+For Multiple Events, per-item errors are returned in `body[].success` and `body[].errorMessage`, not in the `header`. If Data Source validation fails, the entire request is rejected with one of the codes above.
+
+<a id="ingest-error-codes-metrics"></a>
+#### Metric Collection { #ingest-error-codes-metrics }
+
+| Code | Message | Description |
+| --- | --- | --- |
+| -4000001 | Invalid request. | `metrics` is empty or exceeds 5,000 entries, `timestamp`, `value`, or `labels` is missing, a label name or value violates naming rules, or the `X-NC-APP-KEY` header is missing. The entire request is rejected. |
+| -4000002 | Invalid strategy type. | The data source type does not support metric collection. |
+| -4000201 | DataSource is not ready for ingest. | The data source is not in a state where it can receive metrics. |
+| -5004001 | Failed to serialize Kafka message. | Failed to convert the metric to the storage format. |
+| -5004004 | Kafka send interrupted. | Metric storage was interrupted. Try again later. |
+| -5004005 | Kafka batch send partially failed. | Storage of some metrics failed or timed out. Resending the request may result in duplicate entries for metrics that were already stored. |
 
 <a id="univariate-api"></a>
 ## Univariate Time Series Anomaly Detection API { #univariate-api }
@@ -659,7 +753,7 @@ The request rules are as follows:
 - If group labels are specified in the data source, `groupKey` is required, and the set of label names sent must exactly match the group labels of the data source. Sending the same label name twice is rejected.
 - If there are multiple group labels, values at the same position are paired to form a group. For example, if `["a", "b"]` is sent for `rule_id` and `["q", "w"]` for `instance_id`, the two target groups are `(a, q)` and `(b, w)`. All labels must have the same number of values; otherwise, the request is rejected.
 - If a value list is empty, the request is rejected. If the same group is specified more than once, it is processed only once.
-- Stopping or deleting a group that is not registered returns an error.
+- Stopping or deleting an unregistered group returns an error, and other groups included in the request are not processed either.
 
 !!! tip "Note"
     If you did not assign a group label to the data source, the entire data source is registered as a single group when app creation is complete, so this API is not required for the service to function. If you assigned a group label, groups are not registered automatically — you must register the target groups using the Start Service API to receive detection results. This operation is available via API only. You can check the registered groups and their status on the **Group List** tab in the app details view of the console.
@@ -667,6 +761,20 @@ The request rules are as follows:
 !!! danger "Warning"
     Disabling a group does not stop the transmission of detection results. Only the status displayed in the group list changes to disabled.
     A deleted group is permanently removed along with its status history and cannot be recovered.
+
+<a id="univariate-error-codes"></a>
+### Error Codes { #univariate-error-codes }
+
+These are error codes that can be returned from the Enable, Disable, and Delete Groups APIs, in addition to the [common error codes](#auth-common-error-codes).
+
+| Code | Message | Description | Target API |
+| --- | --- | --- | --- |
+| -4000001 | Invalid request. | Violation of `groupKey` rules. This occurs when a `groupKey` is sent to a data source that has no group label, a required `groupKey` is missing, the set of label names differs from the group labels of the data source, label names are duplicated, the value list is empty, or the counts differ. The `X-NC-APP-KEY` header is missing. | Enable, Disable, Delete |
+| -4041301 | ServingPipeline not found. | No app matches the given `servingPipelineId`, or the app belongs to a different appKey. | Enable, Disable, Delete |
+| -4041101 | DataSource not found. | The metric data source connected to the app cannot be found. | Enable, Disable, Delete |
+| -4000201 | DataSource is not ready for ingest. | The metric data source is not in a usable state. | Enable, Disable, Delete |
+| -4001302 | Serving pipeline is not active. | The app is not in an active state. Try again after the app becomes active. | Enable |
+| -4041306 | Group entry not found or has no trainingPipelineId. | One or more of the requested groups are not registered. Other groups included in the request are also not processed. | Disable, Delete |
 
 <a id="recommendation-api"></a>
 ## Recommendation API { #recommendation-api }
@@ -812,6 +920,19 @@ Response example:
 | body.metadata.inferenceType | Inference type. sequential (history-based), cold_start (attribute-based), popular (popularity-based) |
 | body.metadata.abTestGroup | A/B test group (currently returns an empty value) |
 
+<a id="recommendation-error-codes"></a>
+### Error Codes { #recommendation-error-codes }
+
+Error codes that may be returned in recommendation requests, in addition to the [common error codes](#auth-common-error-codes).
+
+| Code | Message | Description |
+| --- | --- | --- |
+| -4004201 | Invalid request. or reason for rejection | Request format error. Possible causes include a missing `userId`, `maxRecommendations` less than 1, violation of the minimum recommendation count rule for a category, a category not in the catalog, violation of the format or count of behavior signals in `context`, or a missing `X-NC-APP-KEY` header. The `resultMessage` contains the reason for rejection. |
+| -4044201 | Recommendation app not found. | No recommendation app was found for the specified `appId`, or the app does not match `X-NC-APP-KEY`. |
+| -4001301 | Invalid model type. | The `appId` does not belong to a Recommendation System app. |
+| -4001302 | Serving pipeline is not active. | The app is not in an active state. Wait until the app status becomes active, and then try again. |
+| -5034201 | Recommendation model is not ready. | The model for the requested recommendation mode has not yet been integrated into the app. Wait until the first training and deployment are complete, and then try again. |
+
 <a id="recommendation-event-api"></a>
 ## Recommendation Event API { #recommendation-event-api }
 
@@ -871,3 +992,18 @@ A successful response (200) returns only the `header`.
     - A successful response (200) indicates that the collection pipeline has received the event, but does not guarantee that the data has been loaded into the analytics table.
     - It may take up to 10 minutes for data to be loaded into the dataset after an event API request.
     - Retrying after a timeout may result in duplicate entries of the same event. Consider deduplication when analyzing the data.
+
+<a id="recommendation-event-error-codes"></a>
+### Error Codes { #recommendation-event-error-codes }
+
+In addition to the [common error codes](#auth-common-error-codes), the following error codes may be returned when sending recommendation events.
+
+| Code | Message | Description |
+| --- | --- | --- |
+| -4004202 | Invalid event request. | Invalid request format. Returned when `eventType` is empty, exceeds 64 characters, contains characters other than letters, numbers, or `_`, or is a reserved word (REQUEST, RESPONSE); when `requestId` is empty or exceeds 128 characters; when `itemKey` is missing; or when a required header is missing. |
+| -4044201 | Recommendation app not found. | No recommendation app exists for the specified `appId`, or the app does not match `X-NC-APP-KEY`. |
+| -4001301 | Invalid model type. | The `appId` does not belong to a Recommendation System app. |
+| -4001302 | Serving pipeline is not active. | The app is not in an active state. |
+| -4094201 | Recommendation event dataset is not configured for this app. | No data source is configured for the app to store recommendation events. |
+| -5034202 | Event publish failed. | Failed to save the event. Please try again later. |
+| -5044201 | Event publish timed out. | The event could not be saved within the timeout period. Please try again later. |

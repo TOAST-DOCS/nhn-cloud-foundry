@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=2e5f8a3ad55b -->
+<!-- pre-align:aligned sig=710c6a0b364f -->
 
 <a id="foundry-getting-started"></a>
 ## Machine Learning > NHN Cloud Foundry > 시작하기 { #foundry-getting-started }
