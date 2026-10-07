@@ -9,7 +9,6 @@
 <a id="foundry-release-notes-2026-10-27-query"></a>
 #### 분석 / 쿼리 { #foundry-release-notes-2026-10-27-query }
 
-- 쿼리 저장 단축키 **Ctrl+S**(macOS는 **⌘+S**)가 추가되었습니다. 저장된 쿼리를 수정한 뒤 실행해도 저장된 내용은 바뀌지 않습니다.
 - `UNION` 등 집합 연산과 StarRocks 전용 문법을 포함한 쿼리를 실행할 수 있습니다.
 
 <a id="foundry-release-notes-2026-10-27-app"></a>
