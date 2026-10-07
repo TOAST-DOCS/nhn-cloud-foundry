@@ -248,7 +248,7 @@ curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
     1つのメトリクスデータソースに対して、単変量時系列異常検出アプリは1つだけ作成できます。結果転送の転送モードはデフォルトの正確モードを推奨します。準備が完了する前の値をすぐに受け取る場合は、即時モードを選択します。
 
 <a id="univariate-result"></a>
-### 4. 탐지 결과 확인하기 { #univariate-result }
+### 4. 検出結果を確認する { #univariate-result }
 
 アプリ一覧から作成したアプリをクリックして、詳細画面に移動します。
 

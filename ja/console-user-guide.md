@@ -204,7 +204,7 @@
     予約フィールド名 `system_eventTimestamp` は使用できません。
 
 <a id="datasource-create-detail-prometheus"></a>
-#### Prometheus API 상세 설정 { #datasource-create-detail-prometheus }
+#### Prometheus API 詳細設定 { #datasource-create-detail-prometheus }
 
 Prometheus API タイプは、収集 API が送信するレコードの形式が決まっているため、スキーマを直接入力しません。基本設定のスキーマの箇所には、次の固定スキーマが読み取り専用の表として表示され、このスキーマのままテーブルが作成されます。
 
