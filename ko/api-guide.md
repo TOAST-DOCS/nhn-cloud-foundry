@@ -43,7 +43,7 @@ https://{gateway-public-host}/api/v1.0
 <a id="auth-common-response"></a>
 ### 응답 공통 사항 { #auth-common-response }
 
-모든 API 응답은 `header`와 `body`로 구성됩니다.
+모든 API는 HTTP 상태 코드 `200`으로 응답하며, 응답 본문은 `header`와 `body`로 구성됩니다. 요청이 거절되거나 처리에 실패한 경우에도 HTTP 상태 코드는 `200`이므로, 성공 여부는 HTTP 상태 코드가 아니라 `header.isSuccessful`로 판정합니다.
 
 ```json
 {
@@ -58,12 +58,48 @@ https://{gateway-public-host}/api/v1.0
 
 | 필드 | 타입 | 설명 |
 | --- | --- | --- |
-| header.isSuccessful | Boolean | 요청 성공 여부 |
-| header.resultCode | Integer | 결과 코드. 성공 시 0, 실패 시 오류 코드 |
-| header.resultMessage | String | 결과 메시지. 성공 시 SUCCESS, 실패 시 오류 상세 |
-| body | Object/Array | API별 응답 데이터 |
+| header.isSuccessful | Boolean | 요청 성공 여부. 실패하면 `false` |
+| header.resultCode | Integer | 결과 코드. 성공 시 `0`, 실패 시 음수 오류 코드 |
+| header.resultMessage | String | 결과 메시지. 성공 시 `SUCCESS`, 실패 시 오류 원인 |
+| body | Object/Array | API별 응답 데이터. 실패 시 `null` |
 
-요청이 거절되어도 HTTP 상태 코드는 `200`으로 반환될 수 있습니다. 성공 여부는 HTTP 상태 코드가 아니라 `header.isSuccessful`과 `header.resultCode`로 판정합니다. 인증 토큰이 없거나 만료된 경우에는 HTTP `401`을 반환합니다.
+실패 응답 예시:
+
+```json
+{
+  "header": {
+    "isSuccessful": false,
+    "resultCode": -4041102,
+    "resultMessage": "IngestJob not found."
+  },
+  "body": null
+}
+```
+
+모든 API에 공통인 오류 코드는 아래 [공통 오류 코드](#auth-common-error-codes)에, API별 오류 코드는 각 API 절 끝의 **오류 코드**에 있습니다.
+
+- 인증 토큰이 없거나 만료된 경우에도 HTTP `200`에 실패 응답으로 반환됩니다.
+- 네트워크 장애 등으로 요청이 서비스에 도달하지 못한 경우에는 `header` 없이 다른 HTTP 상태 코드가 반환될 수 있습니다. 이 경우도 실패로 처리합니다.
+
+!!! danger "주의"
+    HTTP 상태 코드로 성공 여부를 판정하면 실패 응답까지 성공으로 처리됩니다. 클라이언트는 반드시 `header.isSuccessful`로 성공 여부를 판정하고, 실패 원인은 `header.resultCode`로 구분합니다.
+
+<a id="auth-common-error-codes"></a>
+### 공통 오류 코드 { #auth-common-error-codes }
+
+모든 API에서 반환될 수 있는 오류 코드입니다. API별 오류 코드는 각 API 절 끝의 **오류 코드**를 참고합니다.
+
+오류 코드의 앞 세 자리는 HTTP 상태 코드와 같은 의미입니다. 400대 코드는 요청에 문제가 있는 경우이므로 `resultMessage`를 확인해 요청을 수정한 뒤 다시 보냅니다. 500대 코드는 서비스 쪽 문제이므로 잠시 후 같은 요청을 다시 시도하고, 계속 실패하면 고객센터에 문의합니다.
+
+| 코드 | 메시지 | 설명 |
+| --- | --- | --- |
+| -4010000 | Unauthorized | 인증 실패. 인증 토큰이 없거나 형식이 잘못되었거나 만료되었거나, 토큰이 가리키는 Appkey가 요청 대상과 다릅니다. 토큰을 다시 발급받아 요청합니다. |
+| -4040000 | Not Found | 요청 경로가 없습니다. URI를 확인합니다. |
+| -4050000 | Method Not Allowed | 경로는 맞지만 HTTP 메서드가 다릅니다. |
+| -4060000 | Not Acceptable | Accept 헤더로 JSON 응답을 받을 수 없습니다. |
+| -4150000 | Unsupported Media Type | 요청 본문의 Content-Type을 지원하지 않습니다. `application/json`으로 보냅니다. |
+| -5000000 | Internal Server Error | 서버 내부 오류입니다. 잠시 후 다시 시도하고, 계속되면 고객센터로 문의합니다. |
+| -5030101 | Authentication service is not ready. Please retry. | 인증 서비스가 준비되지 않았습니다. 잠시 후 다시 시도합니다. |
 
 <a id="ingest-api"></a>
 ## Ingest API { #ingest-api }
@@ -596,7 +632,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | metrics[].labels[].value | String | O | 라벨 값. 쉼표와 등호는 사용 불가 |
 | metrics[].metadata | Object | X | 부가 정보. 해석하지 않고 그대로 저장·전달. identityKey 키는 시스템이 사용하므로 사용 불가 |
 
-성공하면 HTTP `202 Accepted`를 반환합니다. 요청이 거절되면 HTTP `200`에 `header.isSuccessful`이 `false`로 반환되므로 `header`로 성공 여부를 판정합니다.
+성공하면 `header.isSuccessful`이 `true`로 반환되며 `body`는 없습니다. 요청이 거절되면 `header.isSuccessful`이 `false`로 반환되므로 `header`로 성공 여부를 판정합니다.
 
 수집 규칙은 다음과 같습니다.
 
@@ -606,12 +642,70 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 - `timestamp`는 밀리초 단위 epoch입니다. 초 단위로 보내면 잘못된 시각으로 저장됩니다.
 - 데이터 소스에 그룹 라벨을 지정했다면 항상 그 라벨을 포함해 전송합니다. 라벨이 빠지면 의도한 그룹에 속하지 않습니다.
 - `value`가 NaN 또는 Infinity인 항목은 저장하지 않고 건너뜁니다. 같은 요청의 나머지 항목은 정상 처리됩니다.
-- `202` 응답은 수신 완료를 뜻합니다. 저장은 잠시 뒤 반영되며, 같은 요청을 다시 보내면 같은 데이터가 중복 저장될 수 있습니다.
+- 성공 응답은 수신 완료를 뜻합니다. 저장은 잠시 뒤 반영되며, 같은 요청을 다시 보내면 같은 데이터가 중복 저장될 수 있습니다.
 - 전송이 지연된 데이터는 저장되지만 실시간 추론 대상에서 제외될 수 있습니다.
 
 !!! tip "알아두기"
     적재는 전송 주기와 무관합니다. 다만 이 데이터 소스를 단변량 시계열 이상탐지 앱에 연결했다면 같은 시계열을 1분에 하나씩 끊김 없이 보내야 합니다. 앱이 지표를 1분 단위로 묶어 판정하므로, 그보다 긴 간격으로 보내면 빈 구간이 생겨 정확 모드에서 준비가 끝나지 않을 수 있습니다.
     학습에도 조건이 있습니다. 데이터 소스에 시계열이 하나뿐이면 학습이 실패하므로 시계열을 둘 이상 두어야 하고, 시계열마다 약 4시간 이상 끊김 없이 쌓여야 정상적으로 학습합니다.
+
+<a id="ingest-error-codes"></a>
+### 오류 코드 { #ingest-error-codes }
+
+[공통 오류 코드](#auth-common-error-codes) 외에 Ingest API 전체에서 반환될 수 있는 오류 코드입니다.
+
+| 코드 | 메시지 | 설명 |
+| --- | --- | --- |
+| -4000001 | Invalid request. | 요청 형식 오류. 필수 필드 누락, 값의 범위·형식 위반, 본문 JSON 파싱 실패, `X-NC-APP-KEY` 헤더 누락 |
+| -4041101 | DataSource not found. | `dataSourceId`에 해당하는 데이터 소스가 없거나 다른 Appkey의 데이터 소스입니다. |
+
+<a id="ingest-error-codes-snapshot"></a>
+#### 스냅숏 업로드 { #ingest-error-codes-snapshot }
+
+| 코드 | 메시지 | 설명 | 대상 API |
+| --- | --- | --- | --- |
+| -4000202 | Invalid file name. | `fileName`이 비어 있거나 영문자, 숫자, `.`, `_`, `-` 이외의 문자를 포함합니다. | init, complete |
+| -4001107 | File size exceeds maximum limit. | `fileSize`가 10GB를 초과합니다. | init |
+| -4001101 | Invalid data source type. | 파일 타입 데이터 소스가 아닙니다. | init |
+| -4001103 | DataSource is busy. | 데이터 소스가 적재 중이거나 Event API가 활성화되어 있어 스냅숏을 업로드할 수 없습니다. | init, complete |
+| -4001104 | Ingest job is already running. | 같은 데이터 소스에 진행 중인 스냅숏 업로드 작업이 있습니다. 완료되거나 취소된 뒤 다시 시도합니다. | init, complete |
+| -4000201 | DataSource is not ready for ingest. | 데이터 소스가 적재를 시작할 수 있는 상태가 아닙니다. | complete |
+| -4041102 | IngestJob not found. | `jobId`에 해당하는 작업이 없거나 다른 Appkey의 작업입니다. | complete, 업로드 취소, 작업 상태 조회 |
+| -4001105 | IngestJob is in invalid status. | 작업이 업로드 중 상태가 아닙니다. 이미 완료되었거나 취소되었거나, 업로드 제한 시간이 지나 실패 처리된 작업입니다. init부터 다시 시작합니다. | complete |
+| -4000203 | File name does not match. | init 때 보낸 `fileName`과 다릅니다. | complete |
+| -4291101 | Too many requests. Please try again later. | 처리 대기 중인 작업이 많아 요청을 받을 수 없습니다. 잠시 후 다시 시도합니다. | init, complete |
+
+<a id="ingest-error-codes-event"></a>
+#### 이벤트 수집 { #ingest-error-codes-event }
+
+| 코드 | 메시지 | 설명 | 대상 API |
+| --- | --- | --- | --- |
+| -4001101 | Invalid data source type. | 파일 타입 데이터 소스가 아닙니다. | 활성화, 비활성화 |
+| -4000201 | DataSource is not ready for ingest. | 데이터 소스가 이벤트를 받을 수 있는 상태가 아닙니다. 스냅숏 적재가 진행 중인 경우 등입니다. | 활성화, 단건 전송, 다건 전송 |
+| -4001104 | Ingest job is already running. | 스냅숏 업로드 작업이 진행 중이어서 활성화할 수 없습니다. | 활성화 |
+| -4091103 | Stream API activation is in progress. Please wait. | 활성화가 진행 중입니다. 완료될 때까지 기다립니다. | 활성화 |
+| -4091601 | Operation is in progress. Please wait for the current operation to complete. | 같은 데이터 소스에 다른 작업이 진행 중입니다. 완료된 뒤 다시 시도합니다. | 활성화 |
+| -4000002 | Invalid strategy type. | 이벤트 수집을 지원하지 않는 데이터 소스 타입입니다. | 단건 전송, 다건 전송 |
+| -4001109 | Stream API is not enabled. | Event API가 활성화되어 있지 않습니다. 활성화 API를 먼저 호출합니다. | 단건 전송, 다건 전송 |
+| -4000204 | Invalid operation. | `operation`이 INSERT, UPDATE, DELETE가 아니거나, 기본 키가 없는 데이터 소스에 INSERT 이외의 작업을 보냈습니다. | 단건 전송 |
+| -5004001 | Failed to serialize Kafka message. | 이벤트를 저장 형식으로 변환하지 못했습니다. | 단건 전송 |
+| -5004002 | Kafka send timeout. | 이벤트 저장이 제한 시간 안에 끝나지 않았습니다. 잠시 후 다시 시도합니다. | 단건 전송 |
+| -5004003 | Kafka send failed. | 이벤트 저장에 실패했습니다. 잠시 후 다시 시도합니다. | 단건 전송 |
+| -5004004 | Kafka send interrupted. | 이벤트 저장이 중단되었습니다. 잠시 후 다시 시도합니다. | 단건 전송 |
+
+다건 전송에서 항목별 오류는 `header`가 아니라 `body[].success`와 `body[].errorMessage`로 반환됩니다. 데이터 소스 검증에 실패하면 요청 전체가 위 코드로 거절됩니다.
+
+<a id="ingest-error-codes-metrics"></a>
+#### 지표 수집 { #ingest-error-codes-metrics }
+
+| 코드 | 메시지 | 설명 |
+| --- | --- | --- |
+| -4000001 | Invalid request. | `metrics`가 비어 있거나 5,000건을 초과하거나, `timestamp`·`value`·`labels` 누락, 라벨 이름·값 규칙 위반, `X-NC-APP-KEY` 헤더 누락. 요청 전체가 거절됩니다. |
+| -4000002 | Invalid strategy type. | 지표 수집을 지원하지 않는 데이터 소스 타입입니다. |
+| -4000201 | DataSource is not ready for ingest. | 데이터 소스가 지표를 받을 수 있는 상태가 아닙니다. |
+| -5004001 | Failed to serialize Kafka message. | 지표를 저장 형식으로 변환하지 못했습니다. |
+| -5004004 | Kafka send interrupted. | 지표 저장이 중단되었습니다. 잠시 후 다시 시도합니다. |
+| -5004005 | Kafka batch send partially failed. | 일부 지표의 저장이 실패했거나 제한 시간을 넘겼습니다. 요청을 다시 보내면 이미 저장된 지표가 중복될 수 있습니다. |
 
 <a id="univariate-api"></a>
 ## 단변량 시계열 이상탐지 API { #univariate-api }
@@ -657,7 +751,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingP
 - 데이터 소스에 그룹 라벨을 지정했으면 `groupKey`는 필수이며, 보낸 라벨 이름의 집합이 데이터 소스의 그룹 라벨과 정확히 같아야 합니다. 같은 라벨 이름을 두 번 보내면 거절됩니다.
 - 그룹 라벨이 여러 개면 값 목록을 같은 순서끼리 묶어 그룹을 만듭니다. 예를 들어 `rule_id`에 `["a", "b"]`, `instance_id`에 `["q", "w"]`를 보내면 `(a, q)`와 `(b, w)` 두 그룹이 대상입니다. 모든 라벨의 값 개수가 같아야 하며 다르면 거절됩니다.
 - 값 목록이 비어 있으면 거절됩니다. 같은 그룹이 여러 번 지정되면 한 번만 처리됩니다.
-- 등록되지 않은 그룹을 중지하거나 삭제하면 오류가 반환됩니다.
+- 등록되지 않은 그룹을 중지하거나 삭제하면 오류가 반환되며, 요청에 포함된 다른 그룹도 처리되지 않습니다.
 
 !!! tip "알아두기"
     데이터 소스에 그룹 라벨을 지정하지 않았으면 앱 생성이 끝날 때 데이터 소스 전체가 그룹 하나로 등록되므로 이 API를 쓰지 않아도 동작합니다. 그룹 라벨을 지정했으면 그룹이 저절로 등록되지 않으므로, 사용 시작 API로 대상 그룹을 등록해야 탐지 결과를 받을 수 있습니다. 이 조작은 API로만 제공합니다. 등록된 그룹과 상태는 콘솔 앱 상세의 **그룹 목록** 탭에서 확인합니다.
@@ -665,6 +759,20 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingP
 !!! danger "주의"
     그룹을 중지해도 탐지 결과 전송이 멈추지는 않습니다. 그룹 목록에 표시되는 상태만 비활성화로 바뀝니다.
     삭제한 그룹은 상태 기록과 함께 사라지며 복구할 수 없습니다.
+
+<a id="univariate-error-codes"></a>
+### 오류 코드 { #univariate-error-codes }
+
+[공통 오류 코드](#auth-common-error-codes) 외에 그룹 사용 시작·중지·삭제 API에서 반환될 수 있는 오류 코드입니다.
+
+| 코드 | 메시지 | 설명 | 대상 API |
+| --- | --- | --- | --- |
+| -4000001 | Invalid request. | `groupKey` 규칙 위반. 그룹 라벨이 없는 데이터 소스에 `groupKey`를 보냈거나, 필요한 `groupKey`가 없거나, 라벨 이름 집합이 데이터 소스의 그룹 라벨과 다르거나, 라벨 이름 중복, 값 목록이 비어 있거나 개수가 다른 경우. `X-NC-APP-KEY` 헤더 누락 | 시작, 중지, 삭제 |
+| -4041301 | ServingPipeline not found. | `servingPipelineId`에 해당하는 앱이 없거나 다른 Appkey의 앱입니다. | 시작, 중지, 삭제 |
+| -4041101 | DataSource not found. | 앱에 연결된 지표 데이터 소스를 찾을 수 없습니다. | 시작, 중지, 삭제 |
+| -4000201 | DataSource is not ready for ingest. | 지표 데이터 소스가 사용할 수 있는 상태가 아닙니다. | 시작, 중지, 삭제 |
+| -4001302 | Serving pipeline is not active. | 앱이 활성 상태가 아닙니다. 앱 상태가 활성이 된 뒤 다시 시도합니다. | 시작 |
+| -4041306 | Group entry not found or has no trainingPipelineId. | 요청한 그룹 중 등록되지 않은 그룹이 있습니다. 요청에 포함된 다른 그룹도 처리되지 않습니다. | 중지, 삭제 |
 
 <a id="recommendation-api"></a>
 ## 추천 조회 API { #recommendation-api }
@@ -810,6 +918,19 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | body.metadata.inferenceType | 추론 유형. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) |
 | body.metadata.abTestGroup | A/B 테스트 그룹(현재는 빈 값 반환) |
 
+<a id="recommendation-error-codes"></a>
+### 오류 코드 { #recommendation-error-codes }
+
+[공통 오류 코드](#auth-common-error-codes) 외에 추천 요청에서 반환될 수 있는 오류 코드입니다.
+
+| 코드 | 메시지 | 설명 |
+| --- | --- | --- |
+| -4004201 | Invalid request. 또는 거절 사유 | 요청 형식 오류. `userId` 누락, `maxRecommendations`가 1 미만, 카테고리 최소 추천 수 규칙 위반, 카탈로그에 없는 카테고리, `context`의 행동 신호 형식·개수 위반, `X-NC-APP-KEY` 헤더 누락 등. `resultMessage`에 거절 사유가 포함됩니다. |
+| -4044201 | Recommendation app not found. | `appId`에 해당하는 추천 앱이 없거나 `X-NC-APP-KEY`와 앱이 일치하지 않습니다. |
+| -4001301 | Invalid model type. | `appId`가 추천 시스템 앱이 아닙니다. |
+| -4001302 | Serving pipeline is not active. | 앱이 활성 상태가 아닙니다. 앱 상태가 활성이 된 뒤 다시 시도합니다. |
+| -5034201 | Recommendation model is not ready. | 요청한 추천 모드의 모델이 아직 앱에 연동되지 않았습니다. 첫 학습과 배포가 끝난 뒤 다시 시도합니다. |
+
 <a id="recommendation-event-api"></a>
 ## 추천 이벤트 API { #recommendation-event-api }
 
@@ -869,3 +990,18 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
     - 성공 응답(200)은 수집 파이프라인이 이벤트를 수신했다는 의미이며, 분석 테이블 적재 완료를 보장하지 않습니다.
     - 이벤트 API 요청 후 데이터셋에 적재까지 최대 10분이 걸릴 수 있습니다.
     - 타임아웃 후 재시도하면 같은 이벤트가 중복 적재될 수 있습니다. 분석 시 중복 제거를 고려하세요.
+
+<a id="recommendation-event-error-codes"></a>
+### 오류 코드 { #recommendation-event-error-codes }
+
+[공통 오류 코드](#auth-common-error-codes) 외에 추천 이벤트 전송에서 반환될 수 있는 오류 코드입니다.
+
+| 코드 | 메시지 | 설명 |
+| --- | --- | --- |
+| -4004202 | Invalid event request. | 요청 형식 오류. `eventType`이 비어 있거나 64자를 초과하거나 영문자·숫자·`_` 이외의 문자를 포함하거나 예약어(REQUEST, RESPONSE)인 경우, `requestId`가 비어 있거나 128자를 초과하는 경우, `itemKey` 누락, 필수 헤더 누락 |
+| -4044201 | Recommendation app not found. | `appId`에 해당하는 추천 앱이 없거나 `X-NC-APP-KEY`와 앱이 일치하지 않습니다. |
+| -4001301 | Invalid model type. | `appId`가 추천 시스템 앱이 아닙니다. |
+| -4001302 | Serving pipeline is not active. | 앱이 활성 상태가 아닙니다. |
+| -4094201 | Recommendation event dataset is not configured for this app. | 앱에 추천 이벤트를 저장할 데이터 소스가 설정되어 있지 않습니다. |
+| -5034202 | Event publish failed. | 이벤트 저장에 실패했습니다. 잠시 후 다시 시도합니다. |
+| -5044201 | Event publish timed out. | 이벤트 저장이 제한 시간 안에 끝나지 않았습니다. 잠시 후 다시 시도합니다. |

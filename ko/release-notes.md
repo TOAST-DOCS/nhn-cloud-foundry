@@ -3,6 +3,26 @@
 <a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > 릴리스 노트 { #foundry }
 
+<a id="foundry-release-notes-2026-10-27"></a>
+### 2026. 10. 27. { #foundry-release-notes-2026-10-27 }
+
+<a id="foundry-release-notes-2026-10-27-query"></a>
+#### 분석 / 쿼리 { #foundry-release-notes-2026-10-27-query }
+
+- `UNION` 등 집합 연산과 StarRocks 전용 문법을 포함한 쿼리를 실행할 수 있습니다.
+
+<a id="foundry-release-notes-2026-10-27-app"></a>
+#### 앱 { #foundry-release-notes-2026-10-27-app }
+
+- 앱 목록의 **동작 상태** 칼럼과 앱 상세의 **앱 상태** 탭에서 앱이 데이터를 받아 결과를 내고 있는지 단계별로 확인할 수 있습니다.
+
+<a id="foundry-release-notes-2026-10-27-recommendation"></a>
+#### 추천 앱 { #foundry-release-notes-2026-10-27-recommendation }
+
+- **서빙 관리** 탭에서 모델별로 학습본을 선택해 배포하고 배포 이력을 확인할 수 있습니다.
+- 진행 중인 학습을 앱 전체 또는 모델별로 취소할 수 있습니다.
+- 자동 재학습을 재개하면 중지한 동안 놓친 회차를 바로 실행하지 않고 다음 주기부터 실행합니다.
+
 <a id="foundry-release-notes-2026-09-18"></a>
 ### 2026. 09. 18. { #foundry-release-notes-2026-09-18 }
 
