@@ -254,10 +254,10 @@ CSVファイルでデータソースを作成し、パイプラインで加工�
 リクエストフィールドの詳細については、[API ガイド](./api-guide/#recommendation-event-api)の「レコメンドイベント API」を参照してください。
 
 ```bash
-curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
+curl -X POST '{URL}/api/v2.0/recommendation-apps/{APP_ID}/events' \
   -H "X-NC-APP-KEY: {APP_KEY}" \
   -H "Content-Type: application/json" \
-  -H "X-NHN-Authorization: {AUTH_TOKEN}" \
+  -H "X-NHN-Authorization: Bearer {AUTH_TOKEN}" \
   -d '{
     "eventType": "CLICK",
     "requestId": "{RecommendApiResponse.body.metadata.requestId}",
@@ -304,9 +304,9 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
 ![収集方法](../static/images/quick-start/수집방법.png){ height="70%" }
 
 ```bash
-curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
+curl -X POST '{URL}/api/v2.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
   -H "X-NC-APP-KEY: {APP_KEY}" \
-  -H "X-NHN-Authorization: {AUTH_TOKEN}" \
+  -H "X-NHN-Authorization: Bearer {AUTH_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
     "metrics": [

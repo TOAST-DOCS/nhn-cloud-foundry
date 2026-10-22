@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=e1019368a5e9 -->
+<!-- pre-align:aligned sig=bbdb9424b3ef -->
 
 <a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > リリースノート { #foundry }
@@ -11,19 +11,29 @@
 <a id="foundry-release-notes-2026-10-27-query"></a>
 #### 分析 / クエリ { #foundry-release-notes-2026-10-27-query }
 
-- `UNION`などの集合演算およびStarRocks専用の構文を含むクエリを実行できます。
+- `UNION`などの集合演算とStarRocks専用の構文を含むクエリを実行できます。
 
 <a id="foundry-release-notes-2026-10-27-app"></a>
 #### アプリ { #foundry-release-notes-2026-10-27-app }
 
-- アプリ一覧の**[動作状態]**カラムおよびアプリ詳細の**[アプリ状態]**タブで、アプリがデータを受け取り結果を出力しているかどうかをステップごとに確認できます。
+- アプリ一覧の**動作状態**カラムとアプリ詳細の**アプリ状態**タブで、アプリがデータを受け取り結果を出力しているかどうかを段階ごとに確認できます。
 
 <a id="foundry-release-notes-2026-10-27-recommendation"></a>
 #### 推薦アプリ { #foundry-release-notes-2026-10-27-recommendation }
 
-- **[サービング管理]**タブで、モデルごとに学習済みモデルを選択してデプロイし、デプロイ履歴を確認できます。
-- 進行中の学習をアプリ全体またはモデルごとにキャンセルできます。
-- 自動再学習を再開した場合、停止中にスキップされた回は即時実行されず、次のサイクルから実行されます。
+- **サービング管理**タブで、モデルごとに学習済みモデルを選択してデプロイし、デプロイ履歴を確認できます。
+- 進行中の学習を、アプリ全体またはモデルごとにキャンセルできます。
+- 自動再学習を再開すると、停止中に実行されなかった回は即時実行されず、次のサイクルから実行されます。
+
+<a id="foundry-release-notes-2026-10-27-api"></a>
+#### API { #foundry-release-notes-2026-10-27-api }
+
+API v2.0を提供します。リクエストパスのバージョンは`/api/v2.0`で、v1.0と比較してレスポンスのHTTPステータスコードとエラーコードが次のように変更されました。
+
+- リクエストが失敗しても、すべてのAPIがHTTPステータスコード`200`でレスポンスします。成功かどうかは`header.isSuccessful`で判定します。
+- エラーコード(`header.resultCode`)が負の数に変更されました。成功は`0`、エラーは負の数7桁で、`-`に続く3桁はHTTPステータスコードと同じ意味を持ちます。
+- APIガイドに[共通エラーコード](./api-guide/#auth-common-error-codes)とAPI別エラーコード表が追加されました。
+- API v1.0のサポート終了予定。
 
 <a id="foundry-release-notes-2026-09-18"></a>
 ### 2026. 09. 18. { #foundry-release-notes-2026-09-18 }
