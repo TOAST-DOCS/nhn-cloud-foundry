@@ -14,7 +14,7 @@ NHN Cloud Foundry가 제공하는 API를 설명합니다.
 <a id="api-version"></a>
 ## API 버전 { #api-version }
 
-API는 v2.0과 v1.0 두 버전을 제공합니다. 두 버전은 요청 형식(헤더와 요청 본문)과 성공 응답의 `body`가 같고, 실패를 알리는 HTTP 상태 코드와 결과 코드가 다릅니다.
+API는 v2.0과 v1.0 두 버전을 제공합니다. 두 버전은 요청 형식(헤더와 요청 본문)과 성공 응답의 `body`가 같고, 실패 시 HTTP 상태 코드와 결과 코드가 다릅니다.
 
 | 버전 | 요청 경로 | 상태 | 응답 규격 |
 | --- | --- | --- | --- |
@@ -34,7 +34,7 @@ v2.0은 성공과 실패 모두 HTTP 상태 코드 `200`으로 응답하고, 실
 <a id="auth-common-preparation"></a>
 #### 사전 준비 { #auth-common-preparation }
 
-API를 사용하려면 **Appkey**와 **인증 토큰**이 필요합니다.
+API를 사용하려면 Appkey와 인증 토큰이 필요합니다.
 
 - Appkey는 NHN Cloud 콘솔의 **Machine Learning > NHN Cloud Foundry** 페이지 상단 **URL & Appkey** 메뉴에서 확인할 수 있습니다.
 - API는 **gateway-public** 엔드포인트를 사용합니다.
@@ -120,7 +120,7 @@ https://{gateway-public-host}/api/v2.0
 <a id="ingest-api"></a>
 ### Ingest API { #ingest-api }
 
-Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재하는 API입니다. 데이터 소스 타입에 따라 다음 방식을 제공합니다.
+Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재하는 API입니다. 데이터 소스 타입별로 다음 방식을 제공합니다.
 
 | 방식 | 대상 데이터 소스 | 설명 |
 | --- | --- | --- |
@@ -251,7 +251,7 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 | body.parts[].uploadUrl | 파트 업로드 URL |
 | body.parts[].headUrl | ETag 조회용 URL(업로드 완료 후 HEAD 요청) |
 | body.expiresAt | URL 만료 시간 |
-| body.formPost.objectPrefix | 오브젝트 prefix(파일 이름 앞에 붙는 경로) |
+| body.formPost.objectPrefix | 오브젝트 접두사(파일 이름 앞에 붙는 경로) |
 | body.formPost.signature | HMAC-SHA1 서명 |
 | body.formPost.expires | 만료 시간(UNIX timestamp) |
 | body.formPost.maxFileSize | 최대 파일 크기(bytes) |
@@ -261,7 +261,7 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 ##### 2-A. 단일 파일 업로드(100MB 이하) { #ingest-snapshot-upload-single }
 
 init 응답의 `uploadUrl`로 multipart/form-data POST를 보냅니다.
-이 요청은 Object Storage에 직접 보내므로 별도 인증이 필요 없습니다(`signature`가 인증 역할).
+이 요청은 Object Storage에 직접 보내므로 별도 인증이 필요 없습니다(`signature`가 인증 역할을 합니다).
 
 curl 예시:
 
@@ -276,13 +276,13 @@ curl -X POST "{uploadUrl}" \
 ```
 
 !!! danger "주의"
-    `file` 필드는 반드시 폼 데이터의 **마지막**에 추가해야 합니다. 성공 시 HTTP `201 Created` 응답을 받습니다.
+    `file` 필드는 반드시 폼 데이터의 마지막에 추가해야 합니다. 성공 시 HTTP `201 Created` 응답을 받습니다.
 
 <a id="ingest-snapshot-upload-multipart"></a>
 ##### 2-B. 대용량 파일 업로드(100MB 초과, MULTIPART) { #ingest-snapshot-upload-multipart }
 
 응답의 `parts[]` 배열을 받아서 파트별로 업로드합니다.
-각 파트는 **(1) 업로드 → (2) HEAD로 ETag 조회 → (3) `partETags[]`에 `partNumber` 오름차순으로 수집** 순서로 처리합니다.
+각 파트는 (1) 업로드 → (2) HEAD로 ETag 조회 → (3) `partETags[]`에 `partNumber` 오름차순으로 수집 순서로 처리합니다.
 
 1. 파일을 `partSize`(기본 100MB) 단위로 분할합니다.
 2. 파트마다 `parts[i].uploadUrl`의 쿼리 파라미터(`signature`, `expires`, `max_file_size`, `max_file_count`)를 파싱하여 multipart/form-data로 전송합니다(필드 이름 `file`, 파일 이름 고정 `part`).
@@ -381,7 +381,9 @@ curl -X DELETE "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceI
   -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
 ```
 
-curl 예시(멀티파트 업로드) - 쿼리 파라미터로 `uploadId`를 함께 전달합니다:
+curl 예시(멀티파트 업로드):
+
+쿼리 파라미터로 `uploadId`를 함께 전달합니다.
 
 ```bash
 curl -X DELETE "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}/ingest/snapshots/{jobId}?uploadId={uploadId}" \
@@ -507,7 +509,7 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 | body.enabled | 이벤트 수집 가능 여부 |
 | body.status | 활성화 상태. DISABLED, ENABLING, ENABLED, ENABLE_FAILED |
 
-- 활성화는 비동기로 진행됩니다. 요청 직후 응답은 `enabled`가 false, `status`가 ENABLING이며, ENABLED가 된 뒤부터 이벤트를 수집합니다.
+- 활성화는 비동기로 진행됩니다. 요청 직후 응답은 `enabled`가 `false`, `status`가 `ENABLING`이며, `ENABLED`가 된 뒤부터 이벤트를 수집합니다.
 - 이미 활성인 데이터 소스에 다시 활성화를 요청하면 상태를 그대로 반환합니다. 비활성 상태에 비활성화를 요청할 때도 같습니다. 여러 번 호출해도 결과가 달라지지 않습니다.
 - 다만 활성화가 진행 중(`ENABLING`)일 때 다시 활성화를 요청하면 거절됩니다. 진행 상황은 콘솔의 이벤트 설정 탭에서 확인할 수 있습니다.
 - 없는 데이터 소스로 호출하면 데이터 소스를 찾을 수 없다는 오류가 반환됩니다.
@@ -540,7 +542,7 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| operation | String | O | 작업 타입. INSERT, UPDATE, DELETE 중 하나 |
+| operation | String | O | 작업 유형. INSERT, UPDATE, DELETE 중 하나 |
 | data | Object | O | 이벤트 데이터. 데이터 소스 스키마의 필드 이름을 키로 사용 |
 | eventTimestamp | String | X | 이벤트 발생 시각. 생략 시 서버 수신 시각 사용 |
 
@@ -567,7 +569,7 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 | 필드 | 설명 |
 | --- | --- |
 | body.eventId | 이벤트 ID |
-| body.success | 처리 성공 여부 |
+| body.success | 성공 여부 |
 | body.errorMessage | 실패 시 오류 메시지 |
 
 <a id="event-ingest-api-batch"></a>
@@ -603,7 +605,7 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| events | Array | O | 이벤트 목록. 1회 요청당 최대 5,000건이며 각 항목의 필드는 단건 전송과 동일 |
+| events | Array | O | 이벤트 목록. 1회 요청당 최대 5,000건이며 각 항목의 필드는 단건 전송과 동일함 |
 
 응답의 `body`는 이벤트별 처리 결과 배열입니다.
 
@@ -641,9 +643,9 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
 | metrics | Array | O | 지표 목록. 비어 있을 수 없으며 1회 요청당 최대 5,000건 |
-| metrics[].timestamp | Long | O | 메트릭 시각. 밀리초 epoch |
-| metrics[].value | Double | O | 측정값 |
-| metrics[].labels | Array | O | 라벨 목록. 라벨 조합이 시계열을, 그룹 라벨이 그룹을 결정 |
+| metrics[].timestamp | Long | O | 지표 시각. 밀리초 epoch |
+| metrics[].value | Double | O | 측정 값 |
+| metrics[].labels | Array | O | 라벨 목록. 라벨 조합이 시계열을, 그룹 라벨이 그룹을 결정함 |
 | metrics[].labels[].name | String | O | 라벨 이름. 영문자 또는 _로 시작하고 영문자, 숫자, _만 사용 |
 | metrics[].labels[].value | String | O | 라벨 값. 쉼표와 등호는 사용 불가 |
 | metrics[].metadata | Object | X | 부가 정보. 해석하지 않고 그대로 저장·전달. identityKey 키는 시스템이 사용하므로 사용 불가 |
@@ -832,16 +834,16 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/recommendation-apps/{appId}
 | context.pageType | String | X | 현재 페이지 유형(자유 형식. 예: home, item_detail) |
 | context.sessionId | String | X | 세션 ID |
 | context.impressions | Array | X | 사용자에게 추천 결과로 노출된 아이템 목록 |
-| context.interactions | Array | X | 사용자가 아이템에 대해 수행한 행동 정보 |
+| context.interactions | Array | X | 사용자의 아이템 행동 정보 |
 | context.feedback | Array | X | 사용자가 아이템에 남긴 평가 |
 | userAttributes | Object | X | 사용자 속성 정보(Cold Start 추론에 사용) |
 | options.maxRecommendations | Integer | X | 최대 추천 수(1~100). 100을 초과하는 값은 오류 없이 100으로 조정, 미지정 시 100 적용. 추천 가능한 아이템이 이 값보다 적으면 실제 아이템 수만큼만 반환 |
-| options.mode | String | X | 추론 방식 지정. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) 중 하나이며 그 밖의 값은 거절. 미지정 시 서버가 자동 결정 |
+| options.mode | String | X | 추론 방식 지정. sequential(이력 기반), cold_start(속성 기반), popular(인기 기반) 중 하나이며 그 밖의 값은 거절됨. 미지정 시 서버가 자동 결정 |
 | options.longtail | Boolean | X | 인기가 낮은 항목까지 포함해 추천 다양성 향상. sequential일 때만 적용 |
 | options.excludeItemKeys | Array | X | 추천에서 제외할 아이템 키 목록. 제외한 아이템은 최대 추천 수에 미포함 |
 
 - `options.mode`를 지정하지 않으면 서버가 추론 방식을 정합니다. 이때 정해진 방식의 모델이 앱에 없으면 앱에 연동된 다른 방식으로 대신 추천합니다. 실제로 사용한 방식은 응답의 `body.metadata.inferenceType`에서 확인합니다.
-- `options.mode`에 허용하지 않는 값을 보내면 결과 코드 `-4004201`로 거절합니다. 허용하는 값이어도 요청한 방식의 모델이 앱에 없고 대신할 방식도 없으면 결과 코드 `-5034201`을 반환합니다. 앱에 어떤 모델이 만들어져 있는지와 학습이 끝났는지 확인한 뒤 다시 호출합니다. `options.mode`로 방식을 지정한 요청은 대체하지 않으므로 이 응답을 받을 수 있습니다.
+- `options.mode`에 허용하지 않는 값을 보내면 결과 코드 `-4004201`로 거절합니다. 허용하는 값이어도 요청한 방식의 모델이 앱에 없고 대신할 방식도 없으면 결과 코드 `-5034201`을 반환합니다. 앱에 어떤 모델이 만들어져 있는지와 학습이 끝났는지 확인한 뒤 다시 호출하세요. `options.mode`로 방식을 지정한 요청은 대체하지 않으므로 이 응답을 받을 수 있습니다.
 
 <a id="recommendation-api-signal"></a>
 ##### 행동 신호 { #recommendation-api-signal }
@@ -889,10 +891,10 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/recommendation-apps/{appId}
 | occurredAt | String | O | 행동이 일어난 시각 |
 
 - `occurredAt`은 시간대 오프셋을 포함한 ISO 8601 형식으로 보냅니다. 오프셋이 없으면 오류로 처리됩니다.
-- 세 필드 모두 `requestId`, `occurredAt`, 아이템 키가 모두 있어야 신호로 사용됩니다.
+- `requestId`, `occurredAt`, 아이템 키가 세 필드 모두 있어야 신호로 사용됩니다.
 - 각 필드는 오래된 것부터 최신 순서로 전달합니다.
 - `impressions`는 최대 10건이고 1건당 `itemKeys`는 최대 100개입니다. `interactions`와 `feedback`은 `type`별로 최대 10건입니다. 상한을 초과하면 요청이 거절됩니다.
-- 행동 신호는 이번 추천 요청의 추론 입력으로만 사용하고 저장하지 않습니다. 같은 아이템의 `feedback`이 바뀌면 가장 최근 값만 반영되므로, 효과를 유지하려면 매 요청 다시 전송합니다.
+- 행동 신호는 이번 추천 요청의 추론 입력으로만 사용하고 저장하지 않습니다. 같은 아이템의 `feedback`이 바뀌면 가장 최근 값만 반영되므로, 효과를 유지하려면 매 요청마다 다시 전송합니다.
 - 반응 이벤트를 저장해 분석에 활용하려면 [추천 이벤트 API](#recommendation-event-api)를 함께 사용합니다.
 
 !!! tip "알아두기"
@@ -1035,7 +1037,7 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/recommendation-apps/{appId}
 <a id="auth-common-preparation-v1"></a>
 #### 사전 준비 { #auth-common-preparation-v1 }
 
-API를 사용하려면 **Appkey**와 **인증 토큰**이 필요합니다.
+API를 사용하려면 Appkey와 인증 토큰이 필요합니다.
 
 - Appkey는 NHN Cloud 콘솔의 **Machine Learning > NHN Cloud Foundry** 페이지 상단 **URL & Appkey** 메뉴에서 확인할 수 있습니다.
 - API는 **gateway-public** 엔드포인트를 사용합니다.
@@ -1078,7 +1080,7 @@ https://{gateway-public-host}/api/v1.0
 | --- | --- | --- |
 | header.isSuccessful | Boolean | 요청 성공 여부 |
 | header.resultCode | Integer | 결과 코드. 성공 시 0, 실패 시 오류 코드 |
-| header.resultMessage | String | 결과 메시지. 성공 시 SUCCESS, 실패 시 오류 상세 |
+| header.resultMessage | String | 결과 메시지. 성공 시 SUCCESS, 실패 시 오류 상세 메시지 |
 | body | Object/Array | API별 응답 데이터 |
 
 요청이 거절되어도 HTTP 상태 코드는 `200`으로 반환될 수 있습니다. 성공 여부는 HTTP 상태 코드가 아니라 `header.isSuccessful`과 `header.resultCode`로 판정합니다. 인증 토큰이 없거나 만료된 경우에는 HTTP `401`을 반환합니다.
@@ -1086,7 +1088,7 @@ https://{gateway-public-host}/api/v1.0
 <a id="ingest-api-v1"></a>
 ### Ingest API { #ingest-api-v1 }
 
-Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재하는 API입니다. 데이터 소스 타입에 따라 다음 방식을 제공합니다.
+Ingest API는 콘솔에서 이미 만든 데이터 소스에 데이터를 적재하는 API입니다. 데이터 소스 타입별로 다음 방식을 제공합니다.
 
 | 방식 | 대상 데이터 소스 | 설명 |
 | --- | --- | --- |
@@ -1217,7 +1219,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | body.parts[].uploadUrl | 파트 업로드 URL |
 | body.parts[].headUrl | ETag 조회용 URL(업로드 완료 후 HEAD 요청) |
 | body.expiresAt | URL 만료 시간 |
-| body.formPost.objectPrefix | 오브젝트 prefix(파일 이름 앞에 붙는 경로) |
+| body.formPost.objectPrefix | 오브젝트 접두사(파일 이름 앞에 붙는 경로) |
 | body.formPost.signature | HMAC-SHA1 서명 |
 | body.formPost.expires | 만료 시간(UNIX timestamp) |
 | body.formPost.maxFileSize | 최대 파일 크기(bytes) |
@@ -1227,7 +1229,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 ##### 2-A. 단일 파일 업로드(100MB 이하) { #ingest-snapshot-upload-single-v1 }
 
 init 응답의 `uploadUrl`로 multipart/form-data POST를 보냅니다.
-이 요청은 Object Storage에 직접 보내므로 별도 인증이 필요 없습니다(`signature`가 인증 역할).
+이 요청은 Object Storage에 직접 보내므로 별도 인증이 필요 없습니다(`signature`가 인증 역할을 합니다).
 
 curl 예시:
 
@@ -1242,13 +1244,13 @@ curl -X POST "{uploadUrl}" \
 ```
 
 !!! danger "주의"
-    `file` 필드는 반드시 폼 데이터의 **마지막**에 추가해야 합니다. 성공 시 HTTP `201 Created` 응답을 받습니다.
+    `file` 필드는 반드시 폼 데이터의 마지막에 추가해야 합니다. 성공 시 HTTP `201 Created` 응답을 받습니다.
 
 <a id="ingest-snapshot-upload-multipart-v1"></a>
 ##### 2-B. 대용량 파일 업로드(100MB 초과, MULTIPART) { #ingest-snapshot-upload-multipart-v1 }
 
 응답의 `parts[]` 배열을 받아서 파트별로 업로드합니다.
-각 파트는 **(1) 업로드 → (2) HEAD로 ETag 조회 → (3) `partETags[]`에 `partNumber` 오름차순으로 수집** 순서로 처리합니다.
+각 파트는 (1) 업로드 → (2) HEAD로 ETag 조회 → (3) `partETags[]`에 `partNumber` 오름차순으로 수집 순서로 처리합니다.
 
 1. 파일을 `partSize`(기본 100MB) 단위로 분할합니다.
 2. 파트마다 `parts[i].uploadUrl`의 쿼리 파라미터(`signature`, `expires`, `max_file_size`, `max_file_count`)를 파싱하여 multipart/form-data로 전송합니다(필드 이름 `file`, 파일 이름 고정 `part`).
@@ -1347,7 +1349,9 @@ curl -X DELETE "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceI
   -H "X-NHN-Authorization: Bearer {ACCESS_TOKEN}"
 ```
 
-curl 예시(멀티파트 업로드) - 쿼리 파라미터로 `uploadId`를 함께 전달합니다:
+curl 예시(멀티파트 업로드):
+
+쿼리 파라미터로 `uploadId`를 함께 전달합니다.
 
 ```bash
 curl -X DELETE "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/snapshots/{jobId}?uploadId={uploadId}" \
@@ -1473,7 +1477,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | body.enabled | 이벤트 수집 가능 여부 |
 | body.status | 활성화 상태. DISABLED, ENABLING, ENABLED, ENABLE_FAILED |
 
-- 활성화는 비동기로 진행됩니다. 요청 직후 응답은 `enabled`가 false, `status`가 ENABLING이며, ENABLED가 된 뒤부터 이벤트를 수집합니다.
+- 활성화는 비동기로 진행됩니다. 요청 직후 응답은 `enabled`가 `false`, `status`가 `ENABLING`이며, `ENABLED`가 된 뒤부터 이벤트를 수집합니다.
 - 이미 활성인 데이터 소스에 다시 활성화를 요청하면 상태를 그대로 반환합니다. 비활성 상태에 비활성화를 요청할 때도 같습니다. 여러 번 호출해도 결과가 달라지지 않습니다.
 - 다만 활성화가 진행 중(`ENABLING`)일 때 다시 활성화를 요청하면 거절됩니다. 진행 상황은 콘솔의 이벤트 설정 탭에서 확인할 수 있습니다.
 - 없는 데이터 소스로 호출하면 데이터 소스를 찾을 수 없다는 오류가 반환됩니다.
@@ -1506,7 +1510,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| operation | String | O | 작업 타입. INSERT, UPDATE, DELETE 중 하나 |
+| operation | String | O | 작업 유형. INSERT, UPDATE, DELETE 중 하나 |
 | data | Object | O | 이벤트 데이터. 데이터 소스 스키마의 필드 이름을 키로 사용 |
 | eventTimestamp | String | X | 이벤트 발생 시각. 생략 시 서버 수신 시각 사용 |
 
@@ -1533,7 +1537,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | 필드 | 설명 |
 | --- | --- |
 | body.eventId | 이벤트 ID |
-| body.success | 처리 성공 여부 |
+| body.success | 성공 여부 |
 | body.errorMessage | 실패 시 오류 메시지 |
 
 <a id="event-ingest-api-batch-v1"></a>
@@ -1569,7 +1573,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| events | Array | O | 이벤트 목록. 1회 요청당 최대 5,000건이며 각 항목의 필드는 단건 전송과 동일 |
+| events | Array | O | 이벤트 목록. 1회 요청당 최대 5,000건이며 각 항목의 필드는 단건 전송과 동일함 |
 
 응답의 `body`는 이벤트별 처리 결과 배열입니다.
 
@@ -1607,9 +1611,9 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 | 필드 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
 | metrics | Array | O | 지표 목록. 비어 있을 수 없으며 1회 요청당 최대 5,000건 |
-| metrics[].timestamp | Long | O | 메트릭 시각. 밀리초 epoch |
-| metrics[].value | Double | O | 측정값 |
-| metrics[].labels | Array | O | 라벨 목록. 라벨 조합이 시계열을, 그룹 라벨이 그룹을 결정 |
+| metrics[].timestamp | Long | O | 지표 시각. 밀리초 epoch |
+| metrics[].value | Double | O | 측정 값 |
+| metrics[].labels | Array | O | 라벨 목록. 라벨 조합이 시계열을, 그룹 라벨이 그룹을 결정함 |
 | metrics[].labels[].name | String | O | 라벨 이름. 영문자 또는 _로 시작하고 영문자, 숫자, _만 사용 |
 | metrics[].labels[].value | String | O | 라벨 값. 쉼표와 등호는 사용 불가 |
 | metrics[].metadata | Object | X | 부가 정보. 해석하지 않고 그대로 저장·전달. identityKey 키는 시스템이 사용하므로 사용 불가 |
@@ -1726,7 +1730,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | context.pageType | String | X | 현재 페이지 유형(자유 형식. 예: home, item_detail) |
 | context.sessionId | String | X | 세션 ID |
 | context.impressions | Array | X | 사용자에게 추천 결과로 노출된 아이템 목록 |
-| context.interactions | Array | X | 사용자가 아이템에 대해 수행한 행동 정보 |
+| context.interactions | Array | X | 사용자의 아이템 행동 정보 |
 | context.feedback | Array | X | 사용자가 아이템에 남긴 평가 |
 | userAttributes | Object | X | 사용자 속성 정보(Cold Start 추론에 사용) |
 | options.maxRecommendations | Integer | X | 최대 추천 수(1~100). 100을 초과하는 값은 오류 없이 100으로 조정, 미지정 시 100 적용. 추천 가능한 아이템이 이 값보다 적으면 실제 아이템 수만큼만 반환 |
@@ -1735,7 +1739,7 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | options.excludeItemKeys | Array | X | 추천에서 제외할 아이템 키 목록. 제외한 아이템은 최대 추천 수에 미포함 |
 
 - `options.mode`를 지정하지 않으면 서버가 추론 방식을 정합니다. 이때 정해진 방식의 모델이 앱에 없으면 앱에 연동된 다른 방식으로 대신 추천합니다. 실제로 사용한 방식은 응답의 `body.metadata.inferenceType`에서 확인합니다.
-- 요청한 방식의 모델이 앱에 없고 대신할 방식도 없으면 HTTP `503`과 결과 코드 `5030001`을 반환합니다. 앱에 어떤 모델이 만들어져 있는지와 학습이 끝났는지 확인한 뒤 다시 호출합니다. `options.mode`로 방식을 지정한 요청은 대체하지 않으므로 이 응답을 받을 수 있습니다.
+- 요청한 방식의 모델이 앱에 없고 대신할 방식도 없으면 HTTP `503`과 결과 코드 `5030001`을 반환합니다. 앱에 어떤 모델이 만들어져 있는지와 학습이 끝났는지 확인한 뒤 다시 호출하세요. `options.mode`로 방식을 지정한 요청은 대체하지 않으므로 이 응답을 받을 수 있습니다.
 
 <a id="recommendation-api-signal-v1"></a>
 ##### 행동 신호 { #recommendation-api-signal-v1 }
@@ -1783,10 +1787,10 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | occurredAt | String | O | 행동이 일어난 시각 |
 
 - `occurredAt`은 시간대 오프셋을 포함한 ISO 8601 형식으로 보냅니다. 오프셋이 없으면 오류로 처리됩니다.
-- 세 필드 모두 `requestId`, `occurredAt`, 아이템 키가 모두 있어야 신호로 사용됩니다.
+- `requestId`, `occurredAt`, 아이템 키가 세 필드 모두 있어야 신호로 사용됩니다.
 - 각 필드는 오래된 것부터 최신 순서로 전달합니다.
 - `impressions`는 최대 10건이고 1건당 `itemKeys`는 최대 100개입니다. `interactions`와 `feedback`은 `type`별로 최대 10건입니다. 상한을 초과하면 요청이 거절됩니다.
-- 행동 신호는 이번 추천 요청의 추론 입력으로만 사용하고 저장하지 않습니다. 같은 아이템의 `feedback`이 바뀌면 가장 최근 값만 반영되므로, 효과를 유지하려면 매 요청 다시 전송합니다.
+- 행동 신호는 이번 추천 요청의 추론 입력으로만 사용하고 저장하지 않습니다. 같은 아이템의 `feedback`이 바뀌면 가장 최근 값만 반영되므로, 효과를 유지하려면 매 요청마다 다시 전송합니다.
 - 반응 이벤트를 저장해 분석에 활용하려면 [추천 이벤트 API](#recommendation-event-api-v1)를 함께 사용합니다.
 
 !!! tip "알아두기"

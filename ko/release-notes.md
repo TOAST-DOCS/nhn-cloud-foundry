@@ -31,7 +31,7 @@ API v2.0을 제공합니다. 요청 경로의 버전은 `/api/v2.0`이며, v1.0�
 - 요청이 실패해도 모든 API가 HTTP 상태 코드 `200`으로 응답합니다. 성공 여부는 `header.isSuccessful`로 판정합니다.
 - 오류 코드(`header.resultCode`)가 음수로 바뀌었습니다. 성공은 `0`, 오류는 음수 7자리이며 `-` 뒤 세 자리는 HTTP 상태 코드와 같은 의미입니다.
 - API 가이드에 [공통 오류 코드](./api-guide/#auth-common-error-codes)와 API별 오류 코드 표가 추가되었습니다.
-- API v1.0은 지원 종료 예정입니다.
+- API v1.0 지원 종료 예정.
 
 <a id="foundry-release-notes-2026-09-18"></a>
 ### 2026. 09. 18. { #foundry-release-notes-2026-09-18 }
