@@ -254,10 +254,10 @@ When a user interacts with recommendation results, such as clicking on them, sen
 For a detailed description of each request field, see 'Recommendation event API' in the [API Guide](./api-guide/#recommendation-event-api).
 
 ```bash
-curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
+curl -X POST '{URL}/api/v2.0/recommendation-apps/{APP_ID}/events' \
   -H "X-NC-APP-KEY: {APP_KEY}" \
   -H "Content-Type: application/json" \
-  -H "X-NHN-Authorization: {AUTH_TOKEN}" \
+  -H "X-NHN-Authorization: Bearer {AUTH_TOKEN}" \
   -d '{
     "eventType": "CLICK",
     "requestId": "{RecommendApiResponse.body.metadata.requestId}",
@@ -304,9 +304,9 @@ From the **Metric Collection** tab in the Data Source Created window or the Deta
 ![Collection Method](../static/images/quick-start/수집방법.png){ height="70%" }
 
 ```bash
-curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
+curl -X POST '{URL}/api/v2.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
   -H "X-NC-APP-KEY: {APP_KEY}" \
-  -H "X-NHN-Authorization: {AUTH_TOKEN}" \
+  -H "X-NHN-Authorization: Bearer {AUTH_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
     "metrics": [
