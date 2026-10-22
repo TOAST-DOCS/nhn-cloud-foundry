@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=49c258996509 -->
+<!-- pre-align:aligned sig=7d38f67961d0 -->
 
 <a id="foundry-console-guide"></a>
 ## Machine Learning > NHN Cloud Foundry > Console User Guide { #foundry-console-guide }
@@ -804,19 +804,25 @@ Use SQL to query and analyze data from a data source.
 
 - The execution results are displayed in a data grid format. The column structure is generated dynamically based on the query results, and pagination is supported.
 - When you select a data source, a schema panel appears to the right of the query input field, where you can check field names and data types. You can search by field name.
-- Press **Ctrl+Enter** (or **⌘+Enter** on macOS) in the query input field to execute the query.
+- In the query input area, press **Ctrl+Enter** (or **⌘+Enter** on macOS) to run the query, or press **Ctrl+S** (or **⌘+S** on macOS) to open the save confirmation modal.
+- If you modify a loaded query and run it, the saved query remains unchanged. The modification applies only to that execution. To save the changes, click the **Save Query** button.
 - If query execution fails, the cause of the failure is displayed in the results area. If there is a SQL syntax error, the location and details reported by the query engine are shown as-is.
 - If the query results are too large, exceed the memory required for processing, or the execution time is exceeded, the execution is rejected. Narrow the conditions, reduce joins and sorting, or lower the row limit, then try again.
 - For other errors, an error ID is displayed instead of the details. Providing this value when contacting support helps resolve the issue faster.
 - Click the **Reset** button to clear the query that you have written.
 - Click the **Download Query Results** button to save the results as a CSV file (filename: `query-name_date_time.csv`).
 - Use the table name shown in the data source list as-is in the FROM clause (`SELECT * FROM {table name}`).
-- Only a single SELECT statement can be executed. All other statements are rejected.
+- Only SELECT statements are supported. Set operations such as `UNION`, `INTERSECT`, and `EXCEPT`, parenthesized queries, and StarRocks-specific syntax (array and map literals, lambdas, and join hints) are also supported. Any other statements are rejected and the message "Only SELECT queries can be executed." is displayed.
+
+- System information tables (`information_schema`) cannot be queried. Even saved queries are rejected at the time of execution.
 
 <a id="query-save"></a>
 ### Modify a Saved Query { #query-save }
 
-After loading a query with **Query Selection** and modifying its content, click **Save Query** to save your changes. The button is disabled if no query is loaded or if no changes have been made.
+After loading a query with **Query Selection** and modifying its content, click **Save Query** to open a confirmation modal, then click **Save** to save your changes. The button is disabled if no query is loaded or if no changes have been made.
+
+- You can also open the same confirmation modal by pressing **Ctrl+S** (or **⌘+S** on macOS) in the query input field.
+- A saved query can only be updated this way. Simply running a modified query does not update it.
 
 <a id="query-list"></a>
 ### Query List { #query-list }
@@ -1057,6 +1063,7 @@ Create and manage apps that connect AI models to data. Two app types are availab
 | App name | Name that identifies the app |
 | App description | Description of the app |
 | Status | Current app status |
+| Action Status | Whether the app is actually receiving data and producing results |
 | Created on | Date and time the app was created |
 
 <a id="app-list-status"></a>
@@ -1068,7 +1075,7 @@ Hover over the app status badge to view a detailed description in a tooltip.
 | --- | --- |
 | Initializing | App initialization in progress |
 | Training | AI model training in progress |
-| Deploying | App deployment in progress |
+| Deploying | Model deployment in progress, initiated from the App Deployment or Serving Management tab |
 | Activating | App activation in progress |
 | Active | App is active |
 | Deleting | App deletion in progress |
@@ -1081,6 +1088,26 @@ Hover over the app status badge to view a detailed description in a tooltip.
 !!! tip "Note"
     The following is a description based on the recommendation system app. The training and deployment that occur immediately after app creation are part of the app preparation process, during which the recommendation model has not yet been trained. If you call the recommendation API, a response is returned, but it does not reflect the results of a trained model.
     The first training runs at the time specified in the batch schedule (status: Training → Deploying → Activating → Active). You can retrieve valid recommendation results after the trained model has been deployed.
+
+<a id="app-list-runtime-status"></a>
+#### Runtime Status { #app-list-runtime-status }
+
+While the status indicates the creation, training, and deletion stages of an app, the runtime status indicates whether the app is actually receiving data and producing results. The two values are evaluated independently, so an app can be active in status but have a suspended runtime status.
+
+| Value | Description |
+| --- | --- |
+| Operating normally | Data is being received and results are being produced |
+| Metric disconnected | No metrics have been received by the Univariate Time-Series Anomaly Detection app for a while |
+| Review required | There is a step that requires attention, such as automatic retraining of the Recommendation System app being delayed beyond its scheduled time |
+| Operation suspended | There is a step that has stopped, so results are not being produced |
+| Preparing | The app is being created or data is being collected |
+| Waiting for metrics | Ready to receive metrics, but none have been received yet |
+| Disabled | Usage has been stopped or the app is being deleted |
+| Status unavailable | Status information could not be retrieved |
+
+- The runtime status is displayed for Recommendation System apps and Univariate Time-Series Anomaly Detection apps.
+- The evaluation is updated every minute. Click the **Refresh** button to reload both the app list and the runtime status.
+- To check which step has stopped and how to resolve it, go to the **App Status** tab in the app details. For more information, see the [App Status tab](#app-detail-runtime).
 
 <a id="app-create"></a>
 ### Create App { #app-create }
@@ -1365,59 +1392,65 @@ The completion modal for the univariate time series anomaly detection app displa
 <a id="app-detail"></a>
 ### Recommendation System App Details { #app-detail }
 
-Click an app in the app list to go to the details screen. The recommendation system app consists of three tabs: **Recommendation API Call**, **App Information**, and **Training Management**.
+Click an app in the app list to go to the details screen. The recommendation system app consists of five tabs: **App Information**, **Recommendation API Call**, **Training Management**, **Serving Management**, and **App Status**. For the App Status tab, see [App Status Tab](#app-detail-runtime).
+
+- The header displays the **App > App Name** path along with the status and description. To return to the App List, click **App** in the path.
+- The **Basic Info** panel above the tabs displays the app type, version, app ID, creation date, and modification date.
+
+<a id="app-detail-info"></a>
+#### App Info { #app-detail-info }
+
+The app's configuration is displayed as cards in the order of **Input → Process → Output**.
+
+| Card | Item | Description |
+| --- | --- | --- |
+| Input | Training Data Source | The data source used for model training. Displays the number of models and tables, and shows the role of each table — user, item, history, or tag. |
+| Processing | Recommendation Model | The number of models and versions included in the app. |
+| Output | Result Data Source | The data source where recommendation results are stored. |
 
 <a id="app-detail-recommend"></a>
-#### Recommendation API Call { #app-detail-recommend }
+#### Call the Recommendation API { #app-detail-recommend }
 
-You can call the recommendation API directly by entering request parameters and view the results. The screen consists of three areas: input form, request preview, and recommendation results.
+You can directly call the recommendation API by entering request parameters and check the results. The screen consists of three areas: the input form, the request preview, and the recommendation results.
 
 Input form:
 
 | Item | Description |
 | --- | --- |
-| Recommendation app ID | App ID to call. Automatically populated with the current app. |
-| User ID | Select the user to receive recommendations. |
-| Recommendation mode | Choose between Sequential (history-based) and Cold Start (attribute-based). |
-| Maximum recommendations | Maximum number of items to include in the response (1–100, default: 10). |
-| Longtail mode | Improves recommendation diversity by including unpopular items. Not available in Cold Start mode. |
-| context | Add context information (currently viewed item, recently viewed items, etc.) and behavioral signals for the recommendation request, field by field |
-| userAttributes | Add user attribute information (e.g., group, age, interests) on a field-by-field basis. |
-| options | Add recommendation request options on a field-by-field basis. |
+| Recommendation App ID | The ID of the app to call. Automatically populated with the current app |
+| User ID | Select the user to receive recommendations |
+| Recommendation Mode | Choose between Sequential (history-based) and Cold Start (attribute-based) |
+| Maximum Recommendations | Maximum number of items to include in the response (1–100, default: 10) |
+| Longtail Mode | Improves recommendation diversity by including less popular items. Not available in Cold Start mode |
+| context | Add contextual information for the recommendation request (current and recently viewed items, etc.) and behavior signals, field by field |
+| userAttributes | Add user attribute information (group, age, interests, etc.), field by field |
+| options | Add recommendation request options, field by field |
 
-- **Request Preview**: Displays the actual API request JSON built from your input. You can copy it using the **Copy** button and use it for API integration development.
-- **Recommendation Results**: Click the **Request Recommendation** button to display rankings, item keys, scores, and recommendation reasons. The total result count and response time are also shown.
+- **Request Preview**: Displays the actual API request JSON composed from the entered values. You can click the **Copy** button to copy it and use it for API integration development.
+- **Recommendation Results**: Click the **Request Recommendation** button to view the rank, item key, score, and recommendation reason, along with the total number of results and response time.
 
-By adding the following keys to the context, you can input user behavior signals. The `impressions` key is used to reorder recommendation results based on exposed recommendation information, and `interactions` and `feedback` reflect user behavior-based data in model inference.
+You can input a user's behavior signals by adding the following keys to context. `impressions` is used to reorder recommendation results based on exposed recommendation information, while `interactions` and `feedback` reflect user action-based data in model inference.
 
 | Key | Description | Type |
 | --- | --- | --- |
 | impressions | List of items exposed to the user as recommendation results | None |
 | interactions | Information about actions that the user performed on items | CLICK, CONVERSION |
-| feedback | Evaluation left by the user on an item | POSITIVE, NEGATIVE |
+| feedback | Ratings that the user left on items | POSITIVE, NEGATIVE |
 
 Click the **Add Item** button to add a row and enter the following values.
 
 | Item | Description |
 | --- | --- |
-| Item Key | Target item key. For impressions, enter multiple keys in display order |
-| Type | Select from interactions, feedback |
-| requestId | requestId of the previous recommendation response |
-| Occurrence time | ISO 8601 format with timezone offset. Example: 2026-08-25T10:00:00+09:00 |
+| Item Key | The target item key. For impressions, enter multiple keys in the order of exposure |
+| Type | Select from interactions or feedback |
+| requestId | The requestId from the immediately preceding recommendation response |
+| Occurrence Time | ISO 8601 format including timezone offset. Example: 2026-08-25T10:00:00+09:00 |
 
-impressions can contain up to 10 entries, and interactions and feedback can contain up to 10 entries per type. If the limit is exceeded, the request is rejected.
+You can enter up to 10 entries for `impressions`, and up to 10 entries per type for `interactions` and `feedback`. Requests that exceed these limits are rejected.
 
 !!! tip "Note"
-    Recommendation API calls are only available when the app is active.
-    Impressions are automatically accumulated one at a time, up to the 10 most recent entries, each time a recommendation response is received. They are reset when you change the user or refresh the screen. You can remove them one by one using the ✕ on each row, or clear all of them using the ✕ on the field.
-
-<a id="app-detail-info"></a>
-#### App Info { #app-detail-info }
-
-You can view the app ID, app name, status, app type, description, creation date, modification date, version, and input and output data sources.
-
-- Input data source: The data sources used for model training. For recommendation apps, data sources are displayed separately by model.
-- Output data source: The data source where recommendation results are stored.
+    Calling the recommendation API is only possible when the app is in the Active state.
+    One `impressions` entry is automatically accumulated each time a recommendation response is received, up to the last 10 entries. The entries are reset when you change the user or refresh the page. You can delete entries one at a time using ✕ on a row, or delete all entries at once using ✕ on the field.
 
 <a id="app-detail-training"></a>
 #### Training Management { #app-detail-training }
@@ -1427,12 +1460,12 @@ Change the training cycle of the learning model included in the app, stop or res
 | Column | Description |
 | --- | --- |
 | Training Model | Model to be trained |
-| Training Status | Waiting, Training, Completed, Retraining Stopped, Failed, Deleted |
+| Training Status | Waiting, Training, Completed, Retraining Stopped, Failed, Canceled, Deleted |
 | Training Cycle | The cycle at which automatic retraining runs |
 | Setting Reflection Status | Whether the updated training settings have been applied |
 | Automatic Retraining | Enabled, Stopped, Not Configured |
 | Last Training Time | The time of the most recent training |
-| Management | **Change Training Cycle** button |
+| Management | **Change Training Cycle**, **Stop Training** button |
 
 Setting reflection status:
 
@@ -1448,8 +1481,9 @@ Use the buttons at the top to perform the following actions. The actions apply t
 | Button | Description |
 | --- | --- |
 | Run Training | Runs training immediately |
-| Stop Automatic Retraining | Stops automatic retraining |
-| Resume Automatic Retraining | Resume automatic retraining that was stopped. If no training cycle has been specified, you must set one first. |
+| Cancel Training | Cancel training in progress |
+| Stop Automatic Retraining | Stop automatic retraining. Can be performed even while training is in progress |
+| Resume Automatic Retraining | Resume automatic retraining that was stopped. If no training cycle has been specified, you must configure the cycle first, and training in progress must complete before resuming. When resumed, any cycles missed during the stop period are skipped, and execution resumes from the next cycle |
 | Refresh | Retrieves the latest training status |
 
 When a button is inactive, hover over it to see the reason.
@@ -1462,6 +1496,8 @@ When a button is inactive, hover over it to see the reason.
 | Settings have not finished applying | All models must have a setting reflection status of Applied before you can run training. |
 | A previous change has not been confirmed | A previous automatic retraining change is pending confirmation. |
 | Training cycle is not set | You must set the training cycle before you can resume. |
+| Training in progress (resume) | You can resume only after the running training is complete. |
+| No training in progress (cancel) | No training is in progress. |
 
 Click the **Change Training Cycle** button to change the cycle in the modal.
 
@@ -1473,8 +1509,15 @@ Click the **Change Training Cycle** button to change the cycle in the modal.
 - When you save, the status changes to pending change request. You can check whether the changes have been applied in the Settings Applied Status column in the list.
 - If only some models have not been applied, a notification is displayed along with the list of those models.
 
+Click the **Cancel Training** button to open a confirmation modal, then click **Confirm** to cancel the training in progress. The button at the top cancels training for all training models, while the button in the **Manage** column of the list cancels training only for that model.
+
+- Both automatic retraining and manually triggered training can be canceled. Canceled models have their training status displayed as **Canceled**, and the previously trained model and the most recent training time are retained as-is.
+- The training cycle does not change. Only the current cycle is stopped, and automatic retraining for the next cycle runs normally.
+- If there is no training to cancel, a message stating "There was no training to cancel." is displayed. If training for some models could not be canceled, a notification is displayed along with a list of the affected models.
+
 !!! tip "Note"
     You can run training only when automatic retraining is stopped.
+    Resuming automatic retraining does not run any cycles that were missed during the stopped period. If immediate training is needed, run it directly using **Run Training** before resuming.
     If you save the Training Cycle Change modal without changing the cycle, the message "There are no changes to apply." is displayed.
 
 <a id="app-detail-training-history"></a>
@@ -1492,15 +1535,68 @@ Select a training model from the list to view the training artifact history for 
 
 If no model has been trained yet, the message "No trained models yet." is displayed.
 
+<a id="app-detail-serving"></a>
+#### Serving Management { #app-detail-serving }
+
+View the training artifact currently being served for each model, and select a different training artifact to deploy. When automatic retraining is complete, the latest training artifact is deployed automatically. However, you can use this tab to roll back to a previous version or replace only specific models.
+
+**Serving Configuration per Model**
+
+| Column | Description |
+| --- | --- |
+| Model | Training models included in the app |
+| Currently Serving | Version of the training artifact currently being served. Displays a hyphen for apps that have not been deployed |
+| Training Artifact to Deploy | Select a training artifact to deploy. Only training artifacts that have been trained successfully are displayed in the format 'Version N · Training time' |
+
+Use the buttons at the top to perform the following actions:
+
+| Button | Description |
+| --- | --- |
+| Deploy Selected Models | Start deployment with the selected training artifact |
+| Reset Selection | Cancel the training artifact selection. Displayed only when a training artifact has been selected |
+| Refresh | Reload the serving configuration and deployment history |
+
+Clicking the **Deploy Selected Models** button opens a confirmation modal that displays the models being changed in the format 'Version A → Version B'. Models that were not selected retain their currently serving training artifact. When the button is inactive, hover over it to see the reason.
+
+| Situation | Message |
+| --- | --- |
+| App is not active | You can deploy only when the app is running. |
+| Deployment is in progress | Deployment is in progress. |
+| A model is currently training | You can deploy after training is complete. |
+| No models to deploy | There are no models to deploy. |
+| No training artifact selected | Select the model you want to change first. |
+| A deleted training artifact is selected | A deleted model is selected. Select a different training artifact. |
+
+**Deployment History**
+
+| Column | Description |
+| --- | --- |
+| Round | Deployment sequence number |
+| Status | Deploying, Serving, Rollback Pending, Cleaning Up, Cleaned Up, Deployment Failed |
+| Deployment Method | Automatic retraining, Manual deployment |
+| Model Configuration | Models and versions deployed in that round |
+| Switchover Time | Time when traffic was switched over. For rounds that are deploying or have failed, shows the time the round was created |
+| Management | **Load This Configuration** button. Populates the serving configuration selection with the model configuration from that round |
+
+- When deployment starts, the app status changes to **Deploying**. The existing model continues to respond until the new model is verified and traffic is switched over. Progress is displayed at the top of the tab.
+- When deployment is complete, **Currently Serving** is displayed next to the deployed training artifact in the Training Artifact History on the Training Management tab.
+- **Load This Configuration** is unavailable when the round is currently being served or when a deployment is in progress.
+
+!!! danger "Caution"
+    If automatic retraining is enabled, the serving artifact will be replaced with the latest training artifact when the next retraining is complete. To keep using the training artifact you selected, stop automatic retraining on the Training Management tab.
+
 <a id="app-detail-univariate"></a>
 ### Univariate Time Series Anomaly Detection App Details { #app-detail-univariate }
 
-The univariate time-series anomaly detection app displays the **App > App Name** path at the top and consists of two tabs: **App Information** and **Group List**. To return to the app list, click **App** in the path.
+The Univariate Time-Series Anomaly Detection app consists of three tabs: **App Info**, **Group List**, and **App Status**. For the App Status tab, see [App Status Tab](#app-detail-runtime).
+
+- At the top, the **App > App name** path, status, and description are displayed. To return to the App List, click **App** in the path.
+- The **Basic Info** panel above the tabs displays the app type, app ID, creation date, and modification date.
 
 <a id="app-detail-univariate-info"></a>
 #### App Information { #app-detail-univariate-info }
 
-The header displays the app name, status, app type, app ID, creation date, modification date, and description. Below the header, cards are displayed in the order of **Input → Processing → Output**.
+The app's configuration is displayed as cards in the order of **Input → Processing → Output**.
 
 **Input**: Metric data source
 
@@ -1539,7 +1635,7 @@ The header displays the app name, status, app type, app ID, creation date, modif
 - Values entered in fixed headers and dynamic headers are not displayed on the screen.
 - Results stored in the result data source can be viewed in the **Analysis** menu.
 - Below the card, the group status is displayed as five numbers: **Total**, **Active**, **Activation Pending**, **Inactive**, and **Error**. Clicking a number navigates to the Group List tab and filters by the corresponding status.
-- **Error** is the number of groups for which inference has failed and no results are being output. It is counted on a different basis from Active, Activation Pending, and Inactive, and is not added to their total. Error groups that are turned on are also counted under Active.
+- **Error** is the number of groups for which inference has failed and no results are being output. It is counted on a different basis from Active, Activation Pending, and Inactive, and is not added to their total. Error groups that are turned on are also counted under Active. Because this value counts detection failures for individual groups, check the **App Status** tab to see whether the app as a whole is functioning.
 - You can check the meaning of the three statuses by hovering the mouse over the question mark icon next to the group status title. Activation Pending typically takes around 6 hours in accurate mode, while instant mode activates immediately after the group is turned on.
 - If retraining fails, the training status is displayed as Training Failed. This can occur when there is insufficient or no data available for training. When enough data has accumulated, it will retry at the next retraining cycle. In the meantime, results continue to be generated using the most recently trained model. If the initial training fails, the app enters a failed state and can be deleted.
 - You can check the meaning of each value by hovering over the question mark next to the training status label. Retraining Stopped indicates that automatic retraining is turned off, and Deleted indicates that the training configuration has been cleared.
@@ -1583,6 +1679,8 @@ Inference Status:
 - The absence of incoming metric data is not considered an error in itself. If metric data for a time series in an error state is interrupted for more than 10 minutes, that time series is excluded from evaluation and automatically recovers to normal status.
 - Hovering over an inference status value displays the time of the determination. If there is no determination record, the time is displayed as unknown.
 
+- The inference status shows whether detection has failed for a single group. Check whether metrics are coming in and results are going out on the **App Status** tab.
+
 - If you assign a Group Label to a data source, one group is created for each value. If you do not assign one, the entire data source becomes a single group.
 - If you do not assign a Group Label to the data source, one group is registered when the app is created. The list is empty while the app is being created, and the group appears once creation is complete.
 - If you assign a Group Label, groups are not registered automatically. You must register the target groups using "Start, Stop, or Delete Group Usage" in the [API Guide](./api-guide/#univariate-group-api) for them to appear in the list.
@@ -1606,3 +1704,38 @@ Click the **Hash Calculator** button in the toolbar to calculate a hash directly
 - For the group hash, enter only the labels that correspond to the group key field. For the series hash, enter only the labels that identify the time series.
 - You can check the hash of a group that has not yet been registered in advance.
 - If the hash differs from what you expect, start by comparing the canonical form. The canonical form is the value obtained by sorting labels alphabetically by name and joining them with commas.
+
+<a id="app-detail-runtime"></a>
+### App Status Tab { #app-detail-runtime }
+
+The **App Status** tab in the details screen of a Recommendation System app or Univariate Time-Series Anomaly Detection app shows whether data is flowing in and results are being sent out, evaluated at the overall app level. The top of the card displays the same conclusion as the [Runtime Status](#app-list-runtime-status) in the app list, and below it shows the verdict for each stage.
+
+The stages vary depending on the app type.
+
+| App Type | Stage | Description |
+| --- | --- | --- |
+| Univariate Time-Series Anomaly Detection | Metric Reception | Whether the sent metrics are being collected |
+| Univariate Time-Series Anomaly Detection | Anomaly Detection | Whether anomaly detection is running on the collected metrics |
+| Univariate Time-Series Anomaly Detection | Result Transmission | Whether the connection for sending detection results is functioning |
+| Recommendation System | Recommendation Response | Whether the recommendation API can respond to calls |
+| Recommendation System | Retraining | Whether automatic retraining is running as scheduled |
+
+Stage verdicts:
+
+| Value | Description |
+| --- | --- |
+| Normal | The stage is operating normally |
+| Caution | Degraded but still operating |
+| Issue | Stopped |
+| Waiting | Waiting for data |
+| Preparing | App is being created; no verdict yet |
+| Unable to Check | Failed to retrieve verdict information |
+| Not Applicable | Not subject to evaluation |
+
+- Stages with a Caution or Issue verdict display a reason along with either an **Action Required** or **No Action Required** badge. Action Required indicates a cause that you can investigate — such as the configuration of the system sending metrics — while No Action Required indicates a service-side cause; if the issue persists, contact the customer center.
+- Each stage displays the time when its verdict last changed. For the Retraining stage, this is the time of the last training run.
+- The Result Transmission stage may display **Connected** even when a preceding stage is not Normal. This means that the connection is established, but it is unknown whether there are actual results to send.
+- If the Recommendation Response stage is not Normal, the verdict is also shown broken down by recommendation method: existing-user recommendation, long-tail recommendation, and cold-start recommendation.
+- The Retraining stage is only evaluated for apps that have automatic retraining enabled. Apps that have been trained only once without a recurring cycle, and apps for which automatic retraining has been stopped, are displayed as Not Applicable.
+- Verdicts are refreshed every minute, but the screen does not update automatically. Use the **Refresh** button on the card to reload.
+- To check whether detection has failed for a specific group in a Univariate Time-Series Anomaly Detection app, refer to the Group Status section in the App Info tab and the Group List tab. Because the two views use different criteria, their values may differ. For example, if Result Transmission stops, the app status is shown as Issue even if all groups are Normal.

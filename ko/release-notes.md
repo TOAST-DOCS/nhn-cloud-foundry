@@ -1,7 +1,37 @@
-<!-- pre-align:aligned sig=fef6db797893 -->
+<!-- pre-align:aligned sig=bbdb9424b3ef -->
 
 <a id="foundry"></a>
 ## Machine Learning > NHN Cloud Foundry > 릴리스 노트 { #foundry }
+
+<a id="foundry-release-notes-2026-10-27"></a>
+### 2026. 10. 27. { #foundry-release-notes-2026-10-27 }
+
+<a id="foundry-release-notes-2026-10-27-query"></a>
+#### 분석 / 쿼리 { #foundry-release-notes-2026-10-27-query }
+
+- `UNION` 등 집합 연산과 StarRocks 전용 문법을 포함한 쿼리를 실행할 수 있습니다.
+
+<a id="foundry-release-notes-2026-10-27-app"></a>
+#### 앱 { #foundry-release-notes-2026-10-27-app }
+
+- 앱 목록의 **동작 상태** 칼럼과 앱 상세의 **앱 상태** 탭에서 앱이 데이터를 받아 결과를 내고 있는지 단계별로 확인할 수 있습니다.
+
+<a id="foundry-release-notes-2026-10-27-recommendation"></a>
+#### 추천 앱 { #foundry-release-notes-2026-10-27-recommendation }
+
+- **서빙 관리** 탭에서 모델별로 학습본을 선택해 배포하고 배포 이력을 확인할 수 있습니다.
+- 진행 중인 학습을 앱 전체 또는 모델별로 취소할 수 있습니다.
+- 자동 재학습을 재개하면 중지한 동안 놓친 회차를 바로 실행하지 않고 다음 주기부터 실행합니다.
+
+<a id="foundry-release-notes-2026-10-27-api"></a>
+#### API { #foundry-release-notes-2026-10-27-api }
+
+API v2.0을 제공합니다. 요청 경로의 버전은 `/api/v2.0`이며, v1.0과 비교해 응답의 HTTP 상태 코드와 오류 코드가 다음과 같이 바뀌었습니다.
+
+- 요청이 실패해도 모든 API가 HTTP 상태 코드 `200`으로 응답합니다. 성공 여부는 `header.isSuccessful`로 판정합니다.
+- 오류 코드(`header.resultCode`)가 음수로 바뀌었습니다. 성공은 `0`, 오류는 음수 7자리이며 `-` 뒤 세 자리는 HTTP 상태 코드와 같은 의미입니다.
+- API 가이드에 [공통 오류 코드](./api-guide/#auth-common-error-codes)와 API별 오류 코드 표가 추가되었습니다.
+- API v1.0 지원 종료 예정.
 
 <a id="foundry-release-notes-2026-09-18"></a>
 ### 2026. 09. 18. { #foundry-release-notes-2026-09-18 }
