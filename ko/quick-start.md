@@ -252,10 +252,10 @@ CSV 파일로 데이터 소스를 만들고, 파이프라인으로 가공한 데
 요청 필드의 자세한 설명은 [API 가이드](./api-guide/#recommendation-event-api)의 '추천 이벤트 API'를 참고합니다.
 
 ```bash
-curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
+curl -X POST '{URL}/api/v2.0/recommendation-apps/{APP_ID}/events' \
   -H "X-NC-APP-KEY: {APP_KEY}" \
   -H "Content-Type: application/json" \
-  -H "X-NHN-Authorization: {AUTH_TOKEN}" \
+  -H "X-NHN-Authorization: Bearer {AUTH_TOKEN}" \
   -d '{
     "eventType": "CLICK",
     "requestId": "{RecommendApiResponse.body.metadata.requestId}",
@@ -302,9 +302,9 @@ curl -X POST '{URL}/api/v1.0/recommendation-apps/{APP_ID}/events' \
 ![수집 방법](../static/images/quick-start/수집방법.png){ height="70%" }
 
 ```bash
-curl -X POST '{URL}/api/v1.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
+curl -X POST '{URL}/api/v2.0/data-sources/{DATA_SOURCE_ID}/ingest/metrics' \
   -H "X-NC-APP-KEY: {APP_KEY}" \
-  -H "X-NHN-Authorization: {AUTH_TOKEN}" \
+  -H "X-NHN-Authorization: Bearer {AUTH_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
     "metrics": [
