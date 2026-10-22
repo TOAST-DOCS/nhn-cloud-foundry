@@ -3,7 +3,6 @@
 <!-- pre-align:aligned sig=a293d4083b4d -->
 
 <a id="foundry-api-guide"></a>
-
 ## Machine Learning > NHN Cloud Foundry > API Guide { #foundry-api-guide }
 
 This guide describes the APIs provided by NHN Cloud Foundry.
@@ -15,7 +14,6 @@ This guide describes the APIs provided by NHN Cloud Foundry.
 | Recommendation Event API | Collects user reaction events on recommendation results. |
 
 <a id="api-version"></a>
-
 ## API Version { #api-version }
 
 The API provides two versions: v2.0 and v1.0. Both versions share the same request format (headers and request body) and the same `body` in success responses. They differ in HTTP status codes and result codes on failure.
@@ -28,13 +26,11 @@ The API provides two versions: v2.0 and v1.0. Both versions share the same reque
 It is recommended to use v2.0. The end-of-support schedule for v1.0 will be announced separately.
 
 <a id="api-v2-guide"></a>
-
 ## API v2.0 Guide { #api-v2-guide }
 
 v2.0 responds with HTTP status code `200` for both success and failure. The cause of failure is indicated by a 7-digit negative result code. The request format is the same as v1.0.
 
 <a id="auth-common"></a>
-
 ### Authentication and Common Information { #auth-common }
 
 <a id="auth-common-preparation"></a>
@@ -124,7 +120,6 @@ The first three digits of an error code correspond to the HTTP status code. 400-
 | -5030101 | Authentication service is not ready. Please retry. | The authentication service is not ready. Retry after a moment. |
 
 <a id="ingest-api"></a>
-
 ### Ingest API { #ingest-api }
 
 The Ingest API loads data into a Data Source that has already been created in the Console. The following methods are available for each Data Source type:
@@ -139,7 +134,6 @@ The Ingest API loads data into a Data Source that has already been created in th
     No API is provided for creating a new Data Source. To use the Ingest API, you must first create a Data Source in the Console.
 
 <a id="ingest-snapshot"></a>
-
 #### Snapshot Upload (File Upload) { #ingest-snapshot }
 
 **Replaces all data** in the Data Source with the contents of the uploaded file. The upload process consists of three steps.
@@ -473,7 +467,6 @@ The job status (`status`) can have the following values:
 | FAILED | Job failed |
 
 <a id="event-ingest-api"></a>
-
 #### Event Ingestion { #event-ingest-api }
 
 Sends change events while retaining existing data. This is used with file-type data sources, and the **Event API** must be enabled first. You can enable it from the Event Settings tab in the console or by using the Enable API below.
@@ -619,7 +612,6 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 The `body` of the response is an array of processing results for each event.
 
 <a id="metrics-ingest-api"></a>
-
 #### Collect Metrics { #metrics-ingest-api }
 
 Sends metric data to a data source of type Prometheus API. The transmitted metrics can be viewed in the Analysis menu, and can also be used as input for the Univariate Time-Series Anomaly Detection App.
@@ -678,7 +670,6 @@ The collection rules are as follows:
     Training also has requirements. If the Data Source contains only one time series, training will fail, so you must have at least two time series. Each time series must accumulate data continuously for approximately 4 hours or more to train correctly.
 
 <a id="ingest-error-codes"></a>
-
 #### Error Codes { #ingest-error-codes }
 
 These are error codes that can be returned across all Ingest APIs in addition to the [common error codes](#auth-common-error-codes).
@@ -737,7 +728,6 @@ In Batch Send, per-item errors are returned in `body[].success` and `body[].erro
 | -5004005 | Kafka batch send partially failed. | Some metrics failed to be stored or exceeded the timeout period. Resending the request may result in duplicate metrics that were already stored. |
 
 <a id="univariate-api"></a>
-
 ### Univariate Time-Series Anomaly Detection API { #univariate-api }
 
 <a id="univariate-group-api"></a>
@@ -805,7 +795,6 @@ The following error codes may be returned by the Enable, Disable, and Delete Gro
 | -4041306 | Group entry not found or has no trainingPipelineId. | One or more groups in the request are not registered. Other groups included in the request are also not processed. | Disable, Delete |
 
 <a id="recommendation-api"></a>
-
 ### Recommendation API { #recommendation-api }
 
 Requests recommendation results from the Recommendation System App. If a user has sufficient history, the server uses model-based (Sequential) inference; otherwise, it uses attribute-based (Cold Start) inference.
@@ -963,7 +952,6 @@ The following error codes may be returned from recommendation requests in additi
 | -5034201 | Recommendation model is not ready. | The model for the requested recommendation mode is not yet linked to the app. Retry after the initial training and deployment are complete. |
 
 <a id="recommendation-event-api"></a>
-
 ### Recommendation Event API { #recommendation-event-api }
 
 Collects events representing user reactions (such as clicks) to recommendation results. You can analyze recommendation success rates using the collected event data.
@@ -1039,7 +1027,6 @@ These are error codes that can be returned when sending recommendation events, i
 | -5044201 | Event publish timed out. | The event was not saved within the time limit. Try again later. |
 
 <a id="api-v1-guide"></a>
-
 ## API v1.0 Guide { #api-v1-guide }
 
 !!! danger "Caution"
@@ -1047,7 +1034,6 @@ These are error codes that can be returned when sending recommendation events, i
     It is recommended to use v2.0. For more information, see [API v2.0 Guide](#api-v2-guide).
 
 <a id="auth-common-v1"></a>
-
 ### Authentication and Common Information { #auth-common-v1 }
 
 <a id="auth-common-preparation-v1"></a>
@@ -1102,7 +1088,6 @@ All API responses consist of a `header` and a `body`.
 Even if a request is rejected, the HTTP status code may be returned as `200`. Success is determined by `header.isSuccessful` and `header.resultCode`, not the HTTP status code. If the authentication token is missing or expired, HTTP `401` is returned.
 
 <a id="ingest-api-v1"></a>
-
 ### Ingest API { #ingest-api-v1 }
 
 The Ingest API loads data into Data Sources that have already been created in the Console. The following methods are provided based on the Data Source type:
@@ -1117,7 +1102,6 @@ The Ingest API loads data into Data Sources that have already been created in th
     No API is provided for creating new Data Sources. To use the Ingest API, you must first create a Data Source in the Console.
 
 <a id="ingest-snapshot-v1"></a>
-
 #### Snapshot Upload (File Upload) { #ingest-snapshot-v1 }
 
 Replaces **all** data in the Data Source with the contents of the uploaded file. The upload process consists of three steps.
@@ -1451,7 +1435,6 @@ The job status (`status`) has the following values:
 | FAILED | Job failed |
 
 <a id="event-ingest-api-v1"></a>
-
 #### Collect Events { #event-ingest-api-v1 }
 
 Sends change events while retaining existing data. This is used with a Data Source whose type is File, and you must enable the **Event API** first. You can enable it from the event settings tab in the Console or by using the Enable API below.
@@ -1597,7 +1580,6 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 The `body` of the response is an array of processing results for each event.
 
 <a id="metrics-ingest-api-v1"></a>
-
 #### Collect Metrics { #metrics-ingest-api-v1 }
 
 Sends metric data to a Data Source of the Prometheus API type. The sent metrics can be viewed in the Analysis menu and can also be used as input for the Univariate Time-Series Anomaly Detection App.
@@ -1656,7 +1638,6 @@ The collection rules are as follows:
     Training also has requirements. If the Data Source has only one time series, training fails, so there must be at least two time series. Each time series must also accumulate at least approximately 4 hours of uninterrupted data for training to complete successfully.
 
 <a id="univariate-api-v1"></a>
-
 ### Univariate Time-Series Anomaly Detection API { #univariate-api-v1 }
 
 <a id="univariate-group-api-v1"></a>
@@ -1710,7 +1691,6 @@ Request rules are as follows:
     A deleted group disappears along with its status history and cannot be recovered.
 
 <a id="recommendation-api-v1"></a>
-
 ### Recommendation API { #recommendation-api-v1 }
 
 Requests recommendation results from the Recommendation System App that you created. If user history is sufficient, inference uses a model-based approach (Sequential); if insufficient, it uses an attribute-based approach (Cold Start).
@@ -1855,7 +1835,6 @@ Response example:
 | body.metadata.abTestGroup | A/B test group (currently returns an empty value) |
 
 <a id="recommendation-event-api-v1"></a>
-
 ### Recommendation Event API { #recommendation-event-api-v1 }
 
 Collects user reaction events (such as clicks) on recommendation results. You can analyze the recommendation success rate using the collected event data.
