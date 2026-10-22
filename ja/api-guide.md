@@ -3,7 +3,6 @@
 <!-- pre-align:aligned sig=a293d4083b4d -->
 
 <a id="foundry-api-guide"></a>
-
 ## Machine Learning > NHN Cloud Foundry > APIガイド { #foundry-api-guide }
 
 NHN Cloud Foundryが提供するAPIについて説明します。
@@ -15,7 +14,6 @@ NHN Cloud Foundryが提供するAPIについて説明します。
 | 推薦イベント API | 推薦結果に対してユーザーが示した反応イベントを収集 |
 
 <a id="api-version"></a>
-
 ## APIバージョン { #api-version }
 
 APIはv2.0とv1.0の2つのバージョンを提供します。2つのバージョンは、リクエスト形式(ヘッダとリクエスト本文)と成功レスポンスの`body`が同じで、失敗時のHTTPステータスコードと結果コードが異なります。
@@ -28,13 +26,11 @@ APIはv2.0とv1.0の2つのバージョンを提供します。2つのバージ�
 v2.0の使用を推奨します。v1.0のサポート終了スケジュールは別途ご案内します。
 
 <a id="api-v2-guide"></a>
-
 ## API v2.0ガイド { #api-v2-guide }
 
 v2.0は成功・失敗ともにHTTPステータスコード`200`でレスポンスし、失敗の原因は負の7桁の結果コードで通知します。リクエスト形式はv1.0と同じです。
 
 <a id="auth-common"></a>
-
 ### 認証および共通事項 { #auth-common }
 
 <a id="auth-common-preparation"></a>
@@ -124,7 +120,6 @@ https://{gateway-public-host}/api/v2.0
 | -5030101 | Authentication service is not ready. Please retry. | 認証サービスの準備ができていません。しばらく後に再試行します。 |
 
 <a id="ingest-api"></a>
-
 ### Ingest API { #ingest-api }
 
 Ingest APIは、コンソールで作成済みのデータソースにデータを投入するAPIです。データソースのタイプ別に次の方式を提供します。
@@ -139,7 +134,6 @@ Ingest APIは、コンソールで作成済みのデータソースにデータ�
     データソースを新規作成するAPIは提供していません。Ingest APIを使用するには、コンソールでデータソースを先に作成する必要があります。
 
 <a id="ingest-snapshot"></a>
-
 #### スナップショットアップロード(ファイルアップロード) { #ingest-snapshot }
 
 アップロードしたファイルの内容でデータソースのデータを**すべて置換**します。アップロードは3段階で進行します。
@@ -473,7 +467,6 @@ curl "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}/ingest/
 | FAILED | ジョブ失敗 |
 
 <a id="event-ingest-api"></a>
-
 #### イベント収集 { #event-ingest-api }
 
 既存のデータを保持したまま変更イベントを転送します。タイプがファイルのデータソースで使用し、**Event API**を先に有効化する必要があります。有効化はコンソールのイベント設定タブまたは以下の有効化APIで行います。
@@ -619,7 +612,6 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 レスポンスの`body`はイベントごとの処理結果の配列です。
 
 <a id="metrics-ingest-api"></a>
-
 #### 指標収集 { #metrics-ingest-api }
 
 タイプがPrometheus APIのデータソースに指標データを転送します。転送した指標は分析メニューで照会でき、単変量時系列異常検出アプリの入力としても使用できます。
@@ -678,7 +670,6 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
     学習にも条件があります。データソースに時系列が1つだけの場合は学習が失敗するため、時系列を2つ以上設ける必要があり、時系列ごとに約4時間以上途切れなく蓄積されている必要があります。
 
 <a id="ingest-error-codes"></a>
-
 #### エラーコード { #ingest-error-codes }
 
 [共通エラーコード](#auth-common-error-codes)以外に、Ingest API全体で返される可能性があるエラーコードです。
@@ -737,7 +728,6 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 | -5004005 | Kafka batch send partially failed. | 一部の指標の保存が失敗したか、制限時間を超えました。リクエストを再送すると、すでに保存された指標が重複する可能性があります。 |
 
 <a id="univariate-api"></a>
-
 ### 単変量時系列異常検出 API { #univariate-api }
 
 <a id="univariate-group-api"></a>
@@ -805,7 +795,6 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/serving-pipelines/{servingP
 | -4041306 | Group entry not found or has no trainingPipelineId. | リクエストしたグループの中に登録されていないグループがあります。リクエストに含まれる他のグループも処理されません。 | 停止、削除 |
 
 <a id="recommendation-api"></a>
-
 ### 推薦照会 API { #recommendation-api }
 
 作成した推薦システムアプリに推薦結果をリクエストします。ユーザーの履歴が十分な場合はモデルベース(Sequential)、不足している場合は属性ベース(Cold Start)で推論します。
@@ -963,7 +952,6 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/recommendation-apps/{appId}
 | -5034201 | Recommendation model is not ready. | リクエストした推薦モードのモデルがまだアプリに連携されていません。初回の学習とデプロイが完了してから再試行してください。 |
 
 <a id="recommendation-event-api"></a>
-
 ### 推薦イベント API { #recommendation-event-api }
 
 推薦結果に対するユーザーの反応(クリックなど)イベントを収集します。収集したイベントデータで推薦の成功率を分析できます。
@@ -1039,7 +1027,6 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/recommendation-apps/{appId}
 | -5044201 | Event publish timed out. | イベントの保存が制限時間内に完了しませんでした。しばらくしてから再試行してください。 |
 
 <a id="api-v1-guide"></a>
-
 ## API v1.0ガイド { #api-v1-guide }
 
 !!! danger "注意"
@@ -1047,7 +1034,6 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/recommendation-apps/{appId}
     v2.0の使用を推奨します。詳細については、[API v2.0ガイド](#api-v2-guide)を参照してください。
 
 <a id="auth-common-v1"></a>
-
 ### 認証および共通事項 { #auth-common-v1 }
 
 <a id="auth-common-preparation-v1"></a>
@@ -1102,7 +1088,6 @@ https://{gateway-public-host}/api/v1.0
 リクエストが拒否されてもHTTPステータスコードは`200`で返される場合があります。成功可否はHTTPステータスコードではなく、`header.isSuccessful`と`header.resultCode`で判定します。認証トークンがないか期限切れの場合は、HTTP `401`を返します。
 
 <a id="ingest-api-v1"></a>
-
 ### Ingest API { #ingest-api-v1 }
 
 Ingest APIは、コンソールで作成済みのデータソースにデータを格納するAPIです。データソースのタイプ別に次の方式を提供します。
@@ -1117,7 +1102,6 @@ Ingest APIは、コンソールで作成済みのデータソースにデータ�
     データソースを新規に作成するAPIは提供していません。Ingest APIを使用するには、コンソールでデータソースを先に作成する必要があります。
 
 <a id="ingest-snapshot-v1"></a>
-
 #### スナップショットアップロード(ファイルアップロード) { #ingest-snapshot-v1 }
 
 アップロードしたファイルの内容でデータソースのデータを**すべて置き換え**ます。アップロードは3段階で進めます。
@@ -1451,7 +1435,6 @@ curl "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}/ingest/
 | FAILED | ジョブ失敗 |
 
 <a id="event-ingest-api-v1"></a>
-
 #### イベント収集 { #event-ingest-api-v1 }
 
 既存のデータを保持したまま、変更イベントを転送します。タイプがファイルのデータソースで使用し、**Event API**を先に有効化する必要があります。有効化は、コンソールのイベント設定タブまたは以下の有効化APIで行います。
@@ -1597,7 +1580,6 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
 レスポンスの`body`はイベントごとの処理結果の配列です。
 
 <a id="metrics-ingest-api-v1"></a>
-
 #### 指標収集 { #metrics-ingest-api-v1 }
 
 タイプがPrometheus APIのデータソースに指標データを転送します。転送した指標は分析メニューで照会でき、単変量時系列異常検出アプリの入力としても使用できます。
@@ -1656,7 +1638,6 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/data-sources/{dataSourceId}
     学習にも条件があります。データソースに時系列が1つだけの場合は学習が失敗するため、時系列を2つ以上設定する必要があります。また、時系列ごとに約4時間以上途切れなくデータが蓄積されることで、正常に学習できます。
 
 <a id="univariate-api-v1"></a>
-
 ### 単変量時系列異常検出 API { #univariate-api-v1 }
 
 <a id="univariate-group-api-v1"></a>
@@ -1710,7 +1691,6 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/serving-pipelines/{servingP
     削除したグループは状態の記録とともに消え、復元することはできません。
 
 <a id="recommendation-api-v1"></a>
-
 ### 推薦照会 API { #recommendation-api-v1 }
 
 作成した推薦システムアプリに推薦結果をリクエストします。ユーザーの履歴が十分な場合はモデルベース(Sequential)、不足している場合は属性ベース(Cold Start)で推論します。
@@ -1855,7 +1835,6 @@ curl -X POST "https://{gateway-public-host}/api/v1.0/recommendation-apps/{appId}
 | body.metadata.abTestGroup | A/Bテストグループ(現在は空の値を返します) |
 
 <a id="recommendation-event-api-v1"></a>
-
 ### 推薦イベント API { #recommendation-event-api-v1 }
 
 推薦結果に対してユーザーが示した反応(クリックなど)のイベントを収集します。蓄積されたイベントデータで推薦の成功率を分析できます。
