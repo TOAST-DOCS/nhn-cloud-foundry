@@ -612,7 +612,7 @@ curl -X POST "https://{gateway-public-host}/api/v2.0/data-sources/{dataSourceId}
 The `body` of the response is an array of processing results for each event.
 
 <a id="metrics-ingest-api"></a>
-#### Collect Metrics { #metrics-ingest-api }
+#### Metric Collection { #metrics-ingest-api }
 
 Sends metric data to a data source of type Prometheus API. The transmitted metrics can be viewed in the Analysis menu, and can also be used as input for the Univariate Time-Series Anomaly Detection App.
 
@@ -1634,7 +1634,7 @@ The collection rules are as follows:
 - Data sent with a delay is stored but may be excluded from real-time inference.
 
 !!! tip "Note"
-    Ingestion is independent of the transmission interval. However, if this Data Source is connected to the Univariate Time-Series Anomaly Detection App, you must send data for the same time series without interruption — one record per minute. Because the App evaluates metrics in 1-minute intervals, sending data at longer intervals creates gaps that may prevent preparation from completing in precise mode.
+    Ingestion is independent of the transmission interval. However, if this Data Source is connected to the Univariate Time-Series Anomaly Detection App, you must send data for the same time series without interruption — one record per minute. Because the App evaluates metrics in 1-minute intervals, sending data at longer intervals creates gaps that may prevent preparation from completing in accurate mode.
     Training also has requirements. If the Data Source has only one time series, training fails, so there must be at least two time series. Each time series must also accumulate at least approximately 4 hours of uninterrupted data for training to complete successfully.
 
 <a id="univariate-api-v1"></a>
